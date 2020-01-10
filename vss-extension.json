@@ -1,0 +1,60 @@
+{
+    "manifestVersion": 1,
+    "id": "matlab-azure-pipelines-extension",
+    "name": "MATLAB",
+    "version": "0.1.0",
+    "publisher": "MathWorks",
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],
+    "description": "",
+    "categories": [
+        "Azure Pipelines"
+    ],
+    "icons": {
+        "default": "images/extension-icon.png"
+    },
+    "files": [
+        {
+            "path": "images",
+            "addressable": true
+        },
+        {
+            "path": "tasks"
+        }
+    ],
+    "contributions": [
+        {
+            "id": "InstallMATLAB",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "tasks/install-matlab"
+            }
+        },
+        {
+            "id": "RunMATLABCommand",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "tasks/run-matlab-command"
+            }
+        },
+        {
+            "id": "RunMATLABTests",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "tasks/run-matlab-tests"
+            }
+        }
+    ]
+}

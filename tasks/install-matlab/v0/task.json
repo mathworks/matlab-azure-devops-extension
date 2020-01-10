@@ -1,0 +1,24 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
+    "id": "553fa7ff-af12-4821-8ace-6bf3dc410e62",
+    "name": "InstallMATLAB",
+    "friendlyName": "Install MATLAB",
+    "helpMarkDown": "",
+    "category": "Tool",
+    "author": "The MathWorks, Inc.",
+    "version": {
+        "Major": 0,
+        "Minor": 1,
+        "Patch": 0
+    },
+    "instanceNameFormat": "Install MATLAB",
+    "execution": {
+        "Node10": {
+            "target": "main.js"
+        }
+    },
+    "messages": {
+        "FailedToDownloadInstallScript": "Failed to download install script: %s",
+        "FailedToExecuteInstallScript": "Failed to execute install script. Exited with code '%s'."
+    }
+}
