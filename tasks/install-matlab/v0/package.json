@@ -1,6 +1,7 @@
 {
     "name": "install-matlab",
     "version": "0.1.0",
+    "private": true,
     "dependencies": {
         "@types/node": "^6.0.0",
         "@types/q": "^1.5.2",

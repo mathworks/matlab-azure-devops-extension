@@ -1,6 +1,7 @@
 {
     "name": "run-matlab-command",
     "version": "0.1.0",
+    "private": true,
     "scripts": {
         "postinstall": "npm run getBinDep",
         "getBinDep": "wget -q https://storage.googleapis.com/matlabimagesus/public/run-matlab-command/v0/run-matlab-command.zip -O bin.zip; unzip -qod bin bin.zip; rm bin.zip"

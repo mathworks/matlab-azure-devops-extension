@@ -1,0 +1,94 @@
+resources:
+  pipelines:
+    - pipeline: integ_test_promote
+      source: build-test-publish
+      trigger: true
+
+trigger: none
+
+stages:
+  - stage: integration_test
+    displayName: Integration test
+    jobs:
+      - job: test_install
+        pool:
+          vmImage: ubuntu-16.04
+        steps:
+          - checkout: none
+          - task: MathWorks.matlab-azure-pipelines-extension-dev.InstallMATLAB.InstallMATLAB@0
+            displayName: Install MATLAB
+          - script: |
+              set -e
+              matlab -batch version
+              mex -h
+            displayName: Check matlab and mex
+
+      - job: test_run_command
+        pool:
+          vmImage: ubuntu-16.04
+        steps:
+          - checkout: none
+          - task: MathWorks.matlab-azure-pipelines-extension-dev.InstallMATLAB.InstallMATLAB@0
+            displayName: Install MATLAB
+          - task: MathWorks.matlab-azure-pipelines-extension-dev.RunMATLABCommand.RunMATLABCommand@0
+            displayName: Run MATLAB statement
+            inputs:
+              command: f = fopen('myscript.m', 'w'); fwrite(f, 'assert(true)'); fclose(f);
+          - task: MathWorks.matlab-azure-pipelines-extension-dev.RunMATLABCommand.RunMATLABCommand@0
+            displayName: Run MATLAB script
+            inputs:
+              command: myscript
+
+      - job: test_run_tests
+        pool:
+          vmImage: ubuntu-16.04
+        steps:
+          - checkout: none
+          - task: MathWorks.matlab-azure-pipelines-extension-dev.InstallMATLAB.InstallMATLAB@0
+            displayName: Install MATLAB
+          - script: |
+              mkdir tests
+              echo '%% FirstTest' > tests/mytest.m
+            displayName: Make MATLAB tests
+          - task: MathWorks.matlab-azure-pipelines-extension-dev.RunMATLABTests.RunMATLABTests@0
+            displayName: Run MATLAB tests
+            inputs:
+              testResultsJUnit: test-results/matlab/results.xml
+          - script: |
+              set -e
+              grep -q FirstTest test-results/matlab/results.xml
+            displayName: Check artifacts
+
+  - stage: publish_prod
+    displayName: Publish prod
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    pool:
+      vmImage: ubuntu-16.04
+    jobs:
+      - job: publish_prod
+        steps:
+          - checkout: none
+
+          - task: DownloadPipelineArtifact@2
+            displayName: Get stored extension
+            inputs:
+              source: specific
+              project: 0ff4499a-5f12-48cd-b754-64fd00ef31b8
+              pipeline: 14
+              runVersion: latest
+              artifact: extension
+              path: $(Build.StagingDirectory)
+
+          - task: TfxInstaller@2
+            displayName: Install tfx-cli
+            inputs:
+              version: v0.7.x
+
+          - task: PublishAzureDevOpsExtension@2
+            displayName: Publish prod
+            inputs:
+              connectTo: VsTeam
+              connectedServiceName: MathWorks
+              fileType: vsix
+              vsixFile: $(Build.StagingDirectory)/*.vsix
+              updateTasksVersion: false

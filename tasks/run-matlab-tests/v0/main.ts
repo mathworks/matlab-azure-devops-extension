@@ -19,7 +19,10 @@ async function runTests(options: IRunTestsOptions) {
     // prepare name-value pairs
     const pairs: string[] = [];
     Object.keys(options).forEach((name) => {
-        pairs.push(name, (options as any)[name]);
+        const value = (options as any)[name];
+        if (value !== undefined) {
+            pairs.push(name, value);
+        }
     });
 
     // generate and run MATLAB test script

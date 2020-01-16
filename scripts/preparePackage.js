@@ -26,10 +26,3 @@ for (let task of project.taskList) {
 
     sh.cp("-R", path.join(task.buildPath, "node_modules"), path.join(task.packagePath, "node_modules"));
 }
-
-const cmd = "tfx extension create " +
-    `--root ${project.packagePath} ` +
-    `--output-path ${project.packagePath} ` +
-    `--manifests ${path.join(project.packagePath, "vss-extension.json")}`;
-
-sh.exec(cmd, { fatal: true });
