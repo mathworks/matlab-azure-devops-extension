@@ -5,6 +5,7 @@ resources:
       trigger: true
 
 trigger: none
+pr: none
 
 stages:
   - stage: integration_test
