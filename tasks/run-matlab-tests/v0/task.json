@@ -14,7 +14,7 @@
     "inputs": [
         {
             "name": "testResultsJUnit",
-            "type": "filePath",
+            "type": "string",
             "label": "JUnit-style test results",
             "defaultValue": "",
             "required": false,
@@ -22,7 +22,7 @@
         },
         {
             "name": "codeCoverageCobertura",
-            "type": "filePath",
+            "type": "string",
             "label": "Cobertura code coverage",
             "defaultValue": "",
             "required": false,

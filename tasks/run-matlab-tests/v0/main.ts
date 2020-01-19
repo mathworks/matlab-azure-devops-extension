@@ -6,8 +6,8 @@ import {platform} from "./utils";
 async function run() {
     try {
         const options: IRunTestsOptions = {
-            JUnitTestResults: taskLib.getPathInput("testResultsJUnit"),
-            CoberturaCodeCoverage: taskLib.getPathInput("codeCoverageCobertura"),
+            JUnitTestResults: taskLib.getInput("testResultsJUnit"),
+            CoberturaCodeCoverage: taskLib.getInput("codeCoverageCobertura"),
             CodeCoverageSource: taskLib.getInput("codeCoverageSource")};
         await runTests(options);
     } catch (err) {
