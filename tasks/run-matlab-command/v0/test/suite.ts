@@ -2,10 +2,8 @@ import * as assert from "assert";
 import * as mt from "azure-pipelines-task-lib/mock-test";
 import * as path from "path";
 
-describe("RunMATLABCommand V0 Suite", function() {
+describe("RunMATLABCommand V0 Suite", () => {
     it("should succeed running MATLAB command on linux", (done) => {
-        this.timeout(5000);
-
         const tp = path.join(__dirname, "runCommandLinux.js");
         const tr = new mt.MockTestRunner(tp);
 
@@ -18,8 +16,6 @@ describe("RunMATLABCommand V0 Suite", function() {
     });
 
     it("should succeed running MATLAB command on windows", (done) => {
-        this.timeout(5000);
-
         const tp = path.join(__dirname, "runCommandWindows.js");
         const tr = new mt.MockTestRunner(tp);
 
@@ -32,8 +28,6 @@ describe("RunMATLABCommand V0 Suite", function() {
     });
 
     it("should fail when running command fails", (done) => {
-        this.timeout(5000);
-
         const tp = path.join(__dirname, "failRunCommand.js");
         const tr = new mt.MockTestRunner(tp);
 

@@ -6,6 +6,8 @@ const tp = path.join(__dirname, "..", "main.js");
 const tr = new mr.TaskMockRunner(tp);
 
 tr.setInput("testResultsJUnit", "results.xml");
+tr.setInput("codeCoverageCobertura", "coverage.xml");
+tr.setInput("codeCoverageSource", "source");
 
 tr.registerMock("./utils", {
     platform: () => "linux",
@@ -19,7 +21,10 @@ const a: ma.TaskLibAnswers = {
     exec: {
         [runCmdPath + " " +
         "addpath('" + path.join(path.dirname(__dirname), "scriptgen") + "');" +
-        "testScript = genscript('Test','WorkingFolder','..','JUnitTestResults','results.xml');" +
+        "testScript = genscript('Test','WorkingFolder','..'," +
+        "'JUnitTestResults','results.xml'," +
+        "'CoberturaCodeCoverage','coverage.xml'," +
+        "'CodeCoverageSource',{'source'});" +
         "run(testScript.writeToFile('.mw/runAllTests.m'));"]: {
             code: 0,
             stdout: "ran tests",

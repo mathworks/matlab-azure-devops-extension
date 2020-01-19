@@ -17,7 +17,10 @@ const a: ma.TaskLibAnswers = {
     exec: {
         [runCmdPath + " " +
         "addpath('" + path.join(path.dirname(__dirname), "scriptgen") + "');" +
-        "testScript = genscript('Test','WorkingFolder','..');" +
+        "testScript = genscript('Test','WorkingFolder','..'," +
+        "'JUnitTestResults',''," +
+        "'CoberturaCodeCoverage',''," +
+        "'CodeCoverageSource',{'.'});" +
         "run(testScript.writeToFile('.mw/runAllTests.m'));"]: {
             code: 1,
             stdout: "tests failed",

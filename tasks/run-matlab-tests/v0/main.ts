@@ -5,10 +5,10 @@ import {platform} from "./utils";
 
 async function run() {
     try {
-        const options: IRunTestsOptions = {};
-        if (taskLib.filePathSupplied("testResultsJUnit")) {
-            options.JUnitTestResults = taskLib.getPathInput("testResultsJUnit");
-        }
+        const options: IRunTestsOptions = {
+            JUnitTestResults: taskLib.getPathInput("testResultsJUnit"),
+            CoberturaCodeCoverage: taskLib.getPathInput("codeCoverageCobertura"),
+            CodeCoverageSource: taskLib.getInput("codeCoverageSource")};
         await runTests(options);
     } catch (err) {
         taskLib.setResult(taskLib.TaskResult.Failed, err.message);
@@ -16,23 +16,15 @@ async function run() {
 }
 
 async function runTests(options: IRunTestsOptions) {
-    // prepare name-value pairs
-    const pairs: string[] = [];
-    Object.keys(options).forEach((name) => {
-        const value = (options as any)[name];
-        if (value !== undefined) {
-            pairs.push(name, value);
-        }
-    });
-
-    // generate and run MATLAB test script
     const runToolPath = path.join(__dirname, "bin", "run_matlab_command." + (platform() === "win32" ? "bat" : "sh"));
     chmodSync(runToolPath, "777");
     const runTool = taskLib.tool(runToolPath);
-    runTool.arg([
-        "addpath('" + path.join(__dirname, "scriptgen") + "');" +
-        `testScript = genscript('Test','WorkingFolder','..'${pairs.length === 0 ? "" : ",'" + pairs.join("','") + "'"});` +
-        "run(testScript.writeToFile('.mw/runAllTests.m'));"]);
+    runTool.arg(`addpath('${path.join(__dirname, "scriptgen")}');` +
+        `testScript = genscript('Test','WorkingFolder','..',` +
+        `'JUnitTestResults','${options.JUnitTestResults || ""}',` +
+        `'CoberturaCodeCoverage','${options.CoberturaCodeCoverage || ""}',` +
+        `'CodeCoverageSource',{'${options.CodeCoverageSource || "."}'});` +
+        `run(testScript.writeToFile('.mw/runAllTests.m'));`);
     const exitCode = await runTool.exec();
     if (exitCode !== 0) {
         throw new Error(taskLib.loc("FailedToRunTests"));
@@ -41,6 +33,8 @@ async function runTests(options: IRunTestsOptions) {
 
 interface IRunTestsOptions {
     JUnitTestResults?: string;
+    CoberturaCodeCoverage?: string;
+    CodeCoverageSource?: string;
 }
 
 run();

@@ -16,8 +16,25 @@
             "name": "testResultsJUnit",
             "type": "filePath",
             "label": "JUnit-style test results",
+            "defaultValue": "",
             "required": false,
             "helpMarkDown": "Path to write test results report using JUnit XML format."
+        },
+        {
+            "name": "codeCoverageCobertura",
+            "type": "filePath",
+            "label": "Cobertura code coverage",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "Path to write code coverage report using Cobertura XML format."
+        },
+        {
+            "name": "codeCoverageSource",
+            "type": "string",
+            "label": "Code coverage source",
+            "defaultValue": ".",
+            "required": false,
+            "helpMarkDown": "Location of folder containing source code."
         }
     ],
     "instanceNameFormat": "Run MATLAB Tests",
