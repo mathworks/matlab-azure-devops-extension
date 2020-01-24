@@ -21,10 +21,14 @@ async function runTests(options: IRunTestsOptions) {
     const runTool = taskLib.tool(runToolPath);
     runTool.arg(`addpath('${path.join(__dirname, "scriptgen")}');` +
         `testScript = genscript('Test','WorkingFolder','..',` +
-        `'JUnitTestResults','${options.JUnitTestResults || ""}',` +
-        `'CoberturaCodeCoverage','${options.CoberturaCodeCoverage || ""}',` +
-        `'CodeCoverageSource',{'${options.CodeCoverageSource || "."}'});` +
-        `run(testScript.writeToFile('.mw/runAllTests.m'));`);
+            `'JUnitTestResults','${options.JUnitTestResults || ""}',` +
+            `'CoberturaCodeCoverage','${options.CoberturaCodeCoverage || ""}',` +
+            `'CodeCoverageSource','${options.CodeCoverageSource || "."}');` +
+        `scriptFile = testScript.writeToFile('.matlab/runAllTests.m');` +
+        `disp(['Running ''' scriptFile ''':']);` +
+        `type(scriptFile);` +
+        `fprintf('__________\\n\\n');` +
+        `run(scriptFile);`);
     const exitCode = await runTool.exec();
     if (exitCode !== 0) {
         throw new Error(taskLib.loc("FailedToRunTests"));

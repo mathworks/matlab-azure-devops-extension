@@ -18,10 +18,14 @@ const a: ma.TaskLibAnswers = {
         [runCmdPath + " " +
         "addpath('" + path.join(path.dirname(__dirname), "scriptgen") + "');" +
         "testScript = genscript('Test','WorkingFolder','..'," +
-        "'JUnitTestResults',''," +
-        "'CoberturaCodeCoverage',''," +
-        "'CodeCoverageSource',{'.'});" +
-        "run(testScript.writeToFile('.mw/runAllTests.m'));"]: {
+            "'JUnitTestResults',''," +
+            "'CoberturaCodeCoverage',''," +
+            "'CodeCoverageSource','.');" +
+        "scriptFile = testScript.writeToFile('.matlab/runAllTests.m');" +
+        "disp(['Running ''' scriptFile ''':']);" +
+        "type(scriptFile);" +
+        "fprintf('__________\\n\\n');" +
+        "run(scriptFile);"]: {
             code: 1,
             stdout: "tests failed",
         },
