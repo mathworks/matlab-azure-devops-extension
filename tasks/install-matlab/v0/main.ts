@@ -14,7 +14,7 @@ async function install() {
     // download install bash script
     let scriptPath;
     try {
-        scriptPath = await toolLib.downloadTool("https://storage.googleapis.com/matlabimagesus/public/ephemeral-matlab/v0/install.sh");
+        scriptPath = await toolLib.downloadTool("https://ssd.mathworks.com/supportfiles/ci/ephemeral-matlab/v0/install.sh");
     } catch (err) {
         throw new Error(taskLib.loc("FailedToDownloadInstallScript", err.message));
     }

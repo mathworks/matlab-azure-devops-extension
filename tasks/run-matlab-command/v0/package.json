@@ -4,7 +4,7 @@
     "private": true,
     "scripts": {
         "postinstall": "npm run getBinDep",
-        "getBinDep": "wget -q https://storage.googleapis.com/matlabimagesus/public/run-matlab-command/v0/run-matlab-command.zip -O bin.zip; unzip -qod bin bin.zip; rm bin.zip"
+        "getBinDep": "wget -q https://ssd.mathworks.com/supportfiles/ci/run-matlab-command/v0/run-matlab-command.zip -O bin.zip; unzip -qod bin bin.zip; rm bin.zip"
     },
     "dependencies": {
         "@types/node": "^6.0.0",
