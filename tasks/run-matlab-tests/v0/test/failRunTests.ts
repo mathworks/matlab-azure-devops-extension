@@ -20,7 +20,7 @@ const a: ma.TaskLibAnswers = {
         "testScript = genscript('Test','WorkingFolder','..'," +
             "'JUnitTestResults',''," +
             "'CoberturaCodeCoverage',''," +
-            "'CodeCoverageSource','.');" +
+            "'SourceFolder','.');" +
         "scriptFile = testScript.writeToFile('.matlab/runAllTests.m');" +
         "disp(['Running ''' scriptFile ''':']);" +
         "type(scriptFile);" +

@@ -60,7 +60,7 @@ stages:
             inputs:
               testResultsJUnit: test-results/matlab/results.xml
               codeCoverageCobertura: code-coverage/coverage.xml
-              codeCoverageSource: src
+              sourceFolder: src
           - script: |
               set -e
               grep -q FirstTest test-results/matlab/results.xml
