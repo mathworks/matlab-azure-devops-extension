@@ -1,0 +1,11 @@
+**/node_modules/
+**/_build/
+**/_package/
+
+**/*.map
+**/*.taskkey
+**/.DS_Store
+
+**/*.mltbx
+
+.idea

@@ -1,0 +1,49 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
+    "id": "d9f28863-c9b0-4133-9cb8-a6d4744f30ef",
+    "name": "RunMATLABTests",
+    "friendlyName": "Run MATLAB Tests",
+    "helpMarkDown": "",
+    "category": "Test",
+    "author": "The MathWorks, Inc.",
+    "version": {
+        "Major": 0,
+        "Minor": 1,
+        "Patch": 0
+    },
+    "inputs": [
+        {
+            "name": "testResultsJUnit",
+            "type": "string",
+            "label": "JUnit-style test results",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "Path to write test results report using JUnit XML format."
+        },
+        {
+            "name": "codeCoverageCobertura",
+            "type": "string",
+            "label": "Cobertura code coverage",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "Path to write code coverage report using Cobertura XML format."
+        },
+        {
+            "name": "codeCoverageSource",
+            "type": "string",
+            "label": "Code coverage source",
+            "defaultValue": ".",
+            "required": false,
+            "helpMarkDown": "Location of folder containing source code."
+        }
+    ],
+    "instanceNameFormat": "Run MATLAB Tests",
+    "execution": {
+        "Node10": {
+            "target": "main.js"
+        }
+    },
+    "messages": {
+        "FailedToRunTests": "Failed to run tests successfully."
+    }
+}

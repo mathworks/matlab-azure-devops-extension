@@ -1,0 +1,16 @@
+{
+    "name": "run-matlab-command",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "postinstall": "npm run getBinDep",
+        "getBinDep": "wget -q https://storage.googleapis.com/matlabimagesus/public/run-matlab-command/v0/run-matlab-command.zip -O bin.zip; unzip -qod bin bin.zip; rm bin.zip"
+    },
+    "dependencies": {
+        "@types/node": "^6.0.0",
+        "@types/q": "^1.5.2",
+        "azure-pipelines-task-lib": "^2.9.3",
+        "azure-pipelines-tool-lib": "^0.12.0",
+        "sync-request": "^6.1.0"
+    }
+}

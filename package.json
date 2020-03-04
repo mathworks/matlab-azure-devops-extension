@@ -1,0 +1,23 @@
+{
+    "name": "matlab-azure-pipelines-extension",
+    "version": "0.1.0",
+    "scripts": {
+        "clean": "node ./scripts/clean.js",
+        "lint": "tslint --project .",
+        "compile": "node ./scripts/compile.js",
+        "copyResources": "node ./scripts/copyResources.js",
+        "build": "npm run lint && npm run compile && npm run copyResources",
+        "test": "node ./scripts/test.js",
+        "preparePackage": "node ./scripts/preparePackage.js"
+    },
+    "devDependencies": {
+        "@types/mocha": "^5.2.7",
+        "@types/node": "^12.12.6",
+        "@types/shelljs": "^0.8.6",
+        "mocha": "^6.2.2",
+        "shelljs": "^0.8.3",
+        "tfx-cli": "^0.7.11",
+        "tslint": "^5.20.1",
+        "typescript": "^3.7.4"
+    }
+}

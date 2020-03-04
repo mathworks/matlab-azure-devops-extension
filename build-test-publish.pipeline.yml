@@ -1,0 +1,60 @@
+name: 0.1$(Rev:.r)
+
+trigger:
+  - master
+
+variables:
+  packageFolder: _package
+  vsixFolder: '$(Build.ArtifactStagingDirectory)/vsix'
+  vsixFile: '$(vsixFolder)/matlab-$(Build.BuildNumber).vsix'
+
+pool:
+  vmImage: ubuntu-16.04
+
+steps:
+  - task: NodeTool@0
+    displayName: Install node.js
+    inputs:
+      versionSpec: 10.x
+
+  - script: npm install
+    displayName: Install dependencies
+
+  - script: npm run build
+    displayName: Build
+
+  - script: npm run test
+    displayName: Test
+
+  - script: npm run preparePackage
+    displayName: Prepare package
+
+  - task: TfxInstaller@2
+    displayName: Install tfx-cli
+    inputs:
+      version: v0.7.x
+
+  - task: PackageAzureDevOpsExtension@2
+    displayName: Package
+    inputs:
+      rootFolder: '$(packageFolder)'
+      outputPath: '$(vsixFile)'
+      extensionVersion: '$(Build.BuildNumber)'
+      updateTasksVersion: true
+      updateTasksVersionType: patch
+
+  - publish: '$(vsixFile)'
+    displayName: Store extension
+    artifact: extension
+
+  - task: PublishAzureDevOpsExtension@2
+    displayName: Publish dev
+    inputs:
+      connectTo: VsTeam
+      connectedServiceName: MathWorks
+      fileType: vsix
+      vsixFile: '$(vsixFile)'
+      extensionTag: -dev
+      extensionVisibility: private
+      updateTasksVersion: false
+      shareWith: iat-ci
