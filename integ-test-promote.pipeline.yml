@@ -78,29 +78,32 @@ stages:
     jobs:
       - deployment: publish_prod
         environment: prod
-        steps:
-          - checkout: none
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: none
 
-          - task: DownloadPipelineArtifact@2
-            displayName: Get stored extension
-            inputs:
-              source: specific
-              project: 0ff4499a-5f12-48cd-b754-64fd00ef31b8
-              pipeline: 14
-              runVersion: latest
-              artifact: extension
-              path: $(Build.StagingDirectory)
+                - task: DownloadPipelineArtifact@2
+                  displayName: Get stored extension
+                  inputs:
+                    source: specific
+                    project: 0ff4499a-5f12-48cd-b754-64fd00ef31b8
+                    pipeline: 14
+                    runVersion: latest
+                    artifact: extension
+                    path: $(Build.StagingDirectory)
 
-          - task: TfxInstaller@2
-            displayName: Install tfx-cli
-            inputs:
-              version: v0.7.x
+                - task: TfxInstaller@2
+                  displayName: Install tfx-cli
+                  inputs:
+                    version: v0.7.x
 
-          - task: PublishAzureDevOpsExtension@2
-            displayName: Publish prod
-            inputs:
-              connectTo: VsTeam
-              connectedServiceName: MathWorks
-              fileType: vsix
-              vsixFile: $(Build.StagingDirectory)/*.vsix
-              updateTasksVersion: false
+                - task: PublishAzureDevOpsExtension@2
+                  displayName: Publish prod
+                  inputs:
+                    connectTo: VsTeam
+                    connectedServiceName: MathWorks
+                    fileType: vsix
+                    vsixFile: $(Build.StagingDirectory)/*.vsix
+                    updateTasksVersion: false
