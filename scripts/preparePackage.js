@@ -10,6 +10,7 @@ sh.config.fatal = true;
 sh.mkdir("-p", project.packagePath);
 
 sh.cp(path.join(project.rootPath, "vss-extension.json"), project.packagePath);
+sh.cp(path.join(project.rootPath, "license.txt"), project.packagePath);
 sh.cp("-r", path.join(project.rootPath, "images"), project.packagePath);
 
 const ignored = [".taskkey", ".map"];
