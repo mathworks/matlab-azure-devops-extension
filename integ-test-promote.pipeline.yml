@@ -88,8 +88,8 @@ stages:
                   displayName: Get stored extension
                   inputs:
                     source: specific
-                    project: 0ff4499a-5f12-48cd-b754-64fd00ef31b8
-                    pipeline: 14
+                    project: b3d35465-d584-454b-a4e9-e60757510c12
+                    pipeline: 1
                     runVersion: latest
                     artifact: extension
                     path: $(Build.StagingDirectory)
@@ -128,8 +128,8 @@ stages:
                   displayName: Get stored extension
                   inputs:
                     source: specific
-                    project: 0ff4499a-5f12-48cd-b754-64fd00ef31b8
-                    pipeline: 14
+                    project: b3d35465-d584-454b-a4e9-e60757510c12
+                    pipeline: 1
                     runVersion: latest
                     artifact: extension
                     path: $(Build.StagingDirectory)
