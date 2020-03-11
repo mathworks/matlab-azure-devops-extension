@@ -70,14 +70,14 @@ stages:
               grep -q add code-coverage/coverage.xml
             displayName: Verify code coverage file was created
 
-  - stage: publish_prod
-    displayName: Publish prod
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  - stage: publish_prerelease
+    displayName: Publish prerelease
+    condition: always()
     pool:
       vmImage: ubuntu-16.04
     jobs:
-      - deployment: publish_prod
-        environment: prod
+      - deployment: publish_prerelease
+        environment: prerelease
         strategy:
           runOnce:
             deploy:
@@ -100,7 +100,47 @@ stages:
                     version: v0.7.x
 
                 - task: PublishAzureDevOpsExtension@2
-                  displayName: Publish prod
+                  displayName: Publish prerelease
+                  inputs:
+                    connectTo: VsTeam
+                    connectedServiceName: MathWorks
+                    fileType: vsix
+                    extensionTag: -prerelease
+                    extensionVisibility: private
+                    vsixFile: $(Build.StagingDirectory)/*.vsix
+                    updateTasksVersion: false
+
+  - stage: publish_release
+    displayName: Publish release
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    pool:
+      vmImage: ubuntu-16.04
+    jobs:
+      - deployment: publish_release
+        environment: release
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: none
+
+                - task: DownloadPipelineArtifact@2
+                  displayName: Get stored extension
+                  inputs:
+                    source: specific
+                    project: 0ff4499a-5f12-48cd-b754-64fd00ef31b8
+                    pipeline: 14
+                    runVersion: latest
+                    artifact: extension
+                    path: $(Build.StagingDirectory)
+
+                - task: TfxInstaller@2
+                  displayName: Install tfx-cli
+                  inputs:
+                    version: v0.7.x
+
+                - task: PublishAzureDevOpsExtension@2
+                  displayName: Publish release
                   inputs:
                     connectTo: VsTeam
                     connectedServiceName: MathWorks
