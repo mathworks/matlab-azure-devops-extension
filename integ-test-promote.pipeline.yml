@@ -51,10 +51,12 @@ stages:
               mkdir src
               echo 'function c=add(a,b);c=a+b;' > src/add.m
               mkdir tests
-              printf "%%%% FirstTest\naddpath('../src');assert(add(1,2)==3)" > tests/mytest.m
+              printf "%%%% FirstTest\nassert(add(1,2)==3)" > tests/mytest.m
             displayName: Make MATLAB tests
           - task: MathWorks.matlab-azure-pipelines-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests with defaults
+            inputs:
+              sourceFolder: src
           - task: MathWorks.matlab-azure-pipelines-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests producing artifacts
             inputs:
