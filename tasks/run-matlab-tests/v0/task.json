@@ -29,12 +29,12 @@
             "helpMarkDown": "Path to write code coverage report using Cobertura XML format."
         },
         {
-            "name": "codeCoverageSource",
+            "name": "sourceFolder",
             "type": "string",
-            "label": "Code coverage source",
-            "defaultValue": ".",
+            "label": "Source code folder",
+            "defaultValue": "",
             "required": false,
-            "helpMarkDown": "Location of folder containing source code."
+            "helpMarkDown": "Location of the folder containing source code, relative to the project root folder. The specified folder and its subfolders will be added to the top of the MATLAB search path. To generate a code coverage report, MATLAB uses only the source code in the specified folder and its subfolders. You can specify multiple folders using a colon-separated or a semicolon-separated list."
         }
     ],
     "instanceNameFormat": "Run MATLAB Tests",

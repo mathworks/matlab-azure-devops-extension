@@ -8,7 +8,7 @@ async function run() {
         const options: IRunTestsOptions = {
             JUnitTestResults: taskLib.getInput("testResultsJUnit"),
             CoberturaCodeCoverage: taskLib.getInput("codeCoverageCobertura"),
-            CodeCoverageSource: taskLib.getInput("codeCoverageSource")};
+            SourceFolder: taskLib.getInput("sourceFolder")};
         await runTests(options);
     } catch (err) {
         taskLib.setResult(taskLib.TaskResult.Failed, err.message);
@@ -23,7 +23,7 @@ async function runTests(options: IRunTestsOptions) {
         `testScript = genscript('Test','WorkingFolder','..',` +
             `'JUnitTestResults','${options.JUnitTestResults || ""}',` +
             `'CoberturaCodeCoverage','${options.CoberturaCodeCoverage || ""}',` +
-            `'CodeCoverageSource','${options.CodeCoverageSource || "."}');` +
+            `'SourceFolder','${options.SourceFolder || ""}');` +
         `scriptFile = testScript.writeToFile('.matlab/runAllTests.m');` +
         `disp(['Running ''' scriptFile ''':']);` +
         `type(scriptFile);` +
@@ -38,7 +38,7 @@ async function runTests(options: IRunTestsOptions) {
 interface IRunTestsOptions {
     JUnitTestResults?: string;
     CoberturaCodeCoverage?: string;
-    CodeCoverageSource?: string;
+    SourceFolder?: string;
 }
 
 run();

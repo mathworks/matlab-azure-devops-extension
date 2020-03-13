@@ -51,16 +51,18 @@ stages:
               mkdir src
               echo 'function c=add(a,b);c=a+b;' > src/add.m
               mkdir tests
-              printf "%%%% FirstTest\naddpath('../src');assert(add(1,2)==3)" > tests/mytest.m
+              printf "%%%% FirstTest\nassert(add(1,2)==3)" > tests/mytest.m
             displayName: Make MATLAB tests
           - task: MathWorks.matlab-azure-pipelines-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests with defaults
+            inputs:
+              sourceFolder: src
           - task: MathWorks.matlab-azure-pipelines-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests producing artifacts
             inputs:
               testResultsJUnit: test-results/matlab/results.xml
               codeCoverageCobertura: code-coverage/coverage.xml
-              codeCoverageSource: src
+              sourceFolder: src
           - script: |
               set -e
               grep -q FirstTest test-results/matlab/results.xml
@@ -70,36 +72,80 @@ stages:
               grep -q add code-coverage/coverage.xml
             displayName: Verify code coverage file was created
 
-  - stage: publish_prod
-    displayName: Publish prod
+  - stage: publish_prerelease
+    displayName: Publish prerelease
+    condition: always()
+    pool:
+      vmImage: ubuntu-16.04
+    jobs:
+      - deployment: publish_prerelease
+        environment: prerelease
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: none
+
+                - task: DownloadPipelineArtifact@2
+                  displayName: Get stored extension
+                  inputs:
+                    source: specific
+                    project: b3d35465-d584-454b-a4e9-e60757510c12
+                    pipeline: 1
+                    runVersion: latest
+                    artifact: extension
+                    path: $(Build.StagingDirectory)
+
+                - task: TfxInstaller@2
+                  displayName: Install tfx-cli
+                  inputs:
+                    version: v0.7.x
+
+                - task: PublishAzureDevOpsExtension@2
+                  displayName: Publish prerelease
+                  inputs:
+                    connectTo: VsTeam
+                    connectedServiceName: MathWorks
+                    fileType: vsix
+                    extensionTag: -prerelease
+                    extensionVisibility: private
+                    vsixFile: $(Build.StagingDirectory)/*.vsix
+                    updateTasksVersion: false
+
+  - stage: publish_release
+    displayName: Publish release
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     pool:
       vmImage: ubuntu-16.04
     jobs:
-      - job: publish_prod
-        steps:
-          - checkout: none
+      - deployment: publish_release
+        environment: release
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: none
 
-          - task: DownloadPipelineArtifact@2
-            displayName: Get stored extension
-            inputs:
-              source: specific
-              project: 0ff4499a-5f12-48cd-b754-64fd00ef31b8
-              pipeline: 14
-              runVersion: latest
-              artifact: extension
-              path: $(Build.StagingDirectory)
+                - task: DownloadPipelineArtifact@2
+                  displayName: Get stored extension
+                  inputs:
+                    source: specific
+                    project: b3d35465-d584-454b-a4e9-e60757510c12
+                    pipeline: 1
+                    runVersion: latest
+                    artifact: extension
+                    path: $(Build.StagingDirectory)
 
-          - task: TfxInstaller@2
-            displayName: Install tfx-cli
-            inputs:
-              version: v0.7.x
+                - task: TfxInstaller@2
+                  displayName: Install tfx-cli
+                  inputs:
+                    version: v0.7.x
 
-          - task: PublishAzureDevOpsExtension@2
-            displayName: Publish prod
-            inputs:
-              connectTo: VsTeam
-              connectedServiceName: MathWorks
-              fileType: vsix
-              vsixFile: $(Build.StagingDirectory)/*.vsix
-              updateTasksVersion: false
+                - task: PublishAzureDevOpsExtension@2
+                  displayName: Publish release
+                  inputs:
+                    connectTo: VsTeam
+                    connectedServiceName: MathWorks
+                    fileType: vsix
+                    vsixFile: $(Build.StagingDirectory)/*.vsix
+                    updateTasksVersion: false

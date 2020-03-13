@@ -57,4 +57,4 @@ steps:
       extensionTag: -dev
       extensionVisibility: private
       updateTasksVersion: false
-      shareWith: iat-ci
+      shareWith: iat-ci-dev

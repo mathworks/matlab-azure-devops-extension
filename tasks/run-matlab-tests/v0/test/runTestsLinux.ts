@@ -7,7 +7,7 @@ const tr = new mr.TaskMockRunner(tp);
 
 tr.setInput("testResultsJUnit", "results.xml");
 tr.setInput("codeCoverageCobertura", "coverage.xml");
-tr.setInput("codeCoverageSource", "source");
+tr.setInput("sourceFolder", "source");
 
 tr.registerMock("./utils", {
     platform: () => "linux",
@@ -24,7 +24,7 @@ const a: ma.TaskLibAnswers = {
         "testScript = genscript('Test','WorkingFolder','..'," +
             "'JUnitTestResults','results.xml'," +
             "'CoberturaCodeCoverage','coverage.xml'," +
-            "'CodeCoverageSource','source');" +
+            "'SourceFolder','source');" +
         "scriptFile = testScript.writeToFile('.matlab/runAllTests.m');" +
         "disp(['Running ''' scriptFile ''':']);" +
         "type(scriptFile);" +

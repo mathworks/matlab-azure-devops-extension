@@ -7,7 +7,7 @@ const tr = new mr.TaskMockRunner(tp);
 
 tr.registerMock("azure-pipelines-tool-lib/tool", {
     downloadTool(url: string) {
-        if (url !== "https://storage.googleapis.com/matlabimagesus/public/ephemeral-matlab/v0/install.sh") {
+        if (url !== "https://ssd.mathworks.com/supportfiles/ci/ephemeral-matlab/v0/install.sh") {
             throw new Error("Incorrect URL");
         }
         return "install.sh";
