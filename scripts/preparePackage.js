@@ -1,3 +1,5 @@
+// Copyright 2020 The MathWorks, Inc.
+
 "use strict";
 
 const project = require("./project");

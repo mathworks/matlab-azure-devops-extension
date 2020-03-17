@@ -1,3 +1,5 @@
+// Copyright 2020 The MathWorks, Inc.
+
 import * as assert from "assert";
 import * as mt from "azure-pipelines-task-lib/mock-test";
 import * as path from "path";

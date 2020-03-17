@@ -1,3 +1,5 @@
+// Copyright 2020 The MathWorks, Inc.
+
 import * as taskLib from "azure-pipelines-task-lib/task";
 import { chmodSync } from "fs";
 import * as path from "path";

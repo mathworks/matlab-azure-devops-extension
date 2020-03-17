@@ -1,3 +1,5 @@
+// Copyright 2020 The MathWorks, Inc.
+
 import * as taskLib from "azure-pipelines-task-lib/task";
 import * as toolLib from "azure-pipelines-tool-lib/tool";
 import {platform} from "./utils";
