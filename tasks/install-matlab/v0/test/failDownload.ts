@@ -1,3 +1,5 @@
+// Copyright 2020 The MathWorks, Inc.
+
 import mr = require("azure-pipelines-task-lib/mock-run");
 import path = require("path");
 
