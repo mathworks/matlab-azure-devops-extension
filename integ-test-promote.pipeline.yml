@@ -1,7 +1,7 @@
 resources:
   pipelines:
     - pipeline: integ_test_promote
-      source: build-test-publish
+      source: pre-integ-test
       trigger: true
 
 trigger: none
