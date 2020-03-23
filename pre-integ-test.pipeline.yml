@@ -1,0 +1,15 @@
+resources:
+  pipelines:
+    - pipeline: pre_integ_test
+      source: build-test-publish
+      trigger: true
+
+trigger: none
+pr: none
+
+pool:
+  vmImage: ubuntu-16.04
+
+steps:
+  - script: sleep 60
+    displayName: Wait for published extension to propagate
