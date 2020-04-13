@@ -39,6 +39,18 @@ stages:
             displayName: Run MATLAB script
             inputs:
               command: myscript
+          - task: MathWorks.matlab-azure-pipelines-extension-dev.RunMATLABCommand.RunMATLABCommand@0
+            displayName: Run MATLAB statement with quotes 1
+            inputs:
+              command: "eval(\"a = 1+2\"); assert(a == 3); eval('b = 3+4'); assert(b == 7);"
+          - task: MathWorks.matlab-azure-pipelines-extension-dev.RunMATLABCommand.RunMATLABCommand@0
+            displayName: Run MATLAB statement with quotes 2
+            inputs:
+              command: 'eval("a = 1+2"); assert(a == 3); eval(''b = 3+4''); assert(b == 7);'
+          - task: MathWorks.matlab-azure-pipelines-extension-dev.RunMATLABCommand.RunMATLABCommand@0
+            displayName: Run MATLAB statement with quotes 3
+            inputs:
+              command: a = """hello world"""; b = '"hello world"'; assert(strcmp(a,b));
 
       - job: test_run_tests
         pool:
