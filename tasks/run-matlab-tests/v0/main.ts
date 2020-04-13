@@ -26,11 +26,14 @@ async function runTests(options: IRunTestsOptions) {
             `'JUnitTestResults','${options.JUnitTestResults || ""}',` +
             `'CoberturaCodeCoverage','${options.CoberturaCodeCoverage || ""}',` +
             `'SourceFolder','${options.SourceFolder || ""}');` +
-        `scriptFile = testScript.writeToFile('.matlab/runAllTests.m');` +
-        `disp(['Running ''' scriptFile ''':']);` +
-        `type(scriptFile);` +
+        `scriptFolder = '.matlab';` +
+        `scriptPath = fullfile(scriptFolder, 'runAllTests.m');` +
+        `testScript.writeToFile(scriptPath);` +
+        `disp(['Running ''' scriptPath ''':']);` +
+        `type(scriptPath);` +
         `fprintf('__________\\n\\n');` +
-        `run(scriptFile);`);
+        `cd(scriptFolder);` +
+        `runAllTests;`);
     const exitCode = await runTool.exec();
     if (exitCode !== 0) {
         throw new Error(taskLib.loc("FailedToRunTests"));
