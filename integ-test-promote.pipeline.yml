@@ -51,6 +51,11 @@ stages:
             displayName: Run MATLAB statement with quotes 3
             inputs:
               command: a = """hello world"""; b = '"hello world"'; assert(strcmp(a,b));
+          # https://github.com/mathworks/matlab-azure-pipelines-extension/issues/11
+          - task: MathWorks.matlab-azure-pipelines-extension-dev.RunMATLABCommand.RunMATLABCommand@0
+            displayName: Run MATLAB statement with quotes 4
+            inputs:
+              command: disp(" 'ABC`abc")
 
       - job: test_run_tests
         pool:
