@@ -2,11 +2,16 @@
     "manifestVersion": 1,
     "id": "matlab-azure-devops-extension",
     "name": "MATLAB",
-    "description": "",
+    "description": "Run MATLAB and Simulink as part of your build pipeline.",
     "public": false,
     "publisher": "MathWorks",
+    "tags": [
+        "MATLAB",
+        "Simulink",
+        "MathWorks"
+    ],
     "galleryFlags": [
-        "preview"
+        "Public"
     ],
     "targets": [
         {
@@ -18,6 +23,29 @@
     ],
     "icons": {
         "default": "images/extension-icon.png"
+    },
+    "content": {
+        "details": {
+            "path": "overview.md"
+        },
+        "license": {
+            "path": "license.txt"
+        }
+    },
+    "links": {
+        "repository": {
+            "uri": "https://github.com/mathworks/matlab-azure-devops-extension"
+        },
+        "issues": {
+            "uri": "https://github.com/mathworks/matlab-azure-devops-extension/issues"
+        },
+        "support": {
+            "uri": "mailto:continuous-integration@mathworks.com"
+        }
+    },
+    "repository": {
+        "type": "git",
+        "uri": "https://github.com/mathworks/matlab-azure-devops-extension"
     },
     "files": [
         {
