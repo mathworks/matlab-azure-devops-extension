@@ -16,7 +16,7 @@ stages:
           vmImage: ubuntu-16.04
         steps:
           - checkout: none
-          - task: MathWorks.matlab-azure-pipelines-extension-dev.InstallMATLAB.InstallMATLAB@0
+          - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
             displayName: Install MATLAB
           - script: |
               set -e
@@ -29,25 +29,25 @@ stages:
           vmImage: ubuntu-16.04
         steps:
           - checkout: none
-          - task: MathWorks.matlab-azure-pipelines-extension-dev.InstallMATLAB.InstallMATLAB@0
+          - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
             displayName: Install MATLAB
-          - task: MathWorks.matlab-azure-pipelines-extension-dev.RunMATLABCommand.RunMATLABCommand@0
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run MATLAB statement
             inputs:
               command: f = fopen('myscript.m', 'w'); fwrite(f, 'assert(true)'); fclose(f);
-          - task: MathWorks.matlab-azure-pipelines-extension-dev.RunMATLABCommand.RunMATLABCommand@0
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run MATLAB script
             inputs:
               command: myscript
-          - task: MathWorks.matlab-azure-pipelines-extension-dev.RunMATLABCommand.RunMATLABCommand@0
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run MATLAB statement with quotes 1
             inputs:
               command: "eval(\"a = 1+2\"); assert(a == 3); eval('b = 3+4'); assert(b == 7);"
-          - task: MathWorks.matlab-azure-pipelines-extension-dev.RunMATLABCommand.RunMATLABCommand@0
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run MATLAB statement with quotes 2
             inputs:
               command: 'eval("a = 1+2"); assert(a == 3); eval(''b = 3+4''); assert(b == 7);'
-          - task: MathWorks.matlab-azure-pipelines-extension-dev.RunMATLABCommand.RunMATLABCommand@0
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run MATLAB statement with quotes 3
             inputs:
               command: a = """hello world"""; b = '"hello world"'; assert(strcmp(a,b));
@@ -57,7 +57,7 @@ stages:
           vmImage: ubuntu-16.04
         steps:
           - checkout: none
-          - task: MathWorks.matlab-azure-pipelines-extension-dev.InstallMATLAB.InstallMATLAB@0
+          - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
             displayName: Install MATLAB
           - script: |
               mkdir src
@@ -65,11 +65,11 @@ stages:
               mkdir tests
               printf "%%%% FirstTest\nassert(add(1,2)==3)" > tests/mytest.m
             displayName: Make MATLAB tests
-          - task: MathWorks.matlab-azure-pipelines-extension-dev.RunMATLABTests.RunMATLABTests@0
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests with defaults
             inputs:
               sourceFolder: src
-          - task: MathWorks.matlab-azure-pipelines-extension-dev.RunMATLABTests.RunMATLABTests@0
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests producing artifacts
             inputs:
               testResultsJUnit: test-results/matlab/results.xml
