@@ -108,4 +108,4 @@ Install the latest MATLAB release on a Linux-based Microsoft-hosted agent. Speci
 You can use this task only for public projects that utilize Microsoft-hosted agents.
 
 ## Contact Us
-If you have any questions or suggestions, please contact MathWorks&reg; at continuous-integration@mathworks.com.
+If you have any questions or suggestions, please contact MathWorks&reg; at [continuous-integration@mathworks.com](mailto:continuous-integration@mathworks.com).
