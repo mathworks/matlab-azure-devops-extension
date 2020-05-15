@@ -1,6 +1,6 @@
 {
     "manifestVersion": 1,
-    "id": "matlab-azure-pipelines-extension",
+    "id": "matlab-azure-devops-extension",
     "name": "MATLAB",
     "description": "",
     "public": false,
