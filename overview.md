@@ -87,7 +87,7 @@ Argument                  | Description
 ------------------------- | --------------- 
 `command`                   | (Required) Script, function, or statement to execute. If the value of `command` is the name of a MATLAB script or function, do not specify the file extension. If you specify more than one MATLAB command, use a comma or semicolon to separate the commands.<br/>**Example:** `'myscript'`<br/>**Example:** `'results = runtests, assertSuccess(results);'` 
 
-MATLAB exits with exit code 0 if the the specified script, function, or statement executes successfully without error. Otherwise, MATLAB terminates with a nonzero exit code, which causes the build to fail. You can use the [`assert`](https://www.mathworks.com/help/matlab/ref/assert.html) or [`error`](https://www.mathworks.com/help/matlab/ref/error.html) functions in the command to ensure that builds fail when necessary.
+MATLAB exits with exit code 0 if the specified script, function, or statement executes successfully without error. Otherwise, MATLAB terminates with a nonzero exit code, which causes the build to fail. You can use the [`assert`](https://www.mathworks.com/help/matlab/ref/assert.html) or [`error`](https://www.mathworks.com/help/matlab/ref/error.html) functions in the command to ensure that builds fail when necessary.
 
 When you use this task, all of the required files must be on the MATLAB search path.
 
@@ -108,4 +108,4 @@ Install the latest MATLAB release on a Linux-based Microsoft-hosted agent. Speci
 You can use this task only for public projects that utilize Microsoft-hosted agents.
 
 ## Contact Us
-If you have any questions or suggestions, please contact MathWorks&reg; at continuous-integration@mathworks.com.
+If you have any questions or suggestions, please contact MathWorks&reg; at [continuous-integration@mathworks.com](mailto:continuous-integration@mathworks.com).
