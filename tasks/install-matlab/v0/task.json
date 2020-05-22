@@ -3,6 +3,7 @@
     "id": "553fa7ff-af12-4821-8ace-6bf3dc410e62",
     "name": "InstallMATLAB",
     "friendlyName": "Install MATLAB",
+    "description": "Install the latest MATLAB release on a Linux-based Microsoft-hosted agent. Currently, this task is available only for public projects and does not include transformation products, such as MATLAB Coder and MATLAB Compiler.",
     "helpMarkDown": "",
     "category": "Tool",
     "author": "The MathWorks, Inc.",
