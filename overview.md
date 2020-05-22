@@ -4,7 +4,7 @@ To run your pipeline using the extension, install the extension to your Azure De
 
 - If you want to use a self-hosted agent, you must set up a computer with MATLAB (R2013b or later) as your self-hosted agent and register the agent with Azure Pipelines.
 
-- If you want to use a Microsoft-hosted agent, you must include a task in your pipeline to install the latest MATLAB release on the agent. You can use this task only for public projects that utilize Microsoft-hosted agents.
+- If you want to use a Microsoft-hosted agent, you must include a task in your pipeline to install the latest MATLAB release on the agent. Currently, this task is available only for public projects and does not include transformation products, such as MATLAB Coder and MATLAB Compiler.
 
 ## Usage Examples
 When you author your pipeline, the extension provides you with a task to run MATLAB scripts, functions, and statements. The extension also provides a task to run MATLAB and Simulink tests. Additionally, you can specify a Microsoft-hosted agent to run your MATLAB code.
@@ -62,7 +62,6 @@ steps:
 ### Use MATLAB on Microsoft-Hosted Agent
 Use the [Install MATLAB](#install-matlab) task when you want to run MATLAB code in public projects that utilize Microsoft-hosted agents. The task installs the latest MATLAB release on a Linux virtual machine and enables the agent to run MATLAB scripts, functions, statements, and tests.
 
-
 Use this task in conjunction with the **Run MATLAB Command** or **Run MATLAB Tests** tasks. For example, set up a Microsoft-hosted agent and use it to run the commands in your MATLAB script.
 
 ```YAML
@@ -105,7 +104,7 @@ MATLAB includes any files in your project that have a **Test** label. If your pi
 ### Install MATLAB
 Install the latest MATLAB release on a Linux-based Microsoft-hosted agent. Specify the task in your pipeline YAML using the `InstallMATLAB` key.
 
-You can use this task only for public projects that utilize Microsoft-hosted agents.
+Currently, this task is available only for public projects and does not include transformation products, such as MATLAB Coder and MATLAB Compiler.
 
 ## Contact Us
 If you have any questions or suggestions, please contact MathWorks&reg; at [continuous-integration@mathworks.com](mailto:continuous-integration@mathworks.com).
