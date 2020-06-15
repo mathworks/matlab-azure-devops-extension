@@ -19,6 +19,7 @@
         }
     },
     "messages": {
+        "InstallNotSupportedOnSelfHosted": "The install task is not supported on self-hosted agents. Use the standard MATLAB installer to install MATLAB on this system.",
         "FailedToDownloadInstallScript": "Failed to download install script: %s",
         "FailedToExecuteInstallScript": "Failed to execute install script. Exited with code '%s'."
     }

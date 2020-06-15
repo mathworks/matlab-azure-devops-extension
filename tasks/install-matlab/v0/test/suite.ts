@@ -52,4 +52,16 @@ describe("InstallMATLAB V0 Suite", () => {
 
         done();
     });
+
+    it("should fail on self-hosted agents", (done) => {
+        const tp = path.join(__dirname, "failSelfHosted.js");
+        const tr = new mt.MockTestRunner(tp);
+
+        tr.run();
+
+        assert(tr.failed, "should have failed");
+        assert(tr.stdOutContained("InstallNotSupportedOnSelfHosted"), "should have failed to install");
+
+        done();
+    });
 });
