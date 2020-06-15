@@ -7,6 +7,8 @@ import path = require("path");
 const tp = path.join(__dirname, "..", "main.js");
 const tr = new mr.TaskMockRunner(tp);
 
+process.env.SYSTEM_SERVERTYPE = "hosted";
+
 tr.registerMock("azure-pipelines-tool-lib/tool", {
     downloadTool(url: string) {
         if (url !== "https://ssd.mathworks.com/supportfiles/ci/ephemeral-matlab/v0/install.sh") {

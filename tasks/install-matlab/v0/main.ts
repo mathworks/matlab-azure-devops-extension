@@ -13,6 +13,11 @@ async function run() {
 }
 
 async function install() {
+    const serverType = taskLib.getVariable("System.ServerType");
+    if (!serverType || serverType.toLowerCase() !== "hosted") {
+        throw new Error(taskLib.loc("InstallNotSupportedOnSelfHosted"));
+    }
+
     // download install bash script
     let scriptPath;
     try {
