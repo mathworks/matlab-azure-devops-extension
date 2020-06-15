@@ -12,21 +12,39 @@ stages:
     displayName: Integration test
     jobs:
       - job: test_install
+        strategy:
+          matrix:
+            microsofthosted:
+              poolName: Azure Pipelines
+              vmImage: ubuntu-16.04
+            selfhosted:
+              poolName: vmssagentpool # scale set of Windows agents
+              vmImage: # blank for self-hosted
         pool:
-          vmImage: ubuntu-16.04
+          name: $(poolName)
+          vmImage: $(vmImage)
         steps:
           - checkout: none
           - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
             displayName: Install MATLAB
-          - script: |
+          - bash: |
               set -e
               matlab -batch version
               mex -h
             displayName: Check matlab and mex
 
       - job: test_run_command
+        strategy:
+          matrix:
+            microsofthosted:
+              poolName: Azure Pipelines
+              vmImage: ubuntu-16.04
+            selfhosted:
+              poolName: vmssagentpool # scale set of Windows agents
+              vmImage: # blank for self-hosted
         pool:
-          vmImage: ubuntu-16.04
+          name: $(poolName)
+          vmImage: $(vmImage)
         steps:
           - checkout: none
           - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
@@ -53,13 +71,22 @@ stages:
               command: a = """hello world"""; b = '"hello world"'; assert(strcmp(a,b));
 
       - job: test_run_tests
+        strategy:
+          matrix:
+            microsofthosted:
+              poolName: Azure Pipelines
+              vmImage: ubuntu-16.04
+            selfhosted:
+              poolName: vmssagentpool # scale set of Windows agents
+              vmImage: # blank for self-hosted
         pool:
-          vmImage: ubuntu-16.04
+          name: $(poolName)
+          vmImage: $(vmImage)
         steps:
           - checkout: none
           - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
             displayName: Install MATLAB
-          - script: |
+          - bash: |
               mkdir src
               echo 'function c=add(a,b);c=a+b;' > src/add.m
               mkdir tests
@@ -75,11 +102,11 @@ stages:
               testResultsJUnit: test-results/matlab/results.xml
               codeCoverageCobertura: code-coverage/coverage.xml
               sourceFolder: src
-          - script: |
+          - bash: |
               set -e
               grep -q FirstTest test-results/matlab/results.xml
             displayName: Verify test results file was created
-          - script: |
+          - bash: |
               set -e
               grep -q add code-coverage/coverage.xml
             displayName: Verify code coverage file was created
