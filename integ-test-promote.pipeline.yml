@@ -44,9 +44,6 @@ stages:
           vmImage: $(vmImage)
         steps:
           - checkout: none
-          - powershell: Write-Host '##vso[task.prependpath]C:\Program Files\Git\bin'
-            displayName: Add bash to path
-            condition: eq(variables['Agent.OS'], 'Windows_NT')
           - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
             displayName: Install MATLAB
             condition: eq(variables['Agent.OS'], 'Linux')
@@ -85,9 +82,6 @@ stages:
           vmImage: $(vmImage)
         steps:
           - checkout: none
-          - powershell: Write-Host '##vso[task.prependpath]C:\Program Files\Git\bin'
-            displayName: Add bash to path
-            condition: eq(variables['Agent.OS'], 'Windows_NT')
           - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
             displayName: Install MATLAB
             condition: eq(variables['Agent.OS'], 'Linux')
