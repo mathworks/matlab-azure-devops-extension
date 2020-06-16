@@ -2,7 +2,6 @@ resources:
   pipelines:
     - pipeline: pre_integ_test
       source: build-test-publish
-      trigger: true
 
 trigger: none
 pr: none
