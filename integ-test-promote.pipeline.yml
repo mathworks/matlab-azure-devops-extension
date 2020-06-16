@@ -12,25 +12,41 @@ stages:
     displayName: Integration test
     jobs:
       - job: test_install
+        strategy:
+          matrix:
+            microsoft_hosted_linux:
+              poolName: Azure Pipelines
+              vmImage: ubuntu-16.04
         pool:
-          vmImage: ubuntu-16.04
+          name: $(poolName)
+          vmImage: $(vmImage)
         steps:
           - checkout: none
           - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
             displayName: Install MATLAB
-          - script: |
+          - bash: |
               set -e
               matlab -batch version
               mex -h
             displayName: Check matlab and mex
 
       - job: test_run_command
+        strategy:
+          matrix:
+            microsoft_hosted_linux:
+              poolName: Azure Pipelines
+              vmImage: ubuntu-16.04
+            self_hosted_windows:
+              poolName: vmssagentpool
+              vmImage: # blank for self-hosted
         pool:
-          vmImage: ubuntu-16.04
+          name: $(poolName)
+          vmImage: $(vmImage)
         steps:
           - checkout: none
           - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
             displayName: Install MATLAB
+            condition: not(startsWith(variables['Agent.Name'], 'vmss')) # InstallMATLAB on Microsoft-hosted agents only
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run MATLAB statement
             inputs:
@@ -53,13 +69,23 @@ stages:
               command: a = """hello world"""; b = '"hello world"'; assert(strcmp(a,b));
 
       - job: test_run_tests
+        strategy:
+          matrix:
+            microsoft_hosted_linux:
+              poolName: Azure Pipelines
+              vmImage: ubuntu-16.04
+            self_hosted_windows:
+              poolName: vmssagentpool
+              vmImage: # blank for self-hosted
         pool:
-          vmImage: ubuntu-16.04
+          name: $(poolName)
+          vmImage: $(vmImage)
         steps:
           - checkout: none
           - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
             displayName: Install MATLAB
-          - script: |
+            condition: not(startsWith(variables['Agent.Name'], 'vmss')) # InstallMATLAB on Microsoft-hosted agents only
+          - bash: |
               mkdir src
               echo 'function c=add(a,b);c=a+b;' > src/add.m
               mkdir tests
@@ -75,11 +101,11 @@ stages:
               testResultsJUnit: test-results/matlab/results.xml
               codeCoverageCobertura: code-coverage/coverage.xml
               sourceFolder: src
-          - script: |
+          - bash: |
               set -e
               grep -q FirstTest test-results/matlab/results.xml
             displayName: Verify test results file was created
-          - script: |
+          - bash: |
               set -e
               grep -q add code-coverage/coverage.xml
             displayName: Verify code coverage file was created
