@@ -45,8 +45,8 @@ stages:
         steps:
           - checkout: none
           - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
-            displayName: Install MATLAB
-            condition: not(startsWith(variables['Agent.Name'], 'vmss')) # InstallMATLAB on Microsoft-hosted agents only
+            displayName: Install MATLAB on Microsoft-hosted agents
+            condition: not(startsWith(variables['Agent.Name'], 'vmss'))
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run MATLAB statement
             inputs:
@@ -67,6 +67,10 @@ stages:
             displayName: Run MATLAB statement with quotes 3
             inputs:
               command: a = """hello world"""; b = '"hello world"'; assert(strcmp(a,b));
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
+            displayName: Run MATLAB statement with all symbols
+            inputs:
+              command: a = " !""#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_\\\`abcdefghijklmnopqrstuvwxyz{|}~"; b = char([32:126]); assert(strcmp(a, b), a+b);
 
       - job: test_run_tests
         strategy:
@@ -83,8 +87,8 @@ stages:
         steps:
           - checkout: none
           - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
-            displayName: Install MATLAB
-            condition: not(startsWith(variables['Agent.Name'], 'vmss')) # InstallMATLAB on Microsoft-hosted agents only
+            displayName: Install MATLAB on Microsoft-hosted agents
+            condition: not(startsWith(variables['Agent.Name'], 'vmss'))
           - bash: |
               mkdir src
               echo 'function c=add(a,b);c=a+b;' > src/add.m
