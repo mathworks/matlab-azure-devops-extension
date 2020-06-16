@@ -4,7 +4,7 @@ resources:
       source: pre-integ-test
       trigger:
         branches:
-          - *
+          - '*'
 
 trigger: none
 pr: none

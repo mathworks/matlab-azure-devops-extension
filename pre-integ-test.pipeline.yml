@@ -4,7 +4,7 @@ resources:
       source: build-test-publish
       trigger:
         branches:
-          - *
+          - '*'
 
 trigger: none
 pr: none
