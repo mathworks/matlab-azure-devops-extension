@@ -17,9 +17,6 @@ stages:
             microsofthosted:
               poolName: Azure Pipelines
               vmImage: ubuntu-16.04
-            selfhosted:
-              poolName: vmssagentpool # scale set of Windows agents
-              vmImage: # blank for self-hosted
         pool:
           name: $(poolName)
           vmImage: $(vmImage)
@@ -49,6 +46,7 @@ stages:
           - checkout: none
           - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
             displayName: Install MATLAB
+            condition: eq(variables['Agent.OS'], 'Linux')
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run MATLAB statement
             inputs:
@@ -86,6 +84,7 @@ stages:
           - checkout: none
           - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
             displayName: Install MATLAB
+            condition: eq(variables['Agent.OS'], 'Linux')
           - bash: |
               mkdir src
               echo 'function c=add(a,b);c=a+b;' > src/add.m
