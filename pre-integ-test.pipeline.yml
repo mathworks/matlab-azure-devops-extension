@@ -2,6 +2,9 @@ resources:
   pipelines:
     - pipeline: pre_integ_test
       source: build-test-publish
+      trigger:
+        branches:
+          - *
 
 trigger: none
 pr: none
