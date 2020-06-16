@@ -68,7 +68,7 @@ stages:
             inputs:
               command: a = """hello world"""; b = '"hello world"'; assert(strcmp(a,b));
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
-            displayName: Run MATLAB statement with all symbols
+            displayName: Run MATLAB statement with symbols
             inputs:
               command: a = " !""#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_\\\`abcdefghijklmnopqrstuvwxyz{|}~"; b = char([32:126]); assert(strcmp(a, b), a+b);
 
