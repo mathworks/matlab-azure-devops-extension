@@ -1,6 +1,6 @@
 This extension enables you to run MATLAB&reg; scripts, functions, and statements as part of your build pipeline. You also can run your MATLAB and Simulink&reg; tests, generate artifacts such as JUnit test results and Cobertura code coverage reports, and publish your results to Azure Pipelines. 
 
-To run your pipeline using the extension, install the extension to your Azure DevOps organization. (To access the extension, press the **Get it free** button on this page.) You can use the extension with self-hosted or Linux&reg;-based Microsoft&reg;-hosted [agents](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/agents?view=azure-devops&tabs=browser):
+To run your pipeline using the extension, install the extension to your Azure DevOps organization. (To [install the extension](https://docs.microsoft.com/en-us/azure/devops/marketplace/install-extension?view=azure-devops&tabs=browser), press the **Get it free** button at the top of this page.) You can use the extension with self-hosted or Linux&reg;-based Microsoft&reg;-hosted [agents](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/agents?view=azure-devops&tabs=browser):
 
 - If you want to use a self-hosted agent, you must set up a computer with MATLAB (R2013b or later) as your self-hosted agent and register the agent with Azure Pipelines.
 
