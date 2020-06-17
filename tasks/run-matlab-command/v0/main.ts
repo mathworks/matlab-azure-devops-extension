@@ -22,7 +22,7 @@ async function runCommand(command: string) {
     const workingDirectory = taskLib.getVariable("System.DefaultWorkingDirectory");
     const tempDirectory = taskLib.getVariable("agent.tempDirectory") || "";
     taskLib.checkPath(tempDirectory, `${tempDirectory} (agent.tempDirectory)`);
-    const scriptName = "cmd_" + uuidV4().replace(/-/g, "_");
+    const scriptName = "command_" + uuidV4().replace(/-/g, "_");
     const scriptPath = path.join(tempDirectory, scriptName + ".m");
     await fs.writeFileSync(
         scriptPath,
