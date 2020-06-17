@@ -9,6 +9,7 @@ import {platform} from "./utils";
 
 async function run() {
     try {
+        taskLib.setResourcePath(path.join( __dirname, "task.json"));
         const command = taskLib.getInput("command", true);
         await runCommand(command as string);
     } catch (err) {
