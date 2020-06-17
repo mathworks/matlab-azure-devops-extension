@@ -18,6 +18,7 @@ async function run() {
 
 async function runCommand(command: string) {
     // write command to script
+    console.log(taskLib.loc("GeneratingScript", command));
     taskLib.assertAgent("2.115.0");
     const workingDirectory = taskLib.getVariable("System.DefaultWorkingDirectory") || "";
     const tempDirectory = taskLib.getVariable("agent.tempDirectory") || "";
@@ -30,6 +31,7 @@ async function runCommand(command: string) {
         { encoding: "utf8" });
 
     // run script
+    console.log("========================== Starting Command Output ===========================");
     const runToolPath = path.join(__dirname, "bin", "run_matlab_command." + (platform() === "win32" ? "bat" : "sh"));
     chmodSync(runToolPath, "777");
     const runTool = taskLib.tool(runToolPath);
