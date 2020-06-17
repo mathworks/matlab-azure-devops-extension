@@ -19,10 +19,10 @@ const tlClone = Object.assign({}, tl);
 // @ts-ignore
 tlClone.getVariable = (variable: string) => {
     if (variable.toLowerCase() === "agent.tempdirectory") {
-        return "temp\\path";
+        return "temp's\\path";
     }
     if (variable.toLowerCase() === "system.defaultworkingdirectory") {
-        return "work\\dir";
+        return "work's\\dir";
     }
     return null;
 };
@@ -36,10 +36,10 @@ const runCmdPath = path.join(path.dirname(__dirname), "bin", "run_matlab_command
 const a: ma.TaskLibAnswers = {
     checkPath: {
         [runCmdPath]: true,
-        "temp\\path": true,
+        "temp's\\path": true,
     },
     exec: {
-        [runCmdPath + " cd('temp\\path'); command_1_2_3"]: {
+        [runCmdPath + " cd('temp''s\\path'); command_1_2_3"]: {
             code: 0,
             stdout: "hello world",
         },
