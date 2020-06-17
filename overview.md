@@ -1,6 +1,6 @@
 This extension enables you to run MATLAB&reg; scripts, functions, and statements as part of your build pipeline. You also can run your MATLAB and Simulink&reg; tests, generate artifacts such as JUnit test results and Cobertura code coverage reports, and publish your results to Azure Pipelines. 
 
-To run your pipeline using the extension, install the extension to your Azure DevOps organization. You can use the extension with self-hosted or Linux&reg;-based Microsoft&reg;-hosted [agents](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/agents?view=azure-devops&tabs=browser):
+To run your pipeline using the extension, install the extension to your Azure DevOps organization. (To access the extension, press the **Get it free** button on this page.) You can use the extension with self-hosted or Linux&reg;-based Microsoft&reg;-hosted [agents](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/agents?view=azure-devops&tabs=browser):
 
 - If you want to use a self-hosted agent, you must set up a computer with MATLAB (R2013b or later) as your self-hosted agent and register the agent with Azure Pipelines.
 
@@ -99,12 +99,12 @@ Argument                  | Description
 `codeCoverageCobertura`   | (Optional) Path to write code coverage report in Cobertura XML format.<br/>**Example:** `'code-coverage/coverage.xml'`
 `sourceFolder`      | (Optional) Location of the folder containing source code, relative to the project root folder. The specified folder and its subfolders are added to the top of the MATLAB search path. To generate a code coverage report, MATLAB uses only the source code in the specified folder and its subfolders. You can specify multiple folders using a colon-separated or a semicolon-separated list.<br/>**Example:** `'source'`
 
-MATLAB includes any files in your project that have a **Test** label. If your pipeline does not leverage a MATLAB project or uses a MATLAB release before R2019a, then MATLAB includes all tests in the the root of your repository including its subfolders.
+MATLAB includes any files in your project that have a **Test** label. If your pipeline does not leverage a MATLAB project or uses a MATLAB release before R2019a, then MATLAB includes all tests in the root of your repository including its subfolders.
 
 ### Install MATLAB
 Install the latest MATLAB release on a Linux-based Microsoft-hosted agent. Specify the task in your pipeline YAML using the `InstallMATLAB` key.
 
-Currently, this task is available only for public projects and does not include transformation products, such as MATLAB Coder and MATLAB Compiler.
+Currently, this task is available only for public projects and does not include transformation products, such as MATLAB Coder&trade; and MATLAB Compiler&trade;.
 
 ## Contact Us
 If you have any questions or suggestions, please contact MathWorks&reg; at [continuous-integration@mathworks.com](mailto:continuous-integration@mathworks.com).
