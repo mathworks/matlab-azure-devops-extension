@@ -12,25 +12,41 @@ stages:
     displayName: Integration test
     jobs:
       - job: test_install
+        strategy:
+          matrix:
+            microsoft_hosted_linux:
+              poolName: Azure Pipelines
+              vmImage: ubuntu-16.04
         pool:
-          vmImage: ubuntu-16.04
+          name: $(poolName)
+          vmImage: $(vmImage)
         steps:
           - checkout: none
           - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
             displayName: Install MATLAB
-          - script: |
+          - bash: |
               set -e
               matlab -batch version
               mex -h
             displayName: Check matlab and mex
 
       - job: test_run_command
+        strategy:
+          matrix:
+            microsoft_hosted_linux:
+              poolName: Azure Pipelines
+              vmImage: ubuntu-16.04
+            self_hosted_windows:
+              poolName: vmssagentpool
+              vmImage: # blank for self-hosted
         pool:
-          vmImage: ubuntu-16.04
+          name: $(poolName)
+          vmImage: $(vmImage)
         steps:
           - checkout: none
           - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
-            displayName: Install MATLAB
+            displayName: Install MATLAB on Microsoft-hosted agents
+            condition: not(startsWith(variables['Agent.Name'], 'vmss'))
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run MATLAB statement
             inputs:
@@ -51,15 +67,33 @@ stages:
             displayName: Run MATLAB statement with quotes 3
             inputs:
               command: a = """hello world"""; b = '"hello world"'; assert(strcmp(a,b));
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
+            displayName: Run MATLAB statement with symbols
+            inputs:
+              command: a = " !""#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~"; b = char([32:126]); assert(strcmp(a, b), a+b);
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
+            displayName: Run MATLAB statement in working directory
+            inputs:
+              command: exp = getenv('SYSTEM_DEFAULTWORKINGDIRECTORY'); act = pwd; assert(strcmp(act, exp), strjoin({act exp}, '\n'));
 
       - job: test_run_tests
+        strategy:
+          matrix:
+            microsoft_hosted_linux:
+              poolName: Azure Pipelines
+              vmImage: ubuntu-16.04
+            self_hosted_windows:
+              poolName: vmssagentpool
+              vmImage: # blank for self-hosted
         pool:
-          vmImage: ubuntu-16.04
+          name: $(poolName)
+          vmImage: $(vmImage)
         steps:
           - checkout: none
           - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
-            displayName: Install MATLAB
-          - script: |
+            displayName: Install MATLAB on Microsoft-hosted agents
+            condition: not(startsWith(variables['Agent.Name'], 'vmss'))
+          - bash: |
               mkdir src
               echo 'function c=add(a,b);c=a+b;' > src/add.m
               mkdir tests
@@ -75,11 +109,11 @@ stages:
               testResultsJUnit: test-results/matlab/results.xml
               codeCoverageCobertura: code-coverage/coverage.xml
               sourceFolder: src
-          - script: |
+          - bash: |
               set -e
               grep -q FirstTest test-results/matlab/results.xml
             displayName: Verify test results file was created
-          - script: |
+          - bash: |
               set -e
               grep -q add code-coverage/coverage.xml
             displayName: Verify code coverage file was created

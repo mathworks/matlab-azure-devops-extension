@@ -2,10 +2,12 @@
 
 import * as taskLib from "azure-pipelines-task-lib/task";
 import * as toolLib from "azure-pipelines-tool-lib/tool";
+import * as path from "path";
 import {platform} from "./utils";
 
 async function run() {
     try {
+        taskLib.setResourcePath(path.join( __dirname, "task.json"));
         await install();
     } catch (err) {
         taskLib.setResult(taskLib.TaskResult.Failed, err.message);

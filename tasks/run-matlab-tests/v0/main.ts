@@ -7,6 +7,7 @@ import {platform} from "./utils";
 
 async function run() {
     try {
+        taskLib.setResourcePath(path.join( __dirname, "task.json"));
         const options: IRunTestsOptions = {
             JUnitTestResults: taskLib.getInput("testResultsJUnit"),
             CoberturaCodeCoverage: taskLib.getInput("codeCoverageCobertura"),
