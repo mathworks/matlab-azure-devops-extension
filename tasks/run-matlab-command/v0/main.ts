@@ -1,6 +1,7 @@
 // Copyright 2020 The MathWorks, Inc.
 
 import * as taskLib from "azure-pipelines-task-lib/task";
+import * as toolRunner from "azure-pipelines-task-lib/toolrunner";
 import { chmodSync } from "fs";
 import * as fs from "fs";
 import * as path from "path";
@@ -36,8 +37,10 @@ async function runCommand(command: string) {
     const runToolPath = path.join(__dirname, "bin", "run_matlab_command." + (platform() === "win32" ? "bat" : "sh"));
     chmodSync(runToolPath, "777");
     const runTool = taskLib.tool(runToolPath);
-    runTool.arg("cd('" + tempDirectory.replace(/'/g, "''") + "'); " + scriptName);
-    const exitCode = await runTool.exec();
+    runTool.arg(scriptName);
+    const exitCode = await runTool.exec({
+        cwd: tempDirectory,
+    } as toolRunner.IExecOptions);
     if (exitCode !== 0) {
         throw new Error(taskLib.loc("FailedToRunCommand"));
     }

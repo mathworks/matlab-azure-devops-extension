@@ -39,7 +39,7 @@ const a: ma.TaskLibAnswers = {
         "temp/path": true,
     },
     exec: {
-        [runCmdPath + " cd('temp/path'); command_1_2_3"]: {
+        [runCmdPath + " command_1_2_3"]: {
             code: 1,
             stdout: "BAM!",
         },
