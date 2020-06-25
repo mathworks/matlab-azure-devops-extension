@@ -45,9 +45,9 @@ steps:
 ``` 
 
 ### Specify MATLAB in Pipeline
-When you use the **Run MATLAB Command** or **Run MATLAB Tests** tasks in your pipeline, the self-hosted agent uses the first MATLAB instance it encounters on the path. The job fails if the operating system cannot find MATLAB on the path.
+When you use the **Run MATLAB Command** or **Run MATLAB Tests** tasks in your pipeline, the self-hosted agent uses the first MATLAB version it encounters on the path. The job fails if the operating system cannot find MATLAB on the path.
 
-You can prepend your desired instance of MATLAB to the PATH environment variable of the agent. For example, prepend MATLAB R2020a to the path and use it to run your script.
+You can prepend your desired version of MATLAB to the PATH environment variable of the agent. For example, prepend MATLAB R2020a to the path and use it to run your script.
 
 ```YAML
 pool: myPool
