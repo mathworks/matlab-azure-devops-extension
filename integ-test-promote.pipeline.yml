@@ -75,6 +75,12 @@ stages:
             displayName: Run MATLAB statement in working directory
             inputs:
               command: exp = getenv('SYSTEM_DEFAULTWORKINGDIRECTORY'); act = pwd; assert(strcmp(act, exp), strjoin({act exp}, '\n'));
+          - bash: |
+              echo 'myvar = 123' > startup.m
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
+            displayName: MATLAB runs startup.m automatically
+            inputs:
+              command: assert(myvar == 123, 'myvar was not set as expected by startup.m')
 
       - job: test_run_tests
         strategy:
@@ -117,6 +123,12 @@ stages:
               set -e
               grep -q add code-coverage/coverage.xml
             displayName: Verify code coverage file was created
+          - bash: |
+              echo 'myvar = 123' > startup.m
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
+            displayName: MATLAB runs startup.m automatically
+            inputs:
+              command: assert(myvar == 123, 'myvar was not set as expected by startup.m')
 
   - stage: publish_prerelease
     displayName: Publish prerelease
