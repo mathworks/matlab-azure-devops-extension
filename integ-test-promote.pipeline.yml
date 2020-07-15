@@ -77,10 +77,11 @@ stages:
               command: exp = getenv('SYSTEM_DEFAULTWORKINGDIRECTORY'); act = pwd; assert(strcmp(act, exp), strjoin({act exp}, '\n'));
           - bash: |
               echo 'myvar = 123' > startup.m
+            displayName: Create startup.m
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: MATLAB runs startup.m automatically
             inputs:
-              command: assert(myvar == 123, 'myvar was not set as expected by startup.m')
+              command: assert(myvar==123, 'myvar was not set as expected by startup.m')
 
       - job: test_run_tests
         strategy:
@@ -100,10 +101,12 @@ stages:
             displayName: Install MATLAB on Microsoft-hosted agents
             condition: not(startsWith(variables['Agent.Name'], 'vmss'))
           - bash: |
+              echo 'myvar = 123' > startup.m
               mkdir src
               echo 'function c=add(a,b);c=a+b;' > src/add.m
               mkdir tests
-              printf "%%%% FirstTest\nassert(add(1,2)==3)" > tests/mytest.m
+              printf "%%%% StartupTest\nassert(myvar==123)" > tests/mytest.m
+              printf "%%%% FirstTest\nassert(add(1,2)==3)" >> tests/mytest.m
             displayName: Make MATLAB tests
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests with defaults
@@ -123,12 +126,6 @@ stages:
               set -e
               grep -q add code-coverage/coverage.xml
             displayName: Verify code coverage file was created
-          - bash: |
-              echo 'myvar = 123' > startup.m
-          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
-            displayName: MATLAB runs startup.m automatically
-            inputs:
-              command: assert(myvar == 123, 'myvar was not set as expected by startup.m')
 
   - stage: publish_prerelease
     displayName: Publish prerelease
