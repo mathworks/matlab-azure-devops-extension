@@ -105,9 +105,9 @@ stages:
               mkdir src
               echo 'function c=add(a,b);c=a+b;' > src/add.m
               mkdir tests
-              echo "%%%% StartupTest" > tests/mytest.m
+              echo "%% StartupTest" > tests/mytest.m
               echo "evalin('base','assert(myvar==123)')" >> tests/mytest.m
-              echo "%%%% FirstTest" >> tests/mytest.m
+              echo "%% FirstTest" >> tests/mytest.m
               echo "assert(add(1,2)==3)" >> tests/mytest.m
             displayName: Make MATLAB tests
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
