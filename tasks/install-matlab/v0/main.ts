@@ -20,15 +20,25 @@ async function install() {
         throw new Error(taskLib.loc("InstallNotSupportedOnSelfHosted"));
     }
 
-    // download install bash script
-    let scriptPath;
-    try {
-        scriptPath = await toolLib.downloadTool("https://ssd.mathworks.com/supportfiles/ci/ephemeral-matlab/v0/install.sh");
-    } catch (err) {
-        throw new Error(taskLib.loc("FailedToDownloadInstallScript", err.message));
+    // install core system dependencies
+    let exitCode = await curlsh("https://ssd.mathworks.com/supportfiles/ci/matlab-deps/v0/install.sh");
+    if (exitCode !== 0) {
+        throw new Error(taskLib.loc("FailedToExecuteInstallScript", exitCode));
     }
 
-    // execute install bash script
+    // install ephemeral version of MATLAB
+    exitCode = await curlsh("https://ssd.mathworks.com/supportfiles/ci/ephemeral-matlab/v0/install.sh");
+    if (exitCode !== 0) {
+        throw new Error(taskLib.loc("FailedToExecuteInstallScript", exitCode));
+    }
+}
+
+// similar to "curl | sh"
+async function curlsh(url: string) {
+    // download script
+    const scriptPath = await toolLib.downloadTool(url);
+
+    // execute script
     const bashPath = taskLib.which("bash", true);
     let bash;
     if (platform() === "win32") {
@@ -37,10 +47,7 @@ async function install() {
         bash = taskLib.tool("sudo").arg("-E").line(bashPath);
     }
     bash.arg(scriptPath);
-    const exitCode = await bash.exec();
-    if (exitCode !== 0) {
-        throw new Error(taskLib.loc("FailedToExecuteInstallScript", exitCode));
-    }
+    return bash.exec();
 }
 
 run();

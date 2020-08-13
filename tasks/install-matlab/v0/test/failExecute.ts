@@ -11,7 +11,7 @@ process.env.SYSTEM_SERVERTYPE = "hosted";
 
 tr.registerMock("azure-pipelines-tool-lib/tool", {
     downloadTool(url: string) {
-        if (url !== "https://ssd.mathworks.com/supportfiles/ci/ephemeral-matlab/v0/install.sh") {
+        if (url !== "https://ssd.mathworks.com/supportfiles/ci/matlab-deps/v0/install.sh" && url !== "https://ssd.mathworks.com/supportfiles/ci/ephemeral-matlab/v0/install.sh") {
             throw new Error("Incorrect URL");
         }
         return "install.sh";
