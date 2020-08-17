@@ -12,6 +12,16 @@
         "Minor": 1,
         "Patch": 0
     },
+    "inputs": [
+        {
+            "name": "release",
+            "type": "string",
+            "label": "Release",
+            "required": true,
+            "defaultValue": "latest",
+            "helpMarkDown": "MATLAB release to install. The value specified should follow the MATLAB release naming convention (e.g. R2020a). The latest release will be installed by default. Releases R2020a and above are available shortly after their general release on MathWorks.com."
+        }
+    ],
     "instanceNameFormat": "Install MATLAB",
     "execution": {
         "Node10": {

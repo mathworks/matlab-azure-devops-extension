@@ -30,6 +30,26 @@ stages:
               mex -h
             displayName: Check matlab and mex
 
+      - job: test_install_release
+        strategy:
+          matrix:
+            microsoft_hosted_linux:
+              poolName: Azure Pipelines
+              vmImage: ubuntu-16.04
+        pool:
+          name: $(poolName)
+          vmImage: $(vmImage)
+        steps:
+          - checkout: none
+          - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
+            displayName: Install MATLAB
+            inputs:
+              release: R2020a
+          - bash: |
+              set -e
+              matlab -batch "assert(strcmp(version('-release'),'2020a'))"
+            displayName: Check matlab release
+
       - job: test_run_command
         strategy:
           matrix:

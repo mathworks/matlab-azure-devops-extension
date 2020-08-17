@@ -7,6 +7,8 @@ import path = require("path");
 const tp = path.join(__dirname, "..", "main.js");
 const tr = new mr.TaskMockRunner(tp);
 
+tr.setInput("release", "R2020a");
+
 process.env.SYSTEM_SERVERTYPE = "hosted";
 
 tr.registerMock("azure-pipelines-tool-lib/tool", {
@@ -31,7 +33,11 @@ const a: ma.TaskLibAnswers = {
         "bash.exe": true,
     },
     exec: {
-        "bash.exe install.sh": {
+        "bash.exe install.sh R2020a": {
+            code: 0,
+            stdout: "Installed MATLAB",
+        },
+        "bash.exe install.sh --release R2020a": {
             code: 0,
             stdout: "Installed MATLAB",
         },
