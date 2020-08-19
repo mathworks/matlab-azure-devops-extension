@@ -6,6 +6,8 @@ import path = require("path");
 const tp = path.join(__dirname, "..", "main.js");
 const tr = new mr.TaskMockRunner(tp);
 
+tr.setInput("release", "R2020a");
+
 process.env.SYSTEM_SERVERTYPE = "hosted";
 
 tr.registerMock("azure-pipelines-tool-lib/tool", {
