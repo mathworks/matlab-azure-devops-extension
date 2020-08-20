@@ -41,6 +41,7 @@ steps:
       outputPath: '$(vsixFile)'
       extensionVersion: '$(Build.BuildNumber)'
       updateTasksVersion: true
+      updateTasksVersionType: minor
 
   - publish: '$(vsixFile)'
     displayName: Store extension
