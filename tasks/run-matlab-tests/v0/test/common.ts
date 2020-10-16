@@ -6,16 +6,12 @@ export const runCmdPath = path.join(path.dirname(__dirname), "bin", "run_matlab_
 
 export function runCmdArg(junit: string, cobertura: string, source: string) {
     return "addpath('" + path.join(path.dirname(__dirname), "scriptgen") + "');" +
-        "testScript = genscript('Test','WorkingFolder','..'," +
+        "testScript = genscript('Test'," +
             "'JUnitTestResults','" + junit + "'," +
             "'CoberturaCodeCoverage','" + cobertura + "'," +
             "'SourceFolder','" + source + "');" +
-        `scriptFolder = '.matlab';` +
-        `scriptPath = fullfile(scriptFolder, 'runAllTests.m');` +
-        `testScript.writeToFile(scriptPath);` +
-        `disp(['Running ''' scriptPath ''':']);` +
-        `type(scriptPath);` +
+        `disp('Running MATLAB script with contents:');` +
+        `disp(strtrim(testScript.writeToText()));` +
         `fprintf('__________\\n\\n');` +
-        `cd(scriptFolder);` +
-        `runAllTests;`;
+        `run(testScript);`;
 }
