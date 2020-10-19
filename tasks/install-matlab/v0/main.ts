@@ -28,7 +28,7 @@ async function install(release: string) {
     }
 
     // install ephemeral version of MATLAB
-    exitCode = await curlsh("https://ssd.mathworks.com/supportfiles/ci/ephemeral-matlab/v0/install.sh",
+    exitCode = await curlsh("https://ssd.mathworks.com/supportfiles/ci/ephemeral-matlab/v0/ci-install.sh",
         ["--release", release]);
     if (exitCode !== 0) {
         throw new Error(taskLib.loc("FailedToExecuteInstallScript", exitCode));
