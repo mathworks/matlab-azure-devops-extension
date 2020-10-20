@@ -4,7 +4,7 @@ To run your pipeline using the extension, install the extension to your Azure De
 
 - If you want to use a self-hosted agent, you must set up a computer with MATLAB (R2013b or later) as your self-hosted agent and register the agent with Azure Pipelines.
 
-- If you want to use a Microsoft-hosted agent, you must include a task in your pipeline to install the latest MATLAB release on the agent. Currently, this task is available only for public projects and does not include transformation products, such as MATLAB Coder and MATLAB Compiler.
+- If you want to use a Microsoft-hosted agent, you must include a task in your pipeline to install MATLAB on the agent. Currently, this task is available only for public projects and does not include transformation products, such as MATLAB Coder&trade; and MATLAB Compiler&trade;.
 
 ## Usage Examples
 When you author your pipeline, the extension provides you with a task to run MATLAB scripts, functions, and statements. The extension also provides a task to run MATLAB and Simulink tests. Additionally, you can specify a Microsoft-hosted agent to run your MATLAB code.
@@ -47,28 +47,30 @@ steps:
 ### Specify MATLAB in Pipeline
 When you use the **Run MATLAB Command** or **Run MATLAB Tests** tasks in your pipeline, the self-hosted agent uses the first MATLAB version it encounters on the path. The job fails if the operating system cannot find MATLAB on the path.
 
-You can prepend your desired version of MATLAB to the PATH environment variable of the agent. For example, prepend MATLAB R2020a to the path and use it to run your script.
+You can prepend your desired version of MATLAB to the PATH environment variable of the agent. For example, prepend MATLAB R2020b to the path and use it to run your script.
 
 ```YAML
 pool: myPool
 steps:
-  - powershell: Write-Host '##vso[task.prependpath]C:\Program Files\MATLAB\R2020a\bin'  # Windows agent
-# - bash: echo '##vso[task.prependpath]/usr/local/MATLAB/R2020a/bin'  # Linux agent
+  - powershell: Write-Host '##vso[task.prependpath]C:\Program Files\MATLAB\R2020b\bin'  # Windows agent
+# - bash: echo '##vso[task.prependpath]/usr/local/MATLAB/R2020b/bin'  # Linux agent
   - task: RunMATLABCommand@0
     inputs:
       command: myscript
 ```
 
 ### Use MATLAB on Microsoft-Hosted Agent
-Use the [Install MATLAB](#install-matlab) task when you want to run MATLAB code in public projects that utilize Microsoft-hosted agents. The task installs the latest MATLAB release on a Linux virtual machine and enables the agent to run MATLAB scripts, functions, statements, and tests.
+Use the [Install MATLAB](#install-matlab) task when you want to run MATLAB code in public projects that utilize Microsoft-hosted agents. The task installs your specified MATLAB release (R2020a or later) on a Linux virtual machine and enables the agent to run MATLAB scripts, functions, statements, and tests. If you do not specify a release, the task installs the latest release of MATLAB.
 
-Use this task in conjunction with the **Run MATLAB Command** or **Run MATLAB Tests** tasks. For example, set up a Microsoft-hosted agent and use it to run the commands in your MATLAB script.
+Use this task in conjunction with the **Run MATLAB Command** or **Run MATLAB Tests** tasks. For example, install MATLAB R2020a on a Microsoft-hosted agent to run the commands in your script.
 
 ```YAML
 pool:
   vmImage: Ubuntu 16.04
 steps:
   - task: InstallMATLAB@0
+    inputs:
+      release: R2020a
   - task: RunMATLABCommand@0
     inputs:
       command: myscript
@@ -102,9 +104,14 @@ Argument                  | Description
 MATLAB includes any files in your project that have a **Test** label. If your pipeline does not leverage a MATLAB project or uses a MATLAB release before R2019a, then MATLAB includes all tests in the root of your repository including its subfolders.
 
 ### Install MATLAB
-Install the latest MATLAB release on a Linux-based Microsoft-hosted agent. Specify the task in your pipeline YAML using the `InstallMATLAB` key.
+Install the specified MATLAB release on a Linux-based Microsoft-hosted agent. Specify the task in your pipeline YAML using the `InstallMATLAB` key.
 
-Currently, this task is available only for public projects and does not include transformation products, such as MATLAB Coder&trade; and MATLAB Compiler&trade;.
+Argument                  | Description    
+------------------------- | --------------- 
+`release`                 | (Optional) MATLAB release to install. You can specify R2020a or a later release. If you do not specify `release`, the task installs the latest release of MATLAB.<br/>**Example:** `R2020a`
+
+
+Currently, this task is available only for public projects and does not include transformation products, such as MATLAB Coder and MATLAB Compiler.
 
 ## Contact Us
 If you have any questions or suggestions, please contact MathWorks&reg; at [continuous-integration@mathworks.com](mailto:continuous-integration@mathworks.com).
