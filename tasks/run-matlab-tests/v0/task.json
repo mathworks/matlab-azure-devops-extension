@@ -36,6 +36,22 @@
             "defaultValue": "",
             "required": false,
             "helpMarkDown": "Location of the folder containing source code, relative to the project root folder. The specified folder and its subfolders are added to the top of the MATLAB search path. To generate a code coverage report, MATLAB uses only the source code in the specified folder and its subfolders. You can specify multiple folders using a colon-separated or a semicolon-separated list."
+        },
+        {
+            "name": "selectByFolder",
+            "type": "string",
+            "label": "Test folder",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "Location of the folder containing tests, relative to the project root folder. To generate a test suite, MATLAB uses only the tests in the specified folder and its subfolders. You can specify multiple folders using a colon-separated or a semicolon-separated list."
+        },
+        {
+            "name": "selectByTag",
+            "type": "string",
+            "label": "Test Tag",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "Test tag used to select test suite elements. To generate a test suite, MATLAB uses only the test elements with the specified tag."
         }
     ],
     "instanceNameFormat": "Run MATLAB Tests",
