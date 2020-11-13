@@ -11,6 +11,8 @@ const tr = new mr.TaskMockRunner(tp);
 tr.setInput("testResultsJUnit", "results.xml");
 tr.setInput("codeCoverageCobertura", "coverage.xml");
 tr.setInput("sourceFolder", "source");
+tr.setInput("selectByFolder", "tests/filteredTest");
+tr.setInput("selectByTag", "FILTERED");
 
 tr.registerMock("./utils", {
     platform: () => "linux",
@@ -21,7 +23,7 @@ const a: ma.TaskLibAnswers = {
         [runCmdPath]: true,
     },
     exec: {
-        [runCmdPath + ".sh " + runCmdArg("results.xml", "coverage.xml", "source")]: {
+        [runCmdPath + ".sh " + runCmdArg("results.xml", "coverage.xml", "source", "tests/filteredTest", "FILTERED")]: {
             code: 0,
             stdout: "ran tests",
         },
