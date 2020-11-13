@@ -13,7 +13,7 @@ async function run() {
             CoberturaCodeCoverage: taskLib.getInput("codeCoverageCobertura"),
             SourceFolder: taskLib.getInput("sourceFolder"),
             SelectByFolder: taskLib.getInput("selectByFolder"),
-            SeectByTag: taskLib.getInput("selectByTag")};
+            SelectByTag: taskLib.getInput("selectByTag")};
         await runTests(options);
     } catch (err) {
         taskLib.setResult(taskLib.TaskResult.Failed, err.message);
