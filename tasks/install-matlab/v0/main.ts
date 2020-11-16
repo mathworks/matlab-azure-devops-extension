@@ -22,13 +22,13 @@ async function install(release: string) {
     }
 
     // install core system dependencies
-    let exitCode = await curlsh("https://ssd.mathworks.com/supportfiles/ci/matlab-deps/v0/install.sh", release);
+    let exitCode = await curlsh("https://static.mathworks-ci.com/matlab-deps/v0/install.sh", release);
     if (exitCode !== 0) {
         throw new Error(taskLib.loc("FailedToExecuteInstallScript", exitCode));
     }
 
     // install ephemeral version of MATLAB
-    exitCode = await curlsh("https://ssd.mathworks.com/supportfiles/ci/ephemeral-matlab/v0/ci-install.sh",
+    exitCode = await curlsh("https://static.mathworks-ci.com/ephemeral-matlab/v0/ci-install.sh",
         ["--release", release]);
     if (exitCode !== 0) {
         throw new Error(taskLib.loc("FailedToExecuteInstallScript", exitCode));
