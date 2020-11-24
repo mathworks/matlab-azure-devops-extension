@@ -8,7 +8,7 @@ export function runCmdArg(
                     junit: string,
                     cobertura: string,
                     source: string,
-                    selectByFolder:string,
+                    selectByFolder: string,
                     selectByTag: string
                 ) {
     return "addpath('" + path.join(path.dirname(__dirname), "scriptgen") + "');" +
