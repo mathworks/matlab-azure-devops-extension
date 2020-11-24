@@ -9,7 +9,7 @@ export function runCmdArg(
                     cobertura: string,
                     source: string,
                     selectByFolder: string,
-                    selectByTag: string
+                    selectByTag: string,
                 ) {
     return "addpath('" + path.join(path.dirname(__dirname), "scriptgen") + "');" +
         "testScript = genscript('Test'," +
