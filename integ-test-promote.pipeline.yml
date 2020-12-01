@@ -166,14 +166,14 @@ stages:
             displayName: Verify code coverage file was created
           - bash: |
               set -e
-              grep -q simpleTest code-coverage/selectbyfolder.xml
-              # grep -v FirstTest code-coverage/selectbyfolder.xml
+              grep -q simpleTest test-results/matlab/selectbyfolder.xml
+              grep -v FirstTest test-results/matlab/selectbyfolder.xml
             displayName: Verify test filtered by folder
           - bash: |
               set -e
-              grep -q TaggedTest code-coverage/selectbytag.xml
-              grep -v FirstTest code-coverage/selectbytag.xml
-              grep -v simpleTest code-coverage/selectbytag.xml
+              grep -q TaggedTest test-results/matlab/selectbytag.xml
+              grep -v FirstTest test-results/matlab/selectbytag.xml
+              grep -v simpleTest test-results/matlab/selectbytag.xml
             displayName: Verify test filtered by tag name
 
   - stage: publish_prerelease
