@@ -146,16 +146,16 @@ stages:
               testResultsJUnit: test-results/matlab/results.xml
               codeCoverageCobertura: code-coverage/coverage.xml
               sourceFolder: src
-         - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
-           displayName: Run MATLAB tests filter by folder
-           inputs:
-             testResultsJUnit: test-results/matlab/selectbyfolder.xml
-             selectByFolder: tests/filteredTest
-         - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
-           displayName: Run MATLAB tests filter by folder
-           inputs:
-             testResultsJUnit: test-results/matlab/selectbytag.xml
-             selectByTag: FILTERED
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
+            displayName: Run MATLAB tests filter by folder
+            inputs:
+              testResultsJUnit: test-results/matlab/selectbyfolder.xml
+              selectByFolder: tests/filteredTest
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
+            displayName: Run MATLAB tests filter by folder
+            inputs:
+              testResultsJUnit: test-results/matlab/selectbytag.xml
+              selectByTag: FILTERED
           - bash: |
               set -e
               grep -q FirstTest test-results/matlab/results.xml
