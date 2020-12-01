@@ -133,8 +133,8 @@ stages:
               echo "%% simpleTest" >> tests/filteredTest/filtertest.m
               echo "assert(2==2)" >> tests/filteredTest/filtertest.m
               echo "%% FilterByTag" >> tests/filteredTest/TaggedTest.m
-              echo "classdef (TestTags = {'FILTERED'}) TaggedTest < matlab.unittest.TestCase methods(Test) function testTag(testCase) assert(2==2); end,end,end" >> tests/filteredTest/TaggedTest.m
-              # echo "methods(Test) function testTag() assert(2==2); end,end,end" >> tests/filteredTest/TaggedTest.m
+              echo "classdef (TestTags = {'FILTERED'}) TaggedTest < matlab.unittest.TestCase" >> tests/filteredTest/TaggedTest.m
+              echo -e "methods(Test)\n function testTag(testCase)\n assert(2==2); end,end,end" >> tests/filteredTest/TaggedTest.m
             displayName: Make MATLAB tests
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests with defaults
