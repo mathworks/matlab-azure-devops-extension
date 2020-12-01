@@ -167,7 +167,7 @@ stages:
           - bash: |
               set -e
               grep -q simpleTest code-coverage/selectbyfolder.xml
-              grep -v FirstTest code-coverage/selectbyfolder.xml
+              # grep -v FirstTest code-coverage/selectbyfolder.xml
             displayName: Verify test filtered by folder
           - bash: |
               set -e
