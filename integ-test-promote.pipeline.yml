@@ -129,6 +129,19 @@ stages:
               echo "evalin('base','assert(myvar==123)')" >> tests/mytest.m
               echo "%% FirstTest" >> tests/mytest.m
               echo "assert(add(1,2)==3)" >> tests/mytest.m
+              mkdir tests/filteredTest
+              echo "%% simpleTest" >> tests/filteredTest/filtertest.m
+              echo "assert(2==2)" >> tests/filteredTest/filtertest.m
+              echo "%% FilterByTag" >> tests/filteredTest/TaggedTest.m
+              cat << EOF > tests/filteredTest/TaggedTest.m
+              classdef (TestTags = {'FILTERED'}) TaggedTest < matlab.unittest.TestCase
+                  methods(Test)
+                      function testTag(testCase)
+                          assert(2==2);
+                      end
+                  end
+              end
+              EOF
             displayName: Make MATLAB tests
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests with defaults
@@ -140,6 +153,16 @@ stages:
               testResultsJUnit: test-results/matlab/results.xml
               codeCoverageCobertura: code-coverage/coverage.xml
               sourceFolder: src
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
+            displayName: Run MATLAB tests filter by folder
+            inputs:
+              testResultsJUnit: test-results/matlab/selectbyfolder.xml
+              selectByFolder: tests/filteredTest
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
+            displayName: Run MATLAB tests filter by folder
+            inputs:
+              testResultsJUnit: test-results/matlab/selectbytag.xml
+              selectByTag: FILTERED
           - bash: |
               set -e
               grep -q FirstTest test-results/matlab/results.xml
@@ -148,6 +171,17 @@ stages:
               set -e
               grep -q add code-coverage/coverage.xml
             displayName: Verify code coverage file was created
+          - bash: |
+              set -e
+              grep -q simpleTest test-results/matlab/selectbyfolder.xml
+              grep -v FirstTest test-results/matlab/selectbyfolder.xml
+            displayName: Verify test filtered by folder
+          - bash: |
+              set -e
+              grep -q TaggedTest test-results/matlab/selectbytag.xml
+              grep -v FirstTest test-results/matlab/selectbytag.xml
+              grep -v simpleTest test-results/matlab/selectbytag.xml
+            displayName: Verify test filtered by tag name
 
   - stage: publish_prerelease
     displayName: Publish prerelease

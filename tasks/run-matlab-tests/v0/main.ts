@@ -11,7 +11,9 @@ async function run() {
         const options: IRunTestsOptions = {
             JUnitTestResults: taskLib.getInput("testResultsJUnit"),
             CoberturaCodeCoverage: taskLib.getInput("codeCoverageCobertura"),
-            SourceFolder: taskLib.getInput("sourceFolder")};
+            SourceFolder: taskLib.getInput("sourceFolder"),
+            SelectByFolder: taskLib.getInput("selectByFolder"),
+            SelectByTag: taskLib.getInput("selectByTag")};
         await runTests(options);
     } catch (err) {
         taskLib.setResult(taskLib.TaskResult.Failed, err.message);
@@ -26,7 +28,9 @@ async function runTests(options: IRunTestsOptions) {
         `testScript = genscript('Test',` +
             `'JUnitTestResults','${options.JUnitTestResults || ""}',` +
             `'CoberturaCodeCoverage','${options.CoberturaCodeCoverage || ""}',` +
-            `'SourceFolder','${options.SourceFolder || ""}');` +
+            `'SourceFolder','${options.SourceFolder || ""}',` +
+            `'SelectByFolder','${options.SelectByFolder || ""}',` +
+            `'SelectByTag','${options.SelectByTag || ""}');` +
         `disp('Running MATLAB script with contents:');` +
         `disp(strtrim(testScript.writeToText()));` +
         `fprintf('__________\\n\\n');` +
@@ -41,6 +45,8 @@ interface IRunTestsOptions {
     JUnitTestResults?: string;
     CoberturaCodeCoverage?: string;
     SourceFolder?: string;
+    SelectByFolder?: string;
+    SelectByTag?: string;
 }
 
 run();
