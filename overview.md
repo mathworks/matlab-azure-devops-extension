@@ -101,7 +101,7 @@ Argument                  | Description
 `selectByFolder`          | (Optional) Location of the folder used to select test suite elements, relative to the project root folder. To generate a test suite, MATLAB uses only the tests in the specified folder and its subfolders. You can specify multiple folders using a colon-separated or a semicolon-separated list.<br/>**Example:** `'test/unit'`
 `selectByTag`             | (Optional) Test tag used to select test suite elements. To generate a test suite, MATLAB uses only the test elements with the specified tag.<br/>**Example:** `'Unit'`
 `sourceFolder`            | (Optional) Location of the folder containing source code, relative to the project root folder. The specified folder and its subfolders are added to the top of the MATLAB search path. To generate a code coverage report, MATLAB uses only the source code in the specified folder and its subfolders. You can specify multiple folders using a colon-separated or a semicolon-separated list.<br/>**Example:** `'source'`
-`testResultsJunit`        | (Optional) Path to write test results report in JUnit XML format.<br/>**Example:** `'test-results/results.xml'`
+`testResultsJUnit`        | (Optional) Path to write test results report in JUnit XML format.<br/>**Example:** `'test-results/results.xml'`
 
 MATLAB includes any files in your project that have a **Test** label. If your pipeline does not leverage a MATLAB project or uses a MATLAB release before R2019a, then MATLAB includes all tests in the root of your repository including its subfolders.
 
