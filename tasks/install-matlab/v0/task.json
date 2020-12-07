@@ -17,9 +17,9 @@
             "name": "release",
             "type": "string",
             "label": "Release",
-            "required": true,
+            "required": false,
             "defaultValue": "latest",
-            "helpMarkDown": "MATLAB release to install. You can specify R2020a or a later release. By default, the task installs the latest release of MATLAB."
+            "helpMarkDown": "MATLAB release to install. You can specify R2020a or a later release. If you do not specify `release`, the task installs the latest release of MATLAB."
         }
     ],
     "instanceNameFormat": "Install MATLAB",

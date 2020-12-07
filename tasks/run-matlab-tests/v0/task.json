@@ -14,28 +14,12 @@
     },
     "inputs": [
         {
-            "name": "testResultsJUnit",
-            "type": "string",
-            "label": "JUnit-style test results",
-            "defaultValue": "",
-            "required": false,
-            "helpMarkDown": "Path to write test results report in JUnit XML format."
-        },
-        {
             "name": "codeCoverageCobertura",
             "type": "string",
             "label": "Cobertura code coverage",
             "defaultValue": "",
             "required": false,
             "helpMarkDown": "Path to write code coverage report in Cobertura XML format."
-        },
-        {
-            "name": "sourceFolder",
-            "type": "string",
-            "label": "Source code folder",
-            "defaultValue": "",
-            "required": false,
-            "helpMarkDown": "Location of the folder containing source code, relative to the project root folder. The specified folder and its subfolders are added to the top of the MATLAB search path. To generate a code coverage report, MATLAB uses only the source code in the specified folder and its subfolders. You can specify multiple folders using a colon-separated or a semicolon-separated list."
         },
         {
             "name": "selectByFolder",
@@ -52,6 +36,22 @@
             "defaultValue": "",
             "required": false,
             "helpMarkDown": "Test tag used to select test suite elements. To generate a test suite, MATLAB uses only the test elements with the specified tag."
+        },
+        {
+            "name": "sourceFolder",
+            "type": "string",
+            "label": "Source code folder",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "Location of the folder containing source code, relative to the project root folder. The specified folder and its subfolders are added to the top of the MATLAB search path. To generate a code coverage report, MATLAB uses only the source code in the specified folder and its subfolders. You can specify multiple folders using a colon-separated or a semicolon-separated list."
+        },
+        {
+            "name": "testResultsJUnit",
+            "type": "string",
+            "label": "JUnit-style test results",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "Path to write test results report in JUnit XML format."
         }
     ],
     "instanceNameFormat": "Run MATLAB Tests",

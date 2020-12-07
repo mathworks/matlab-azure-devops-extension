@@ -86,7 +86,7 @@ Execute a MATLAB script, function, or statement. Specify the task in your pipeli
 
 Argument                  | Description    
 ------------------------- | --------------- 
-`command`                   | (Required) Script, function, or statement to execute. If the value of `command` is the name of a MATLAB script or function, do not specify the file extension. If you specify more than one MATLAB command, use a comma or semicolon to separate the commands.<br/>**Example:** `'myscript'`<br/>**Example:** `'results = runtests, assertSuccess(results);'` 
+`command`                 | (Required) Script, function, or statement to execute. If the value of `command` is the name of a MATLAB script or function, do not specify the file extension. If you specify more than one MATLAB command, use a comma or semicolon to separate the commands.<br/>**Example:** `'myscript'`<br/>**Example:** `'results = runtests, assertSuccess(results);'` 
 
 MATLAB exits with exit code 0 if the specified script, function, or statement executes successfully without error. Otherwise, MATLAB terminates with a nonzero exit code, which causes the build to fail. You can use the [`assert`](https://www.mathworks.com/help/matlab/ref/assert.html) or [`error`](https://www.mathworks.com/help/matlab/ref/error.html) functions in the command to ensure that builds fail when necessary.
 
@@ -96,10 +96,12 @@ When you use this task, all of the required files must be on the MATLAB search p
 Run all tests in a MATLAB project and generate test artifacts. Specify the task in your pipeline YAML using the `RunMATLABTests` key.
 
 Argument                  | Description    
-------------------------- | --------------- 
-`testResultsJunit`        | (Optional) Path to write test results report in JUnit XML format.<br/>**Example:** `'test-results/results.xml'`
+------------------------- | ---------------
 `codeCoverageCobertura`   | (Optional) Path to write code coverage report in Cobertura XML format.<br/>**Example:** `'code-coverage/coverage.xml'`
-`sourceFolder`      | (Optional) Location of the folder containing source code, relative to the project root folder. The specified folder and its subfolders are added to the top of the MATLAB search path. To generate a code coverage report, MATLAB uses only the source code in the specified folder and its subfolders. You can specify multiple folders using a colon-separated or a semicolon-separated list.<br/>**Example:** `'source'`
+`selectByFolder`          | (Optional) Location of the folder used to select test suite elements, relative to the project root folder. To generate a test suite, MATLAB uses only the tests in the specified folder and its subfolders. You can specify multiple folders using a colon-separated or a semicolon-separated list.<br/>**Example:** `'test/unit'`
+`selectByTag`             | (Optional) Test tag used to select test suite elements. To generate a test suite, MATLAB uses only the test elements with the specified tag.<br/>**Example:** `'Unit'`
+`sourceFolder`            | (Optional) Location of the folder containing source code, relative to the project root folder. The specified folder and its subfolders are added to the top of the MATLAB search path. To generate a code coverage report, MATLAB uses only the source code in the specified folder and its subfolders. You can specify multiple folders using a colon-separated or a semicolon-separated list.<br/>**Example:** `'source'`
+`testResultsJunit`        | (Optional) Path to write test results report in JUnit XML format.<br/>**Example:** `'test-results/results.xml'`
 
 MATLAB includes any files in your project that have a **Test** label. If your pipeline does not leverage a MATLAB project or uses a MATLAB release before R2019a, then MATLAB includes all tests in the root of your repository including its subfolders.
 
