@@ -19,7 +19,7 @@ export function runCmdArg(
             "'SelectByFolder','" + selectByFolder + "'," +
             "'SelectByTag','" + selectByTag + "');" +
         `disp('Running MATLAB script with contents:');` +
-        `disp(strtrim(testScript.writeToText()));` +
+        `disp(testScript.Contents);` +
         `fprintf('__________\\n\\n');` +
         `run(testScript);`;
 }

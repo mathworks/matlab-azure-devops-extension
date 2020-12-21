@@ -32,7 +32,7 @@ async function runTests(options: IRunTestsOptions) {
             `'SelectByFolder','${options.SelectByFolder || ""}',` +
             `'SelectByTag','${options.SelectByTag || ""}');` +
         `disp('Running MATLAB script with contents:');` +
-        `disp(strtrim(testScript.writeToText()));` +
+        `disp(testScript.Contents);` +
         `fprintf('__________\\n\\n');` +
         `run(testScript);`);
     const exitCode = await runTool.exec();
