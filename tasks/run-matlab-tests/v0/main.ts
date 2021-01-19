@@ -35,7 +35,7 @@ async function runTests(options: IRunTestsOptions) {
             `'SelectByFolder','${options.SelectByFolder || ""}',` +
             `'SelectByTag','${options.SelectByTag || ""}',` +
             `'CoberturaModelCoverage','${options.CoberturaModelCoverage || ""}',` +
-            `'SimulinkTestResults','${options.SimulinkTestResults || ""}', ` +
+            `'SimulinkTestResults','${options.SimulinkTestResults || ""}',` +
             `'PDFTestReport','${options.PDFTestReport || ""}');` +
         `disp('Running MATLAB script with contents:');` +
         `disp(testScript.Contents);` +
