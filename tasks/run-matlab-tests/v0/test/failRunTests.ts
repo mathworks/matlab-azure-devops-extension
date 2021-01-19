@@ -17,7 +17,7 @@ const a: ma.TaskLibAnswers = {
         [runCmdPath]: true,
     },
     exec: {
-        [runCmdPath + ".sh " + runCmdArg("", "", "", "", "","","","")]: {
+        [runCmdPath + ".sh " + runCmdArg("", "", "", "", "", "", "", "")]: {
             code: 1,
             stdout: "tests failed",
         },

@@ -13,10 +13,9 @@ tr.setInput("codeCoverageCobertura", "coverage.xml");
 tr.setInput("sourceFolder", "source");
 tr.setInput("selectByFolder", "tests/filteredTest");
 tr.setInput("selectByTag", "FILTERED");
-tr.setInput("coberturaModelCoverage","modelcoverage.xml");
-tr.setInput("simulinkTestResults","stmresults.mldatx");
-tr.setInput("testResultsPDF","results.pdf");
-
+tr.setInput("coberturaModelCoverage", "modelcoverage.xml");
+tr.setInput("simulinkTestResults", "stmresults.mldatx");
+tr.setInput("testResultsPDF", "results.pdf");
 
 tr.registerMock("./utils", {
     platform: () => "linux",
@@ -27,7 +26,7 @@ const a: ma.TaskLibAnswers = {
         [runCmdPath]: true,
     },
     exec: {
-        [runCmdPath + ".sh " + runCmdArg("results.xml", "coverage.xml", "source", "tests/filteredTest", "FILTERED","modelcoverage.xml", "stmresults.mldatx", "results.pdf")]: {
+        [runCmdPath + ".sh " + runCmdArg("results.xml", "coverage.xml", "source", "tests/filteredTest", "FILTERED", "modelcoverage.xml", "stmresults.mldatx", "results.pdf")]: {
             code: 0,
             stdout: "ran tests",
         },
