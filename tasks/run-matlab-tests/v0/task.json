@@ -22,6 +22,30 @@
             "helpMarkDown": "Path to write code coverage report in Cobertura XML format."
         },
         {
+            "name": "coberturaModelCoverage",
+            "type": "string",
+            "label": "Cobertura model coverage",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "Path to write model coverage report in Cobertura XML format."
+        },
+        {
+            "name": "simulinkTestResults",
+            "type": "string",
+            "label": "Simulink test results",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "Path to write Simulink test results in mldatx format."
+        },
+        {
+            "name": "testResultsPDF",
+            "type": "string",
+            "label": "Test results in PDF format",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "Path to write test results in PDF format."
+        },
+        {
             "name": "selectByFolder",
             "type": "string",
             "label": "Select by folder",
