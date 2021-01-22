@@ -183,7 +183,8 @@ stages:
               grep -v simpleTest test-results/matlab/selectbytag.xml
             displayName: Verify test filtered by tag name
           - bash: |
-              cat << EOF > createModel.m
+              mkdir simtests
+              cat << EOF > simtests/createModel.m
               % Create model
               model = 'new_temp_model';
               new_system(model);
@@ -233,10 +234,11 @@ stages:
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run model creator and test Simulink test generator
             inputs:
-              command: "createModel"
+              command: "cd simtests;createModel"
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests and generate Simulink test artifacts
             inputs:
+              selectByFolder: "simtests"
               coberturaModelCoverage: test-results/matlab/modelcoverage.xml
               simulinkTestResults: test-results/matlab/stmResult.mldatx
           - bash: |
