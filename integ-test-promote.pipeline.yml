@@ -245,6 +245,10 @@ stages:
               set -e
               grep -q new_temp_model test-results/matlab/modelcoverage.xml
             displayName: Verify Model coverage was created
+          - bash: |
+              set -e
+              test -f test-results/matlab/stmResult.mldatx
+            displayName: Verify STM report was created
   - stage: publish_prerelease
     displayName: Publish prerelease
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
