@@ -241,6 +241,7 @@ stages:
               selectByFolder: "simtests"
               coberturaModelCoverage: test-results/matlab/modelcoverage.xml
               simulinkTestResults: test-results/matlab/stmResult.mldatx
+              testResultsPDF: test-results/matlab/results.pdf
           - bash: |
               set -e
               grep -q new_temp_model test-results/matlab/modelcoverage.xml
@@ -249,6 +250,10 @@ stages:
               set -e
               test -f test-results/matlab/stmResult.mldatx
             displayName: Verify STM report was created
+          - bash: |
+              set -e
+              test -f test-results/matlab/results.pdf
+            displayName: Verify PDF report was created
   - stage: publish_prerelease
     displayName: Publish prerelease
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
