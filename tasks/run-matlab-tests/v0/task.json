@@ -35,7 +35,7 @@
             "label": "Simulink test results",
             "defaultValue": "",
             "required": false,
-            "helpMarkDown": "Path to write Simulink test results in mldatx format."
+            "helpMarkDown": "Path to export Simulink Test Manager results in MLDATX format."
         },
         {
             "name": "testResultsPDF",
