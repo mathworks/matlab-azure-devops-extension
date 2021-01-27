@@ -12,6 +12,20 @@
         "Minor": 1,
         "Patch": 0
     },
+    "groups": [
+        {
+            "name": "testArtifact"
+            "displayName": "Generate Test Artifacts"
+        },
+        {
+            "name": "coverageArtifacts"
+            "displayName": "Generate Coverage Artifacts"
+        },
+        {
+          "name": "filterTests"
+          "displayName": "Filter Tests"
+        }
+    ],
     "inputs": [
         {
             "name": "codeCoverageCobertura",
@@ -19,6 +33,7 @@
             "label": "Cobertura code coverage",
             "defaultValue": "",
             "required": false,
+            "groupName": "coverageArtifacts"
             "helpMarkDown": "Path to write code coverage report in Cobertura XML format."
         },
         {
