@@ -33,7 +33,7 @@
             "label": "Cobertura code coverage",
             "defaultValue": "",
             "required": false,
-            "groupName": "coverageArtifacts"
+            "groupName": "coverageArtifacts",
             "helpMarkDown": "Path to write code coverage report in Cobertura XML format."
         },
         {
