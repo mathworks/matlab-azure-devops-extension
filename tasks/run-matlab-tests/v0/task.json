@@ -12,51 +12,6 @@
         "Minor": 1,
         "Patch": 0
     },
-    "groups":{
-      "label": "Test Artifcats"
-      "inputs": [
-          {
-              "name": "codeCoverageCobertura",
-              "type": "string",
-              "label": "Cobertura code coverage",
-              "defaultValue": "",
-              "required": false,
-              "helpMarkDown": "Path to write code coverage report in Cobertura XML format."
-          },
-          {
-              "name": "modelCoverageCobertura",
-              "type": "string",
-              "label": "Cobertura model coverage",
-              "defaultValue": "",
-              "required": false,
-              "helpMarkDown": "Path to write model coverage report in Cobertura XML format."
-          },
-          {
-              "name": "testResultsSimulinkTest",
-              "type": "string",
-              "label": "Simulink test results",
-              "defaultValue": "",
-              "required": false,
-              "helpMarkDown": "Path to export Simulink Test Manager results in MLDATX format."
-          },
-          {
-              "name": "testResultsPDF",
-              "type": "string",
-              "label": "Test results in PDF format",
-              "defaultValue": "",
-              "required": false,
-              "helpMarkDown": "Path to write test results in PDF format."
-          },
-          {
-              "name": "testResultsJUnit",
-              "type": "string",
-              "label": "JUnit-style test results",
-              "defaultValue": "",
-              "required": false,
-              "helpMarkDown": "Path to write test results report in JUnit XML format."
-          }
-      ],
-    },
     "inputs": [
         {
             "name": "codeCoverageCobertura",
