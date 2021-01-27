@@ -22,7 +22,7 @@
             "helpMarkDown": "Path to write code coverage report in Cobertura XML format."
         },
         {
-            "name": "coberturaModelCoverage",
+            "name": "modelCoverageCobertura",
             "type": "string",
             "label": "Cobertura model coverage",
             "defaultValue": "",
@@ -30,7 +30,7 @@
             "helpMarkDown": "Path to write model coverage report in Cobertura XML format."
         },
         {
-            "name": "simulinkTestResults",
+            "name": "testResultsSimulinkTest",
             "type": "string",
             "label": "Simulink test results",
             "defaultValue": "",

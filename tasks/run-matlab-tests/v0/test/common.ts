@@ -10,8 +10,8 @@ export function runCmdArg(
                     source: string,
                     selectByFolder: string,
                     selectByTag: string,
-                    coberturaModelCoverage: string,
-                    simulinkTestResults: string,
+                    modelCoverageCobertura: string,
+                    testResultsSimulinkTest: string,
                     testResultsPDF: string,
                 ) {
     return "addpath('" + path.join(path.dirname(__dirname), "scriptgen") + "');" +
@@ -21,8 +21,8 @@ export function runCmdArg(
             "'SourceFolder','" + source + "'," +
             "'SelectByFolder','" + selectByFolder + "'," +
             "'SelectByTag','" + selectByTag + "'," +
-            "'CoberturaModelCoverage','" + coberturaModelCoverage + "'," +
-            "'SimulinkTestResults','" + simulinkTestResults + "'," +
+            "'CoberturaModelCoverage','" + modelCoverageCobertura + "'," +
+            "'SimulinkTestResults','" + testResultsSimulinkTest + "'," +
             "'PDFTestReport','" + testResultsPDF + "');" +
         `disp('Running MATLAB script with contents:');` +
         `disp(testScript.Contents);` +

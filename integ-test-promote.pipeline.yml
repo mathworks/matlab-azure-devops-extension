@@ -239,8 +239,8 @@ stages:
             displayName: Run MATLAB tests and generate Simulink test artifacts
             inputs:
               selectByFolder: "simtests"
-              coberturaModelCoverage: test-results/matlab/modelcoverage.xml
-              simulinkTestResults: test-results/matlab/stmResult.mldatx
+              modelCoverageCobertura: test-results/matlab/modelcoverage.xml
+              testResultsSimulinkTest: test-results/matlab/stmResult.mldatx
               testResultsPDF: test-results/matlab/results.pdf
           - bash: |
               set -e

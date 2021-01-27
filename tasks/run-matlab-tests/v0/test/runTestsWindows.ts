@@ -13,8 +13,8 @@ tr.setInput("codeCoverageCobertura", "coverage.xml");
 tr.setInput("sourceFolder", "source");
 tr.setInput("selectByFolder", "tests/filteredTest");
 tr.setInput("selectByTag", "FILTERED");
-tr.setInput("coberturaModelCoverage", "modelcoverage.xml");
-tr.setInput("simulinkTestResults", "stmresults.mldatx");
+tr.setInput("modelCoverageCobertura", "modelcoverage.xml");
+tr.setInput("testResultsSimulinkTest", "stmresults.mldatx");
 tr.setInput("testResultsPDF", "results.pdf");
 
 tr.registerMock("./utils", {
