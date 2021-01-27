@@ -14,15 +14,15 @@
     },
     "groups": [
         {
-            "name": "testArtifact"
+            "name": "testArtifact",
             "displayName": "Generate Test Artifacts"
         },
         {
-            "name": "coverageArtifacts"
+            "name": "coverageArtifacts",
             "displayName": "Generate Coverage Artifacts"
         },
         {
-          "name": "filterTests"
+          "name": "filterTests",
           "displayName": "Filter Tests"
         }
     ],
