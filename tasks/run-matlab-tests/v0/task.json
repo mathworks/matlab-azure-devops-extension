@@ -14,7 +14,7 @@
     },
     "groups": [
         {
-            "name": "testArtifact",
+            "name": "testArtifacts",
             "displayName": "Generate Test Artifacts"
         },
         {
@@ -43,34 +43,34 @@
             "defaultValue": "",
             "groupName": "coverageArtifacts",
             "required": false,
-            "helpMarkDown": "Path to write model coverage report in Cobertura XML format."
+            "helpMarkDown": "Path to write model coverage report in Cobertura XML format (requires Simulink Coverage™ license and is supported in MATLAB R2018b or later)."
         },
         {
             "name": "testResultsSimulinkTest",
             "type": "string",
             "label": "Simulink test results",
             "defaultValue": "",
-            "groupName": "testArtifact",
+            "groupName": "testArtifacts",
             "required": false,
-            "helpMarkDown": "Path to export Simulink Test Manager results in MLDATX format."
+            "helpMarkDown": "Path to export Simulink Test Manager results in MLDATX format (requires Simulink Test license and is supported in MATLAB R2019a or later)."
         },
         {
             "name": "testResultsPDF",
             "type": "string",
-            "label": "Test results in PDF format",
+            "label": "PDF test report ",
             "defaultValue": "",
-            "groupName": "testArtifact",
+            "groupName": "testArtifacts",
             "required": false,
-            "helpMarkDown": "Path to write test results in PDF format."
+            "helpMarkDown": "Path to write test results report in PDF format (currently not supported on macOS platforms)."
         },
         {
             "name": "selectByFolder",
             "type": "string",
-            "label": "By folder name",
+            "label": "By folder",
             "defaultValue": "",
             "groupName": "filterTests",
             "required": false,
-            "helpMarkDown": "Location of the folder used to select test suite elements, relative to the project root folder. To generate a test suite, MATLAB uses only the tests in the specified folder and its subfolders. You can specify multiple folders using a colon-separated or a semicolon-separated list."
+            "helpMarkDown": "Locations of the folders used to select test suite elements, relative to the project root folder. To create a test suite, the task uses only the tests in the specified folders and their subfolders. You can specify multiple folders using a colon-separated or a semicolon-separated list."
         },
         {
             "name": "selectByTag",
@@ -79,12 +79,12 @@
             "defaultValue": "",
             "groupName": "filterTests",
             "required": false,
-            "helpMarkDown": "Test tag used to select test suite elements. To generate a test suite, MATLAB uses only the test elements with the specified tag."
+            "helpMarkDown": "Test tag used to select test suite elements. To create a test suite, the task uses only the test elements with the specified tag."
         },
         {
             "name": "sourceFolder",
             "type": "string",
-            "label": "Source code folder",
+            "label": "Source folder",
             "defaultValue": "",
             "required": false,
             "helpMarkDown": "Location of the folder containing source code, relative to the project root folder. The specified folder and its subfolders are added to the top of the MATLAB search path. To generate a code coverage report, MATLAB uses only the source code in the specified folder and its subfolders. You can specify multiple folders using a colon-separated or a semicolon-separated list."
@@ -94,7 +94,7 @@
             "type": "string",
             "label": "JUnit-style test results",
             "defaultValue": "",
-            "groupName": "testArtifact",
+            "groupName": "testArtifacts",
             "required": false,
             "helpMarkDown": "Path to write test results report in JUnit XML format."
         }
