@@ -13,7 +13,10 @@ async function run() {
             CoberturaCodeCoverage: taskLib.getInput("codeCoverageCobertura"),
             SourceFolder: taskLib.getInput("sourceFolder"),
             SelectByFolder: taskLib.getInput("selectByFolder"),
-            SelectByTag: taskLib.getInput("selectByTag")};
+            SelectByTag: taskLib.getInput("selectByTag"),
+            CoberturaModelCoverage: taskLib.getInput("modelCoverageCobertura"),
+            SimulinkTestResults: taskLib.getInput("testResultsSimulinkTest"),
+            PDFTestReport: taskLib.getInput("testResultsPDF")};
         await runTests(options);
     } catch (err) {
         taskLib.setResult(taskLib.TaskResult.Failed, err.message);
@@ -30,7 +33,10 @@ async function runTests(options: IRunTestsOptions) {
             `'CoberturaCodeCoverage','${options.CoberturaCodeCoverage || ""}',` +
             `'SourceFolder','${options.SourceFolder || ""}',` +
             `'SelectByFolder','${options.SelectByFolder || ""}',` +
-            `'SelectByTag','${options.SelectByTag || ""}');` +
+            `'SelectByTag','${options.SelectByTag || ""}',` +
+            `'CoberturaModelCoverage','${options.CoberturaModelCoverage || ""}',` +
+            `'SimulinkTestResults','${options.SimulinkTestResults || ""}',` +
+            `'PDFTestReport','${options.PDFTestReport || ""}');` +
         `disp('Running MATLAB script with contents:');` +
         `disp(testScript.Contents);` +
         `fprintf('__________\\n\\n');` +
@@ -47,6 +53,9 @@ interface IRunTestsOptions {
     SourceFolder?: string;
     SelectByFolder?: string;
     SelectByTag?: string;
+    CoberturaModelCoverage?: string;
+    SimulinkTestResults?: string;
+    PDFTestReport?: string;
 }
 
 run();
