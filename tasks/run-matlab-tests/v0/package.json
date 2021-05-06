@@ -4,7 +4,7 @@
     "private": true,
     "scripts": {
         "postinstall": "npm run getBinDep && npm run getScriptgenDep",
-        "getBinDep": "wget -q https://ssd.mathworks.com/supportfiles/ci/run-matlab-command/v0/run-matlab-command.zip -O bin.zip; unzip -qod bin bin.zip; rm bin.zip",
+        "getBinDep": "wget -q https://static-dev.mathworks-ci.com/run-matlab-command/private-pilot/run-matlab-command.zip -O bin.zip; unzip -qod bin bin.zip; rm bin.zip",
         "getScriptgenDep": "wget -q https://ssd.mathworks.com/supportfiles/ci/matlab-script-generator/v0/matlab-script-generator.zip -O scriptgen.zip; unzip -qod scriptgen scriptgen.zip; rm scriptgen.zip"
     },
     "dependencies": {

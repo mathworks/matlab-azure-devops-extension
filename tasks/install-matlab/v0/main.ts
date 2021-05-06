@@ -35,6 +35,12 @@ async function install(release?: string) {
     if (exitCode !== 0) {
         throw new Error(taskLib.loc("FailedToExecuteInstallScript", exitCode));
     }
+
+    // install matlab-batch
+    exitCode = await curlsh("https://static-dev.mathworks-ci.com/matlab-batch/v0/install.sh", []);
+    if (exitCode !== 0) {
+        throw new Error(taskLib.loc("FailedToExecuteInstallScript", exitCode));
+    }
 }
 
 // similar to "curl | sh"

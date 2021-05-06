@@ -15,6 +15,8 @@ tr.registerMock("azure-pipelines-tool-lib/tool", {
             return "install.sh";
         } else if (url === "https://ssd.mathworks.com/supportfiles/ci/ephemeral-matlab/v0/ci-install.sh") {
             return "ci-install.sh";
+        } else if (url === "https://static-dev.mathworks-ci.com/matlab-batch/v0/install.sh") {
+            return "install.sh";
         } else {
             throw new Error("Incorrect URL");
         }
@@ -40,6 +42,10 @@ const a: ma.TaskLibAnswers = {
         "sudo -E /bin/bash ci-install.sh --release R2020a": {
             code: 0,
             stdout: "Installed MATLAB",
+        },
+        "sudo -E /bin/bash install.sh": {
+            code: 0,
+            stdout: "Installed matlab-batch",
         },
     },
 } as ma.TaskLibAnswers;
