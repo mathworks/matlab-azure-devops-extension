@@ -9,8 +9,6 @@ pr: none
 
 variables:
   MATHWORKS_SKIP_ACTIVATION: true
-  MATHWORKS_ACCOUNT: $(mwaccount)
-  MATHWORKS_TOKEN: $(mwtoken)
 
 stages:
   - stage: integration_test
@@ -34,6 +32,9 @@ stages:
               matlab-batch version
               mex -h
             displayName: Check matlab and mex
+            env:
+              MATHWORKS_ACCOUNT: $(mwaccount)
+              MATHWORKS_TOKEN: $(mwtoken)
 
       - job: test_install_release
         strategy:
@@ -54,6 +55,9 @@ stages:
               set -e
               matlab-batch "assert(strcmp(version('-release'),'2020a'))"
             displayName: Check matlab release
+            env:
+              MATHWORKS_ACCOUNT: $(mwaccount)
+              MATHWORKS_TOKEN: $(mwtoken)
 
       - job: test_run_command
         strategy:
@@ -76,30 +80,51 @@ stages:
             displayName: Run MATLAB statement
             inputs:
               command: f = fopen('myscript.m', 'w'); fwrite(f, 'assert(true)'); fclose(f);
+            env:
+              MATHWORKS_ACCOUNT: $(mwaccount)
+              MATHWORKS_TOKEN: $(mwtoken)
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run MATLAB script
             inputs:
               command: myscript
+            env:
+              MATHWORKS_ACCOUNT: $(mwaccount)
+              MATHWORKS_TOKEN: $(mwtoken)
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run MATLAB statement with quotes 1
             inputs:
               command: "eval(\"a = 1+2\"); assert(a == 3); eval('b = 3+4'); assert(b == 7);"
+            env:
+              MATHWORKS_ACCOUNT: $(mwaccount)
+              MATHWORKS_TOKEN: $(mwtoken)
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run MATLAB statement with quotes 2
             inputs:
               command: 'eval("a = 1+2"); assert(a == 3); eval(''b = 3+4''); assert(b == 7);'
+            env:
+              MATHWORKS_ACCOUNT: $(mwaccount)
+              MATHWORKS_TOKEN: $(mwtoken)
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run MATLAB statement with quotes 3
             inputs:
               command: a = """hello world"""; b = '"hello world"'; assert(strcmp(a,b));
+            env:
+              MATHWORKS_ACCOUNT: $(mwaccount)
+              MATHWORKS_TOKEN: $(mwtoken)
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run MATLAB statement with symbols
             inputs:
               command: a = " !""#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~"; b = char([32:126]); assert(strcmp(a, b), a+b);
+            env:
+              MATHWORKS_ACCOUNT: $(mwaccount)
+              MATHWORKS_TOKEN: $(mwtoken)
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run MATLAB statement in working directory
             inputs:
               command: exp = getenv('SYSTEM_DEFAULTWORKINGDIRECTORY'); act = pwd; assert(strcmp(act, exp), strjoin({act exp}, '\n'));
+            env:
+              MATHWORKS_ACCOUNT: $(mwaccount)
+              MATHWORKS_TOKEN: $(mwtoken)
           - bash: |
               echo 'myvar = 123' > startup.m
             displayName: Create startup.m
@@ -107,6 +132,9 @@ stages:
             displayName: MATLAB runs startup.m automatically
             inputs:
               command: assert(myvar==123, 'myvar was not set as expected by startup.m')
+            env:
+              MATHWORKS_ACCOUNT: $(mwaccount)
+              MATHWORKS_TOKEN: $(mwtoken)
 
       - job: test_run_tests
         strategy:
@@ -154,22 +182,34 @@ stages:
             displayName: Run MATLAB tests with defaults
             inputs:
               sourceFolder: src
+            env:
+              MATHWORKS_ACCOUNT: $(mwaccount)
+              MATHWORKS_TOKEN: $(mwtoken)
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests producing artifacts
             inputs:
               testResultsJUnit: test-results/matlab/results.xml
               codeCoverageCobertura: code-coverage/coverage.xml
               sourceFolder: src
+            env:
+              MATHWORKS_ACCOUNT: $(mwaccount)
+              MATHWORKS_TOKEN: $(mwtoken)
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests filter by folder
             inputs:
               testResultsJUnit: test-results/matlab/selectbyfolder.xml
               selectByFolder: tests/filteredTest
+            env:
+              MATHWORKS_ACCOUNT: $(mwaccount)
+              MATHWORKS_TOKEN: $(mwtoken)
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests filter by folder
             inputs:
               testResultsJUnit: test-results/matlab/selectbytag.xml
               selectByTag: FILTERED
+            env:
+              MATHWORKS_ACCOUNT: $(mwaccount)
+              MATHWORKS_TOKEN: $(mwtoken)
           - bash: |
               set -e
               grep -q FirstTest test-results/matlab/results.xml
@@ -242,6 +282,9 @@ stages:
             displayName: Run model creator and test Simulink test generator
             inputs:
               command: "cd simtests;createModel"
+            env:
+              MATHWORKS_ACCOUNT: $(mwaccount)
+              MATHWORKS_TOKEN: $(mwtoken)
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests and generate Simulink test artifacts
             inputs:
@@ -249,6 +292,9 @@ stages:
               modelCoverageCobertura: test-results/matlab/modelcoverage.xml
               testResultsSimulinkTest: test-results/matlab/stmResult.mldatx
               testResultsPDF: test-results/matlab/results.pdf
+            env:
+              MATHWORKS_ACCOUNT: $(mwaccount)
+              MATHWORKS_TOKEN: $(mwtoken)
           - bash: |
               set -e
               grep -q new_temp_model test-results/matlab/modelcoverage.xml
