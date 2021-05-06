@@ -53,7 +53,7 @@ stages:
               release: R2020b
           - bash: |
               set -e
-              matlab-batch "assert(strcmp(version('-release'),'2020a'))"
+              matlab-batch "assert(strcmp(version('-release'),'2020b'))"
             displayName: Check matlab release
             env:
               MATHWORKS_ACCOUNT: $(mwaccount)
