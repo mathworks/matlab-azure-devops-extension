@@ -16,11 +16,6 @@ async function run() {
 }
 
 async function install(release?: string) {
-    const serverType = taskLib.getVariable("System.ServerType");
-    if (!serverType || serverType.toLowerCase() !== "hosted") {
-        throw new Error(taskLib.loc("InstallNotSupportedOnSelfHosted"));
-    }
-
     // install core system dependencies
     const depArgs: string[] = [];
     if (release !== undefined) {

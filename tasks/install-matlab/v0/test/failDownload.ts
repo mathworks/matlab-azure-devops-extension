@@ -8,8 +8,6 @@ const tr = new mr.TaskMockRunner(tp);
 
 tr.setInput("release", "R2020a");
 
-process.env.SYSTEM_SERVERTYPE = "hosted";
-
 tr.registerMock("azure-pipelines-tool-lib/tool", {
     downloadTool() {
         throw new Error("Download failed");

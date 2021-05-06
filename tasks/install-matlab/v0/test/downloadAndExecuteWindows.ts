@@ -9,8 +9,6 @@ const tr = new mr.TaskMockRunner(tp);
 
 tr.setInput("release", "R2020a");
 
-process.env.SYSTEM_SERVERTYPE = "hosted";
-
 tr.registerMock("azure-pipelines-tool-lib/tool", {
     downloadTool(url: string) {
         if (url === "https://ssd.mathworks.com/supportfiles/ci/matlab-deps/v0/install.sh") {
