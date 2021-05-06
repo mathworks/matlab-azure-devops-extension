@@ -307,6 +307,47 @@ stages:
               set -e
               test -f test-results/matlab/results.pdf
             displayName: Verify PDF report was created
+
+  - stage: publish_pilot
+    displayName: Publish pilot
+    condition: and(succeeded())
+    pool:
+      vmImage: ubuntu-16.04
+    jobs:
+      - deployment: publish_pilot
+        environment: pilot
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: none
+
+                - task: DownloadPipelineArtifact@2
+                  displayName: Get stored extension
+                  inputs:
+                    source: specific
+                    project: b3d35465-d584-454b-a4e9-e60757510c12
+                    pipeline: 6
+                    runVersion: latest
+                    artifact: extension
+                    path: $(Build.StagingDirectory)
+
+                - task: TfxInstaller@2
+                  displayName: Install tfx-cli
+                  inputs:
+                    version: v0.7.x
+
+                - task: PublishAzureDevOpsExtension@2
+                  displayName: Publish pilot
+                  inputs:
+                    connectTo: VsTeam
+                    connectedServiceName: MathWorks
+                    fileType: vsix
+                    extensionTag: -pilot
+                    extensionVisibility: private
+                    vsixFile: $(Build.StagingDirectory)/*.vsix
+                    updateTasksVersion: false
+
   - stage: publish_prerelease
     displayName: Publish prerelease
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
