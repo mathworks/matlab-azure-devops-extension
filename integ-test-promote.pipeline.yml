@@ -9,8 +9,6 @@ pr: none
 
 variables:
   MATHWORKS_SKIP_ACTIVATION: true
-  MATHWORKS_ACCOUNT: $(MATHWORKS_ACCOUNT)
-  MATHWORKS_TOKEN: $(MATHWORKS_TOKEN)
 
 stages:
   - stage: integration_test
