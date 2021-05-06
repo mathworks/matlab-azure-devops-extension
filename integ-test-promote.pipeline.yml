@@ -7,6 +7,11 @@ resources:
 trigger: none
 pr: none
 
+variables:
+  MATHWORKS_SKIP_ACTIVATION: true
+  MATHWORKS_ACCOUNT: $(MATHWORKS_ACCOUNT)
+  MATHWORKS_TOKEN: $(MATHWORKS_TOKEN)
+
 stages:
   - stage: integration_test
     displayName: Integration test
@@ -44,7 +49,7 @@ stages:
           - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
             displayName: Install MATLAB
             inputs:
-              release: R2020a
+              release: R2020b
           - bash: |
               set -e
               matlab -batch "assert(strcmp(version('-release'),'2020a'))"
