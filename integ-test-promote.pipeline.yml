@@ -29,7 +29,7 @@ stages:
             displayName: Install MATLAB
           - bash: |
               set -e
-              matlab -batch version
+              matlab-batch version
               mex -h
             displayName: Check matlab and mex
 
@@ -50,7 +50,7 @@ stages:
               release: R2020b
           - bash: |
               set -e
-              matlab -batch "assert(strcmp(version('-release'),'2020a'))"
+              matlab-batch "assert(strcmp(version('-release'),'2020a'))"
             displayName: Check matlab release
 
       - job: test_run_command
