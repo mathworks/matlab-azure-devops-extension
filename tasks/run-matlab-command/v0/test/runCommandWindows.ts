@@ -50,7 +50,7 @@ tr.setAnswers(a);
 // mock fs
 import fs = require("fs");
 const fsClone = Object.assign({}, fs);
-fsClone.writeFileSync = (filePath: string, contents: any, options: any) => {
+fsClone.writeFileSync = (filePath: any, contents: any, options: any) => {
     // tslint:disable-next-line:no-console
     console.log(`writing ${contents} to ${filePath}`);
 };
