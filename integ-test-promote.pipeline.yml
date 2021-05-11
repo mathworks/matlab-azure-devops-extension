@@ -25,7 +25,7 @@ stages:
           vmImage: $(vmImage)
         steps:
           - checkout: none
-          - task: MathWorks.matlab-azure-devops-extension-pilot-dev.InstallMATLAB.InstallMATLAB@0
+          - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
             displayName: Install MATLAB
           - bash: |
               set -e
@@ -47,7 +47,7 @@ stages:
           vmImage: $(vmImage)
         steps:
           - checkout: none
-          - task: MathWorks.matlab-azure-devops-extension-pilot-dev.InstallMATLAB.InstallMATLAB@0
+          - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
             displayName: Install MATLAB
             inputs:
               release: R2020b
@@ -73,52 +73,52 @@ stages:
           vmImage: $(vmImage)
         steps:
           - checkout: none
-          - task: MathWorks.matlab-azure-devops-extension-pilot-dev.InstallMATLAB.InstallMATLAB@0
+          - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
             displayName: Install MATLAB on Microsoft-hosted agents
             condition: not(startsWith(variables['Agent.Name'], 'vmss'))
-          - task: MathWorks.matlab-azure-devops-extension-pilot-dev.RunMATLABCommand.RunMATLABCommand@0
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run MATLAB statement
             inputs:
               command: f = fopen('myscript.m', 'w'); fwrite(f, 'assert(true)'); fclose(f);
             env:
               MATHWORKS_ACCOUNT: $(mwaccount)
               MATHWORKS_TOKEN: $(mwtoken)
-          - task: MathWorks.matlab-azure-devops-extension-pilot-dev.RunMATLABCommand.RunMATLABCommand@0
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run MATLAB script
             inputs:
               command: myscript
             env:
               MATHWORKS_ACCOUNT: $(mwaccount)
               MATHWORKS_TOKEN: $(mwtoken)
-          - task: MathWorks.matlab-azure-devops-extension-pilot-dev.RunMATLABCommand.RunMATLABCommand@0
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run MATLAB statement with quotes 1
             inputs:
               command: "eval(\"a = 1+2\"); assert(a == 3); eval('b = 3+4'); assert(b == 7);"
             env:
               MATHWORKS_ACCOUNT: $(mwaccount)
               MATHWORKS_TOKEN: $(mwtoken)
-          - task: MathWorks.matlab-azure-devops-extension-pilot-dev.RunMATLABCommand.RunMATLABCommand@0
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run MATLAB statement with quotes 2
             inputs:
               command: 'eval("a = 1+2"); assert(a == 3); eval(''b = 3+4''); assert(b == 7);'
             env:
               MATHWORKS_ACCOUNT: $(mwaccount)
               MATHWORKS_TOKEN: $(mwtoken)
-          - task: MathWorks.matlab-azure-devops-extension-pilot-dev.RunMATLABCommand.RunMATLABCommand@0
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run MATLAB statement with quotes 3
             inputs:
               command: a = """hello world"""; b = '"hello world"'; assert(strcmp(a,b));
             env:
               MATHWORKS_ACCOUNT: $(mwaccount)
               MATHWORKS_TOKEN: $(mwtoken)
-          - task: MathWorks.matlab-azure-devops-extension-pilot-dev.RunMATLABCommand.RunMATLABCommand@0
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run MATLAB statement with symbols
             inputs:
               command: a = " !""#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~"; b = char([32:126]); assert(strcmp(a, b), a+b);
             env:
               MATHWORKS_ACCOUNT: $(mwaccount)
               MATHWORKS_TOKEN: $(mwtoken)
-          - task: MathWorks.matlab-azure-devops-extension-pilot-dev.RunMATLABCommand.RunMATLABCommand@0
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run MATLAB statement in working directory
             inputs:
               command: exp = getenv('SYSTEM_DEFAULTWORKINGDIRECTORY'); act = pwd; assert(strcmp(act, exp), strjoin({act exp}, '\n'));
@@ -128,7 +128,7 @@ stages:
           - bash: |
               echo 'myvar = 123' > startup.m
             displayName: Create startup.m
-          - task: MathWorks.matlab-azure-devops-extension-pilot-dev.RunMATLABCommand.RunMATLABCommand@0
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: MATLAB runs startup.m automatically
             inputs:
               command: assert(myvar==123, 'myvar was not set as expected by startup.m')
@@ -152,7 +152,7 @@ stages:
           clean: all
         steps:
           - checkout: none
-          - task: MathWorks.matlab-azure-devops-extension-pilot-dev.InstallMATLAB.InstallMATLAB@0
+          - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
             displayName: Install MATLAB on Microsoft-hosted agents
             condition: not(startsWith(variables['Agent.Name'], 'vmss'))
           - bash: |
@@ -178,14 +178,14 @@ stages:
               end
               EOF
             displayName: Make MATLAB tests
-          - task: MathWorks.matlab-azure-devops-extension-pilot-dev.RunMATLABTests.RunMATLABTests@0
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests with defaults
             inputs:
               sourceFolder: src
             env:
               MATHWORKS_ACCOUNT: $(mwaccount)
               MATHWORKS_TOKEN: $(mwtoken)
-          - task: MathWorks.matlab-azure-devops-extension-pilot-dev.RunMATLABTests.RunMATLABTests@0
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests producing artifacts
             inputs:
               testResultsJUnit: test-results/matlab/results.xml
@@ -194,7 +194,7 @@ stages:
             env:
               MATHWORKS_ACCOUNT: $(mwaccount)
               MATHWORKS_TOKEN: $(mwtoken)
-          - task: MathWorks.matlab-azure-devops-extension-pilot-dev.RunMATLABTests.RunMATLABTests@0
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests filter by folder
             inputs:
               testResultsJUnit: test-results/matlab/selectbyfolder.xml
@@ -202,7 +202,7 @@ stages:
             env:
               MATHWORKS_ACCOUNT: $(mwaccount)
               MATHWORKS_TOKEN: $(mwtoken)
-          - task: MathWorks.matlab-azure-devops-extension-pilot-dev.RunMATLABTests.RunMATLABTests@0
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests filter by folder
             inputs:
               testResultsJUnit: test-results/matlab/selectbytag.xml
@@ -278,14 +278,14 @@ stages:
               evalin('base', 'clear all');
               EOF
             displayName: Create model file and Simulink test.
-          - task: MathWorks.matlab-azure-devops-extension-pilot-dev.RunMATLABCommand.RunMATLABCommand@0
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run model creator and test Simulink test generator
             inputs:
               command: "cd simtests;createModel"
             env:
               MATHWORKS_ACCOUNT: $(mwaccount)
               MATHWORKS_TOKEN: $(mwtoken)
-          - task: MathWorks.matlab-azure-devops-extension-pilot-dev.RunMATLABTests.RunMATLABTests@0
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests and generate Simulink test artifacts
             inputs:
               selectByFolder: "simtests"

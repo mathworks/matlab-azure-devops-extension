@@ -54,7 +54,7 @@ steps:
       connectedServiceName: MathWorks
       fileType: vsix
       vsixFile: '$(vsixFile)'
-      extensionTag: -pilot-dev
+      extensionTag: -dev
       extensionVisibility: private
       updateTasksVersion: false
       shareWith: iat-ci-dev
