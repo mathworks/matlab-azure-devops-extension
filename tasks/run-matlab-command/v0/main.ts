@@ -13,7 +13,7 @@ async function run() {
         const command = taskLib.getInput("command", true);
         await runCommand(command as string);
     } catch (err) {
-        taskLib.setResult(taskLib.TaskResult.Failed, err.message);
+        taskLib.setResult(taskLib.TaskResult.Failed, (err as Error).message);
     }
 }
 
