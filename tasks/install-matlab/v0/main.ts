@@ -11,7 +11,7 @@ async function run() {
         const release = taskLib.getInput("release");
         await install(release);
     } catch (err) {
-        taskLib.setResult(taskLib.TaskResult.Failed, err.message);
+        taskLib.setResult(taskLib.TaskResult.Failed, (err as Error).message);
     }
 }
 

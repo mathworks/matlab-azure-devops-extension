@@ -19,7 +19,7 @@ async function run() {
             PDFTestReport: taskLib.getInput("testResultsPDF")};
         await runTests(options);
     } catch (err) {
-        taskLib.setResult(taskLib.TaskResult.Failed, err.message);
+        taskLib.setResult(taskLib.TaskResult.Failed, (err as Error).message);
     }
 }
 
