@@ -57,13 +57,13 @@ steps:
 ### Specify MATLAB in Pipeline
 When you use the **Run MATLAB Command** or **Run MATLAB Tests** tasks in your pipeline, the self-hosted agent uses the topmost MATLAB version on the system path. The build fails if the agent cannot find any version of MATLAB on the path.
 
-You can prepend your desired version of MATLAB to the PATH environment variable of the agent. For example, prepend MATLAB R2020b to the path and use it to run your script.
+You can prepend your desired version of MATLAB to the PATH environment variable of the agent. For example, prepend MATLAB R2021b to the path and use it to run your script.
 
 ```YAML
 pool: myPool
 steps:
-  - powershell: Write-Host '##vso[task.prependpath]C:\Program Files\MATLAB\R2020b\bin'  # Windows agent
-# - bash: echo '##vso[task.prependpath]/usr/local/MATLAB/R2020b/bin'  # Linux agent
+  - powershell: Write-Host '##vso[task.prependpath]C:\Program Files\MATLAB\R2021b\bin'  # Windows agent
+# - bash: echo '##vso[task.prependpath]/usr/local/MATLAB/R2021b/bin'  # Linux agent
   - task: RunMATLABCommand@0
     inputs:
       command: myscript
@@ -72,7 +72,7 @@ steps:
 ### Use MATLAB on Microsoft-Hosted Agent
 Before you run MATLAB code or Simulink models on a Microsoft-hosted agent, first use the [Install MATLAB](#install-matlab) task. The task installs your specified MATLAB release (R2020a or later) on a Linux&reg; virtual machine. If you do not specify a release, the task installs the latest release of MATLAB.
 
-For example, install MATLAB R2020a on a Microsoft-hosted agent, and then use the **Run MATLAB Command** task to run the commands in your script.
+For example, install MATLAB R2021a on a Microsoft-hosted agent, and then use the **Run MATLAB Command** task to run the commands in your script.
 
 ```YAML
 pool:
@@ -80,7 +80,7 @@ pool:
 steps:
   - task: InstallMATLAB@0
     inputs:
-      release: R2020a
+      release: R2021a
   - task: RunMATLABCommand@0
     inputs:
       command: myscript
@@ -120,12 +120,14 @@ Argument                  | Description
 `codeCoverageCobertura`   | (Optional) Path to write code coverage report in Cobertura XML format.<br/>**Example:** `code-coverage/coverage.xml`
 `modelCoverageCobertura`  | (Optional) Path to write model coverage report in Cobertura XML format. This argument requires a Simulink Coverage™ license, and is supported in MATLAB R2018b and later.<br/>**Example:** `model-coverage/coverage.xml`
 
+> :information_source: **Note:** To customize the pretest state of the system, you can specify startup code that automatically executes before your tests run. For information on how to specify startup or shutdown files in a MATLAB project, see [Automate Startup and Shutdown Tasks](https://www.mathworks.com/help/matlab/matlab_prog/automate-startup-and-shutdown-tasks.html). If your pipeline does not use a MATLAB project, specify the commands you want executed at startup in a `startup.m` file instead, and save the file to the root of your repository. See [`startup`](https://www.mathworks.com/help/matlab/ref/startup.html) for more information
+
 ### Install MATLAB
 Install the specified MATLAB release on a Linux agent in the cloud. Specify the task in your pipeline YAML using the `InstallMATLAB` key.
 
 Argument                  | Description    
 ------------------------- | --------------- 
-`release`                 | (Optional) MATLAB release to install. You can specify R2020a or a later release. If you do not specify `release`, the task installs the latest release of MATLAB.<br/>**Example:** `R2020a`
+`release`                 | (Optional) MATLAB release to install. You can specify R2020a or a later release. If you do not specify `release`, the task installs the latest release of MATLAB.<br/>**Example:** `R2021a`
 
 
 Currently, this task is available only for public projects. It does not install transformation products, such as MATLAB Coder and MATLAB Compiler.
