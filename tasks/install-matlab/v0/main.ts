@@ -1,7 +1,9 @@
-// Copyright 2020 The MathWorks, Inc.
+// Copyright 2020-2022 The MathWorks, Inc.
 
 import * as taskLib from "azure-pipelines-task-lib/task";
 import * as toolLib from "azure-pipelines-tool-lib/tool";
+import * as fs from "fs";
+import * as os from "os";
 import * as path from "path";
 import {platform} from "./utils";
 
@@ -43,6 +45,15 @@ async function install(release?: string) {
     exitCode = await curlsh("https://ssd.mathworks.com/supportfiles/ci/ephemeral-matlab/v0/ci-install.sh", installArgs);
     if (exitCode !== 0) {
         throw new Error(taskLib.loc("FailedToExecuteInstallScript", exitCode));
+    }
+
+    // prepend MATLAB to path
+    let root: string;
+    try {
+        root = fs.readFileSync(path.join(os.tmpdir(), "ephemeral_matlab_root")).toString();
+        toolLib.prependPath(path.join(root, "bin"));
+    } catch (err: any) {
+        throw new Error(taskLib.loc("FailedToAddToPath", err.message));
     }
 }
 
