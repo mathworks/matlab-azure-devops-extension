@@ -21,14 +21,18 @@ async function install(release?: string) {
         throw new Error(taskLib.loc("InstallNotSupportedOnSelfHosted"));
     }
 
-    // install core system dependencies
-    const depArgs: string[] = [];
-    if (release !== undefined) {
-        depArgs.push(release);
-    }
-    let exitCode = await curlsh("https://ssd.mathworks.com/supportfiles/ci/matlab-deps/v0/install.sh", depArgs);
-    if (exitCode !== 0) {
-        throw new Error(taskLib.loc("FailedToExecuteInstallScript", exitCode));
+    let exitCode = 0;
+
+    // install core system dependencies on Linux
+    if (platform() === "linux") {
+        const depArgs: string[] = [];
+        if (release !== undefined) {
+            depArgs.push(release);
+        }
+        exitCode = await curlsh("https://ssd.mathworks.com/supportfiles/ci/matlab-deps/v0/install.sh", depArgs);
+        if (exitCode !== 0) {
+            throw new Error(taskLib.loc("FailedToExecuteInstallScript", exitCode));
+        }
     }
 
     // install ephemeral version of MATLAB

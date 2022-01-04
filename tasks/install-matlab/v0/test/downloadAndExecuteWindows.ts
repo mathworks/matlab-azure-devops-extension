@@ -13,9 +13,7 @@ process.env.SYSTEM_SERVERTYPE = "hosted";
 
 tr.registerMock("azure-pipelines-tool-lib/tool", {
     downloadTool(url: string) {
-        if (url === "https://ssd.mathworks.com/supportfiles/ci/matlab-deps/v0/install.sh") {
-            return "install.sh";
-        } else if (url === "https://ssd.mathworks.com/supportfiles/ci/ephemeral-matlab/v0/ci-install.sh") {
+        if (url === "https://ssd.mathworks.com/supportfiles/ci/ephemeral-matlab/v0/ci-install.sh") {
             return "ci-install.sh";
         } else {
             throw new Error("Incorrect URL");
@@ -35,10 +33,6 @@ const a: ma.TaskLibAnswers = {
         "bash.exe": true,
     },
     exec: {
-        "bash.exe install.sh R2020a": {
-            code: 0,
-            stdout: "Installed MATLAB",
-        },
         "bash.exe ci-install.sh --release R2020a": {
             code: 0,
             stdout: "Installed MATLAB",
