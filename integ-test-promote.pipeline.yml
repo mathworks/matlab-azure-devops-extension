@@ -16,7 +16,13 @@ stages:
           matrix:
             microsoft_hosted_linux:
               poolName: Azure Pipelines
-              vmImage: ubuntu-16.04
+              vmImage: ubuntu-latest
+            microsoft_hosted_macos:
+              poolName: Azure Pipelines
+              vmImage: macOS-latest
+            microsoft_hosted_windows:
+              poolName: Azure Pipelines
+              vmImage: windows-latest
         pool:
           name: $(poolName)
           vmImage: $(vmImage)
@@ -35,7 +41,13 @@ stages:
           matrix:
             microsoft_hosted_linux:
               poolName: Azure Pipelines
-              vmImage: ubuntu-16.04
+              vmImage: ubuntu-latest
+            microsoft_hosted_macos:
+              poolName: Azure Pipelines
+              vmImage: macOS-latest
+            microsoft_hosted_windows:
+              poolName: Azure Pipelines
+              vmImage: windows-latest
         pool:
           name: $(poolName)
           vmImage: $(vmImage)
@@ -55,7 +67,13 @@ stages:
           matrix:
             microsoft_hosted_linux:
               poolName: Azure Pipelines
-              vmImage: ubuntu-16.04
+              vmImage: ubuntu-latest
+            microsoft_hosted_macos:
+              poolName: Azure Pipelines
+              vmImage: macOS-latest
+            microsoft_hosted_windows:
+              poolName: Azure Pipelines
+              vmImage: windows-latest
             self_hosted_windows:
               poolName: vmssagentpool
               vmImage: # blank for self-hosted
@@ -108,7 +126,7 @@ stages:
           matrix:
             microsoft_hosted_linux:
               poolName: Azure Pipelines
-              vmImage: ubuntu-16.04
+              vmImage: ubuntu-latest
             self_hosted_windows:
               poolName: vmssagentpool
               vmImage: # blank for self-hosted
@@ -260,7 +278,7 @@ stages:
     displayName: Publish prerelease
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     pool:
-      vmImage: ubuntu-16.04
+      vmImage: ubuntu-latest
     jobs:
       - deployment: publish_prerelease
         environment: prerelease
@@ -300,7 +318,7 @@ stages:
     displayName: Publish release
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     pool:
-      vmImage: ubuntu-16.04
+      vmImage: ubuntu-latest
     jobs:
       - deployment: publish_release
         environment: release
