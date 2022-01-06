@@ -255,10 +255,12 @@ stages:
               evalin('base', 'clear all');
               EOF
             displayName: Create model file and Simulink test.
+            condition: eq(variables['Agent.OS'], 'Linux')
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run model creator and test Simulink test generator
             inputs:
               command: "cd simtests;createModel"
+            condition: eq(variables['Agent.OS'], 'Linux')
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests and generate Simulink test artifacts
             inputs:
@@ -266,18 +268,22 @@ stages:
               modelCoverageCobertura: test-results/matlab/modelcoverage.xml
               testResultsSimulinkTest: test-results/matlab/stmResult.mldatx
               testResultsPDF: test-results/matlab/results.pdf
+            condition: eq(variables['Agent.OS'], 'Linux')
           - bash: |
               set -e
               grep -q new_temp_model test-results/matlab/modelcoverage.xml
             displayName: Verify Model coverage was created
+            condition: eq(variables['Agent.OS'], 'Linux')
           - bash: |
               set -e
               test -f test-results/matlab/stmResult.mldatx
             displayName: Verify STM report was created
+            condition: eq(variables['Agent.OS'], 'Linux')
           - bash: |
               set -e
               test -f test-results/matlab/results.pdf
             displayName: Verify PDF report was created
+            condition: eq(variables['Agent.OS'], 'Linux')
   - stage: publish_prerelease
     displayName: Publish prerelease
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
