@@ -56,10 +56,10 @@ stages:
           - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
             displayName: Install MATLAB
             inputs:
-              release: R2020a
+              release: R2021a
           - bash: |
               set -e
-              matlab -batch "assert(strcmp(version('-release'),'2020a'))"
+              matlab -batch "assert(strcmp(version('-release'),'2021a'))"
             displayName: Check matlab release
 
       - job: test_run_command
