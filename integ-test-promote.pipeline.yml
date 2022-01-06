@@ -33,6 +33,7 @@ stages:
           - bash: |
               set -e
               matlab -batch version
+              os=$(uname)
               if [[ $os = CYGWIN* || $os = MINGW* || $os = MSYS* ]]; then
                 mex.bat -h
               else
