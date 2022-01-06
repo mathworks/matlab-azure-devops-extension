@@ -33,7 +33,11 @@ stages:
           - bash: |
               set -e
               matlab -batch version
-              mex -h
+              if [[ $os = CYGWIN* || $os = MINGW* || $os = MSYS* ]]; then
+                mex.bat -h
+              else
+                mex -h
+              fi
             displayName: Check matlab and mex
 
       - job: test_install_release
