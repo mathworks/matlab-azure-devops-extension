@@ -1,4 +1,4 @@
-// Copyright 2020 The MathWorks, Inc.
+// Copyright 2020-2022 The MathWorks, Inc.
 
 import * as assert from "assert";
 import * as mt from "azure-pipelines-task-lib/mock-test";

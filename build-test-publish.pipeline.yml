@@ -9,7 +9,7 @@ variables:
   vsixFile: '$(vsixFolder)/matlab-$(Build.BuildNumber).vsix'
 
 pool:
-  vmImage: ubuntu-16.04
+  vmImage: ubuntu-latest
 
 steps:
   - task: NodeTool@0

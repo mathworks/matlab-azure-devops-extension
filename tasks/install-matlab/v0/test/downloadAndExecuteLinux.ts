@@ -1,7 +1,9 @@
-// Copyright 2020 The MathWorks, Inc.
+// Copyright 2020-2022 The MathWorks, Inc.
 
 import ma = require("azure-pipelines-task-lib/mock-answer");
 import mr = require("azure-pipelines-task-lib/mock-run");
+import * as fs from "fs";
+import * as os from "os";
 import path = require("path");
 
 const tp = path.join(__dirname, "..", "main.js");
@@ -11,6 +13,9 @@ tr.setInput("release", "R2020a");
 
 process.env.SYSTEM_SERVERTYPE = "hosted";
 
+const matlabRoot = "path/to/matlab";
+fs.writeFileSync(path.join(os.tmpdir(), "ephemeral_matlab_root"), matlabRoot);
+
 tr.registerMock("azure-pipelines-tool-lib/tool", {
     downloadTool(url: string) {
         if (url === "https://ssd.mathworks.com/supportfiles/ci/matlab-deps/v0/install.sh") {
@@ -19,6 +24,11 @@ tr.registerMock("azure-pipelines-tool-lib/tool", {
             return "ci-install.sh";
         } else {
             throw new Error("Incorrect URL");
+        }
+    },
+    prependPath(toolPath: string) {
+        if (toolPath !== path.join(matlabRoot, "bin")) {
+            throw new Error(`Unexpected path: ${toolPath}`);
         }
     },
 });
