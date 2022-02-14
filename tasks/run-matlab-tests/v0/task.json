@@ -61,7 +61,7 @@
             "defaultValue": "",
             "groupName": "testArtifacts",
             "required": false,
-            "helpMarkDown": "Path to write test results report in PDF format (on macOS platforms this is supported in MATLAB R2020b and later)."
+            "helpMarkDown": "Path to write test results report in PDF format (requires MATLAB R2020b or later on macOS platforms)."
         },
         {
             "name": "selectByFolder",
