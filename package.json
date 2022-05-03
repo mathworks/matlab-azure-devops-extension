@@ -15,7 +15,7 @@
         "@types/node": "^15.0.2",
         "@types/shelljs": "^0.8.8",
         "mocha": "^8.3.2",
-        "shelljs": "^0.8.4",
+        "shelljs": "^0.8.5",
         "sync-request": "^6.1.0",
         "tfx-cli": "^0.10.0",
         "tslint": "^5.20.1",
