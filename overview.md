@@ -76,7 +76,7 @@ For example, install MATLAB R2021a on a Microsoft-hosted agent, and then use the
 
 ```YAML
 pool:
-  vmImage: Ubuntu 16.04
+  vmImage: ubuntu-20.04
 steps:
   - task: InstallMATLAB@0
     inputs:
