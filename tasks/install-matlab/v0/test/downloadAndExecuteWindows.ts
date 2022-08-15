@@ -14,20 +14,24 @@ tr.setInput("release", "R2020a");
 process.env.SYSTEM_SERVERTYPE = "hosted";
 
 const matlabRoot = "C:\\path\\to\\matlab";
+const batchInstallRoot = path.join("C:", "Program Files", "matlab-batch");
+console.log(batchInstallRoot);
 fs.writeFileSync(path.join(os.tmpdir(), "ephemeral_matlab_root"), matlabRoot);
 
 tr.registerMock("azure-pipelines-tool-lib/tool", {
     downloadTool(url: string) {
         if (url === "https://ssd.mathworks.com/supportfiles/ci/ephemeral-matlab/v0/ci-install.sh") {
             return "ci-install.sh";
+        } else if (url === "https://ssd.mathworks.com/supportfiles/ci/matlab-batch/v0/install.sh") {
+            return "install.sh";
         } else {
             throw new Error("Incorrect URL");
         }
     },
     prependPath(toolPath: string) {
-        if (toolPath !== path.join(matlabRoot, "bin")) {
-            throw new Error(`Unexpected path: ${toolPath}`);
-        }
+        // if (toolPath !== path.join(matlabRoot, "bin") || toolPath !== batchInstallRoot) {
+        //     throw new Error(`Unexpected path: ${toolPath}`);
+        // }
     },
 });
 
@@ -46,6 +50,14 @@ const a: ma.TaskLibAnswers = {
         "bash.exe ci-install.sh --release R2020a": {
             code: 0,
             stdout: "Installed MATLAB",
+        },
+        "bash.exe install.sh 'C:/Program Files/matlab-batch'": {
+            code: 0,
+            stdout: "Installed matlab-batch",
+        },
+        "bash.exe install.sh 'C:\\Program Files\\matlab-batch'": {
+            code: 0,
+            stdout: "Installed matlab-batch",
         },
     },
 } as ma.TaskLibAnswers;

@@ -3,7 +3,7 @@
 import * as taskLib from "azure-pipelines-task-lib/task";
 import { chmodSync } from "fs";
 import * as path from "path";
-import {platform} from "./utils";
+import { architecture, platform } from "./utils";
 
 async function run() {
     try {
@@ -24,7 +24,29 @@ async function run() {
 }
 
 async function runTests(options: IRunTestsOptions) {
-    const runToolPath = path.join(__dirname, "bin", "run_matlab_command." + (platform() === "win32" ? "bat" : "sh"));
+    if (architecture() !== "x64") {
+        const msg = `This task is not supported on ${platform()} runners using the ${architecture()} architecture.`;
+        throw new Error(msg);
+    }
+    let ext;
+    let platformDir;
+    switch (platform()) {
+        case "win32":
+            ext = ".exe";
+            platformDir = "win64";
+            break;
+        case "darwin":
+            ext = "";
+            platformDir = "maci64";
+            break;
+        case "linux":
+            ext = "";
+            platformDir = "glnxa64";
+            break;
+        default:
+            throw new Error(`This task is not supported on ${platform()} runners using the ${architecture()} architecture.`);
+    }
+    const runToolPath = path.join(__dirname, "bin", platformDir, `run-matlab-command${ext}`);
     chmodSync(runToolPath, "777");
     const runTool = taskLib.tool(runToolPath);
     runTool.arg(`addpath('${path.join(__dirname, "scriptgen")}');` +

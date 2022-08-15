@@ -5,7 +5,7 @@ import { chmodSync } from "fs";
 import * as fs from "fs";
 import * as path from "path";
 import * as uuidV4 from "uuid/v4";
-import {platform} from "./utils";
+import { architecture, platform } from "./utils";
 
 async function run() {
     try {
@@ -32,11 +32,33 @@ async function runCommand(command: string) {
         { encoding: "utf8" });
 
     // run script
+    if (architecture() !== "x64") {
+        const msg = `This task is not supported on ${platform()} runners using the ${architecture()} architecture.`;
+        throw new Error(msg);
+    }
+    let ext;
+    let platformDir;
+    switch (platform()) {
+        case "win32":
+            ext = ".exe";
+            platformDir = "win64";
+            break;
+        case "darwin":
+            ext = "";
+            platformDir = "maci64";
+            break;
+        case "linux":
+            ext = "";
+            platformDir = "glnxa64";
+            break;
+        default:
+            throw new Error(`This task is not supported on ${platform()} runners using the ${architecture()} architecture.`);
+    }
     console.log("========================== Starting Command Output ===========================");
-    const runToolPath = path.join(__dirname, "bin", "run_matlab_command." + (platform() === "win32" ? "bat" : "sh"));
+    const runToolPath = path.join(__dirname, "bin", platformDir, `run-matlab-command${ext}`);
     chmodSync(runToolPath, "777");
     const runTool = taskLib.tool(runToolPath);
-    runTool.arg("cd('" + tempDirectory.replace(/'/g, "''") + "'); " + scriptName);
+    runTool.arg("cd('" + tempDirectory.replace(/'/g, "''") + "');" + scriptName);
     const exitCode = await runTool.exec();
     if (exitCode !== 0) {
         throw new Error(taskLib.loc("FailedToRunCommand"));

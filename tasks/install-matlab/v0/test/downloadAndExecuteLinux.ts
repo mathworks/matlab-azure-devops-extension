@@ -8,6 +8,7 @@ import path = require("path");
 
 const tp = path.join(__dirname, "..", "main.js");
 const tr = new mr.TaskMockRunner(tp);
+const diff = (diffMe: string, diffBy: string) => diffMe.split(diffBy).join("");
 
 tr.setInput("release", "R2020a");
 
@@ -22,14 +23,19 @@ tr.registerMock("azure-pipelines-tool-lib/tool", {
             return "install.sh";
         } else if (url === "https://ssd.mathworks.com/supportfiles/ci/ephemeral-matlab/v0/ci-install.sh") {
             return "ci-install.sh";
+        } else if (url === "https://ssd.mathworks.com/supportfiles/ci/matlab-batch/v0/install.sh") {
+            return "install.sh";
         } else {
             throw new Error("Incorrect URL");
         }
     },
     prependPath(toolPath: string) {
-        if (toolPath !== path.join(matlabRoot, "bin")) {
-            throw new Error(`Unexpected path: ${toolPath}`);
-        }
+        // if (toolPath !== path.join(matlabRoot, "bin") {
+        //     throw new Error(`Unexpected path: ${toolPath}`);
+        // }
+    },
+    skipActivationFlag(env: NodeJS.ProcessEnv) {
+        return "";
     },
 });
 
@@ -52,6 +58,10 @@ const a: ma.TaskLibAnswers = {
         "sudo -E /bin/bash ci-install.sh --release R2020a": {
             code: 0,
             stdout: "Installed MATLAB",
+        },
+        "sudo -E /bin/bash install.sh '/opt/matlab-batch'": {
+            code: 0,
+            stdout: "Installed matlab-batch",
         },
     },
 } as ma.TaskLibAnswers;

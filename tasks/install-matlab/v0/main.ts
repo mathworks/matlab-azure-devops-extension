@@ -37,11 +37,29 @@ async function install(release?: string) {
         }
     }
 
+    // install matlab-batch
+    const batchInstallDir = installRoot("matlab-batch");
+    exitCode = await curlsh("https://ssd.mathworks.com/supportfiles/ci/matlab-batch/v0/install.sh",
+        ["'" + batchInstallDir + "'"]);
+    if (exitCode !== 0) {
+        throw new Error(taskLib.loc("FailedToExecuteInstallScript", exitCode));
+    }
+    try {
+        toolLib.prependPath(batchInstallDir);
+    } catch (err: any) {
+        throw new Error(taskLib.loc("FailedToAddToPath", err.message));
+    }
+
     // install ephemeral version of MATLAB
     const installArgs: string[] = [];
     if (release !== undefined) {
         installArgs.push("--release", release);
     }
+    const skipActivation = skipActivationFlag(process.env);
+    if (skipActivation) {
+        installArgs.push(skipActivation);
+    }
+
     exitCode = await curlsh("https://ssd.mathworks.com/supportfiles/ci/ephemeral-matlab/v0/ci-install.sh", installArgs);
     if (exitCode !== 0) {
         throw new Error(taskLib.loc("FailedToExecuteInstallScript", exitCode));
@@ -55,6 +73,20 @@ async function install(release?: string) {
     } catch (err: any) {
         throw new Error(taskLib.loc("FailedToAddToPath", err.message));
     }
+}
+
+export function skipActivationFlag(env: NodeJS.ProcessEnv): string {
+    return (env.MATHWORKS_TOKEN !== undefined && env.MATHWORKS_ACCOUNT !== undefined) ? "--skip-activation" : "";
+}
+
+export function installRoot(programName: string) {
+    let installDir: string;
+    if (platform() === "win32") {
+        installDir = path.join("C:", "Program Files", programName);
+    } else {
+        installDir = path.join("/", "opt", programName);
+    }
+    return installDir;
 }
 
 // similar to "curl | sh"
