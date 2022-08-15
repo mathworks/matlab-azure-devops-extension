@@ -8,7 +8,6 @@ import path = require("path");
 
 const tp = path.join(__dirname, "..", "main.js");
 const tr = new mr.TaskMockRunner(tp);
-const diff = (diffMe: string, diffBy: string) => diffMe.split(diffBy).join("");
 
 tr.setInput("release", "R2020a");
 
