@@ -23,6 +23,11 @@ async function install(release?: string) {
         throw new Error(taskLib.loc("InstallNotSupportedOnSelfHosted"));
     }
 
+    const tmpDir = taskLib.getVariable("Agent.TempDirectory");
+    if (!tmpDir) {
+        throw new Error("Expected Agent.TempDirectory to be set");
+    }
+
     let exitCode = 0;
 
     // install core system dependencies on Linux
@@ -38,9 +43,10 @@ async function install(release?: string) {
     }
 
     // install matlab-batch
-    const batchInstallDir = installRoot("matlab-batch");
-    exitCode = await curlsh("https://ssd.mathworks.com/supportfiles/ci/matlab-batch/v0/install.sh",
-        ["'" + batchInstallDir + "'"]);
+    const batchInstallDir = path.join(tmpDir, "matlab-batch");
+    const batchInstallArgs: string[] = [];
+    batchInstallArgs.push("\"" + batchInstallDir + "\"");
+    exitCode = await curlsh("https://ssd.mathworks.com/supportfiles/ci/matlab-batch/v0/install.sh", batchInstallArgs);
     if (exitCode !== 0) {
         throw new Error(taskLib.loc("FailedToExecuteInstallScript", exitCode));
     }
@@ -77,16 +83,6 @@ async function install(release?: string) {
 
 export function skipActivationFlag(env: NodeJS.ProcessEnv): string {
     return (env.MATHWORKS_TOKEN !== undefined && env.MATHWORKS_ACCOUNT !== undefined) ? "--skip-activation" : "";
-}
-
-export function installRoot(programName: string) {
-    let installDir: string;
-    if (platform() === "win32") {
-        installDir = path.join("C:", "Program Files", programName);
-    } else {
-        installDir = path.join("/", "opt", programName);
-    }
-    return installDir;
 }
 
 // similar to "curl | sh"
