@@ -66,11 +66,11 @@ const a: ma.TaskLibAnswers = {
             code: 0,
             stdout: "Installed MATLAB",
         },
-        "bash.exe install.sh \"temp\\matlab-batch\"": {
+        "bash.exe install.sh C:\\Program Files\\matlab-batch": {
             code: 0,
             stdout: "Installed matlab-batch",
         },
-        "bash.exe install.sh \"temp/matlab-batch\"": {
+        "bash.exe install.sh C:/Program Files/matlab-batch": {
             code: 0,
             stdout: "Installed matlab-batch",
         },

@@ -75,7 +75,7 @@ const a: ma.TaskLibAnswers = {
             code: 0,
             stdout: "Installed MATLAB",
         },
-        "sudo -E /bin/bash install.sh \"temp/matlab-batch\"": {
+        "sudo -E /bin/bash install.sh /opt/matlab-batch": {
             code: 0,
             stdout: "Installed matlab-batch",
         },
