@@ -16,7 +16,7 @@ stages:
           matrix:
             microsoft_hosted_linux:
               poolName: Azure Pipelines
-              vmImage: ubuntu-latest
+              vmImage: ubuntu-22.04
             microsoft_hosted_macos:
               poolName: Azure Pipelines
               vmImage: macOS-latest
@@ -46,7 +46,7 @@ stages:
           matrix:
             microsoft_hosted_linux:
               poolName: Azure Pipelines
-              vmImage: ubuntu-latest
+              vmImage: ubuntu-22.04
             microsoft_hosted_macos:
               poolName: Azure Pipelines
               vmImage: macOS-latest
@@ -72,7 +72,7 @@ stages:
           matrix:
             microsoft_hosted_linux:
               poolName: Azure Pipelines
-              vmImage: ubuntu-latest
+              vmImage: ubuntu-22.04
             microsoft_hosted_macos:
               poolName: Azure Pipelines
               vmImage: macOS-latest
@@ -131,7 +131,7 @@ stages:
           matrix:
             microsoft_hosted_linux:
               poolName: Azure Pipelines
-              vmImage: ubuntu-latest
+              vmImage: ubuntu-22.04
             self_hosted_windows:
               poolName: vmssagentpool
               vmImage: # blank for self-hosted
