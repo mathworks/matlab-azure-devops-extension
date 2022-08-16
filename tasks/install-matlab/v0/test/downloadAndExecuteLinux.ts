@@ -13,15 +13,13 @@ tr.setInput("release", "R2020a");
 
 const matlabRoot = "path/to/matlab";
 fs.writeFileSync(path.join(os.tmpdir(), "ephemeral_matlab_root"), matlabRoot);
+const batchInstallRoot = path.join("/", "opt", "matlab-batch");
 
 // create assertAgent and getVariable mocks, support not added in this version of task-lib
 import tl = require("azure-pipelines-task-lib/mock-task");
 const tlClone = Object.assign({}, tl);
 // @ts-ignore
 tlClone.getVariable = (variable: string) => {
-    if (variable.toLowerCase() === "agent.tempdirectory") {
-        return "temp";
-    }
     if (variable.toLocaleLowerCase() === "system.servertype") {
         return "hosted";
     }
@@ -46,9 +44,9 @@ tr.registerMock("azure-pipelines-tool-lib/tool", {
         }
     },
     prependPath(toolPath: string) {
-        // if (toolPath !== path.join(matlabRoot, "bin") || toolPath !== path.join("temp", "matlab-batch")) {
-        //     throw new Error(`Unexpected path: ${toolPath}`);
-        // }
+        if ( toolPath !== path.join(matlabRoot, "bin") && toolPath !== batchInstallRoot) {
+            throw new Error(`Unexpected path: ${toolPath}`);
+        }
     },
     skipActivationFlag(env: NodeJS.ProcessEnv) {
         return "";

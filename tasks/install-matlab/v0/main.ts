@@ -23,11 +23,6 @@ async function install(release?: string) {
         throw new Error(taskLib.loc("InstallNotSupportedOnSelfHosted"));
     }
 
-    const tmpDir = taskLib.getVariable("Agent.TempDirectory");
-    if (!tmpDir) {
-        throw new Error("Expected Agent.TempDirectory to be set");
-    }
-
     let exitCode = 0;
 
     // install core system dependencies on Linux
@@ -44,7 +39,6 @@ async function install(release?: string) {
 
     // install matlab-batch
     const batchInstallDir = installRoot("matlab-batch");
-    // const batchInstallArgs: string = "\"" + batchInstallDir + "\"";
     exitCode = await curlsh("https://ssd.mathworks.com/supportfiles/ci/matlab-batch/v0/install.sh", batchInstallDir);
     if (exitCode !== 0) {
         throw new Error(taskLib.loc("FailedToExecuteInstallScript", exitCode));

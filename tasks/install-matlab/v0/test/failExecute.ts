@@ -14,9 +14,6 @@ import tl = require("azure-pipelines-task-lib/mock-task");
 const tlClone = Object.assign({}, tl);
 // @ts-ignore
 tlClone.getVariable = (variable: string) => {
-    if (variable.toLowerCase() === "agent.tempdirectory") {
-        return "temp";
-    }
     if (variable.toLocaleLowerCase() === "system.servertype") {
         return "hosted";
     }

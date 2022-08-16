@@ -11,9 +11,12 @@ const tr = new mr.TaskMockRunner(tp);
 
 tr.setInput("release", "R2020a");
 
-const matlabRoot = "C:\\path\\to\\matlab";
+process.env.MATHWORKS_ACCOUNT = "euclid@mathworks.com";
+process.env.MATHWORKS_TOKEN = "token123456";
+
+const matlabRoot = "path/to/matlab";
 fs.writeFileSync(path.join(os.tmpdir(), "ephemeral_matlab_root"), matlabRoot);
-const batchInstallRoot = path.join("C:", "Program Files", "matlab-batch");
+const batchInstallRoot = path.join("/", "opt", "matlab-batch");
 
 // create assertAgent and getVariable mocks, support not added in this version of task-lib
 import tl = require("azure-pipelines-task-lib/mock-task");
@@ -33,7 +36,9 @@ tr.registerMock("azure-pipelines-task-lib/mock-task", tlClone);
 
 tr.registerMock("azure-pipelines-tool-lib/tool", {
     downloadTool(url: string) {
-        if (url === "https://ssd.mathworks.com/supportfiles/ci/ephemeral-matlab/v0/ci-install.sh") {
+        if (url === "https://ssd.mathworks.com/supportfiles/ci/matlab-deps/v0/install.sh") {
+            return "install.sh";
+        } else if (url === "https://ssd.mathworks.com/supportfiles/ci/ephemeral-matlab/v0/ci-install.sh") {
             return "ci-install.sh";
         } else if (url === "https://ssd.mathworks.com/supportfiles/ci/matlab-batch/v0/install.sh") {
             return "install.sh";
@@ -46,29 +51,32 @@ tr.registerMock("azure-pipelines-tool-lib/tool", {
             throw new Error(`Unexpected path: ${toolPath}`);
         }
     },
+    skipActivationFlag(env: NodeJS.ProcessEnv) {
+        return "";
+    },
 });
 
 tr.registerMock("./utils", {
-    platform: () => "win32",
+    platform: () => "linux",
 });
 
 const a: ma.TaskLibAnswers = {
     which: {
-        bash: "bash.exe",
+        bash: "/bin/bash",
     },
     checkPath: {
-        "bash.exe": true,
+        "/bin/bash": true,
     },
     exec: {
-        "bash.exe ci-install.sh --release R2020a": {
+        "sudo -E /bin/bash install.sh R2020a": {
             code: 0,
-            stdout: "Installed MATLAB",
+            stdout: "Installed MATLAB dependencies",
         },
-        "bash.exe install.sh C:\\Program Files\\matlab-batch": {
+        "sudo -E /bin/bash ci-install.sh --release R2020a --skip-activation": {
             code: 0,
-            stdout: "Installed matlab-batch",
+            stdout: "Installed MATLAB without activating",
         },
-        "bash.exe install.sh C:/Program Files/matlab-batch": {
+        "sudo -E /bin/bash install.sh /opt/matlab-batch": {
             code: 0,
             stdout: "Installed matlab-batch",
         },
