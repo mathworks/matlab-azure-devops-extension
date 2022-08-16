@@ -39,6 +39,7 @@ tr.registerMock("azure-pipelines-tool-lib/tool", {
 
 tr.registerMock("./utils", {
     platform: () => "linux",
+    architecture: () => "x64",
 });
 
 const a: ma.TaskLibAnswers = {

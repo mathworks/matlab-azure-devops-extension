@@ -74,11 +74,11 @@ async function install(release?: string) {
     }
 }
 
-export function skipActivationFlag(env: NodeJS.ProcessEnv): string {
+function skipActivationFlag(env: NodeJS.ProcessEnv): string {
     return (env.MATHWORKS_TOKEN !== undefined && env.MATHWORKS_ACCOUNT !== undefined) ? "--skip-activation" : "";
 }
 
-export function installRoot(programName: string) {
+function installRoot(programName: string) {
     let installDir: string;
     if (platform() === "win32") {
         installDir = path.join("C:", "Program Files", programName);

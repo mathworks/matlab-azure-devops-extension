@@ -48,9 +48,6 @@ tr.registerMock("azure-pipelines-tool-lib/tool", {
             throw new Error(`Unexpected path: ${toolPath}`);
         }
     },
-    skipActivationFlag(env: NodeJS.ProcessEnv) {
-        return "";
-    },
 });
 
 tr.registerMock("./utils", {
