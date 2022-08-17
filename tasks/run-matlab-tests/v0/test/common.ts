@@ -2,8 +2,6 @@
 
 import * as path from "path";
 
-export const runCmdPath = path.join(path.dirname(__dirname), "bin", "run_matlab_command");
-
 export function runCmdArg(
                     junit: string,
                     cobertura: string,

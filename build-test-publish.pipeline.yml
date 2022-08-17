@@ -15,7 +15,7 @@ steps:
   - task: NodeTool@0
     displayName: Install node.js
     inputs:
-      versionSpec: 10.x
+      versionSpec: 18.x
 
   - script: npm install
     displayName: Install dependencies
@@ -32,7 +32,7 @@ steps:
   - task: TfxInstaller@2
     displayName: Install tfx-cli
     inputs:
-      version: v0.7.x
+      version: v0.12.x
 
   - task: PackageAzureDevOpsExtension@2
     displayName: Package

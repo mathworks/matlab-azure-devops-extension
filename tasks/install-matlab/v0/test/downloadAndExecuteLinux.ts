@@ -11,10 +11,25 @@ const tr = new mr.TaskMockRunner(tp);
 
 tr.setInput("release", "R2020a");
 
-process.env.SYSTEM_SERVERTYPE = "hosted";
-
 const matlabRoot = "path/to/matlab";
 fs.writeFileSync(path.join(os.tmpdir(), "ephemeral_matlab_root"), matlabRoot);
+const batchInstallRoot = path.join("/", "opt", "matlab-batch");
+
+// create assertAgent and getVariable mocks, support not added in this version of task-lib
+import tl = require("azure-pipelines-task-lib/mock-task");
+const tlClone = Object.assign({}, tl);
+// @ts-ignore
+tlClone.getVariable = (variable: string) => {
+    if (variable.toLocaleLowerCase() === "system.servertype") {
+        return "hosted";
+    }
+    return null;
+};
+// @ts-ignore
+tlClone.assertAgent = (variable: string) => {
+    return;
+};
+tr.registerMock("azure-pipelines-task-lib/mock-task", tlClone);
 
 tr.registerMock("azure-pipelines-tool-lib/tool", {
     downloadTool(url: string) {
@@ -22,12 +37,14 @@ tr.registerMock("azure-pipelines-tool-lib/tool", {
             return "install.sh";
         } else if (url === "https://ssd.mathworks.com/supportfiles/ci/ephemeral-matlab/v0/ci-install.sh") {
             return "ci-install.sh";
+        } else if (url === "https://ssd.mathworks.com/supportfiles/ci/matlab-batch/v0/install.sh") {
+            return "install.sh";
         } else {
             throw new Error("Incorrect URL");
         }
     },
     prependPath(toolPath: string) {
-        if (toolPath !== path.join(matlabRoot, "bin")) {
+        if ( toolPath !== path.join(matlabRoot, "bin") && toolPath !== batchInstallRoot) {
             throw new Error(`Unexpected path: ${toolPath}`);
         }
     },
@@ -52,6 +69,10 @@ const a: ma.TaskLibAnswers = {
         "sudo -E /bin/bash ci-install.sh --release R2020a": {
             code: 0,
             stdout: "Installed MATLAB",
+        },
+        "sudo -E /bin/bash install.sh /opt/matlab-batch": {
+            code: 0,
+            stdout: "Installed matlab-batch",
         },
     },
 } as ma.TaskLibAnswers;

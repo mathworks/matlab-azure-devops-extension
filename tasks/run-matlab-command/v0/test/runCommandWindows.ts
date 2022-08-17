@@ -11,6 +11,7 @@ tr.setInput("command", "myscript");
 
 tr.registerMock("./utils", {
     platform: () => "win32",
+    architecture: () => "x64",
 });
 
 // create assertAgent and getVariable mocks, support not added in this version of task-lib
@@ -32,14 +33,14 @@ tlClone.assertAgent = (variable: string) => {
 };
 tr.registerMock("azure-pipelines-task-lib/mock-task", tlClone);
 
-const runCmdPath = path.join(path.dirname(__dirname), "bin", "run_matlab_command.bat");
+const runCmdPath = path.join(path.dirname(__dirname), "bin", "win64", "run-matlab-command.exe");
 const a: ma.TaskLibAnswers = {
     checkPath: {
         [runCmdPath]: true,
         "temp's\\path": true,
     },
     exec: {
-        [runCmdPath + " cd('temp''s\\path'); command_1_2_3"]: {
+        [runCmdPath + " cd('temp''s\\path');command_1_2_3"]: {
             code: 0,
             stdout: "hello world",
         },

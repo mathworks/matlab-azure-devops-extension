@@ -1,13 +1,22 @@
-// Copyright 2020 The MathWorks, Inc.
+// Copyright 2020-2022 The MathWorks, Inc.
 
 import ma = require("azure-pipelines-task-lib/mock-answer");
 import mr = require("azure-pipelines-task-lib/mock-run");
+import * as fs from "fs";
+import * as os from "os";
 import path = require("path");
 
 const tp = path.join(__dirname, "..", "main.js");
 const tr = new mr.TaskMockRunner(tp);
 
 tr.setInput("release", "R2020a");
+
+process.env.MATHWORKS_ACCOUNT = "euclid@mathworks.com";
+process.env.MATHWORKS_TOKEN = "token123456";
+
+const matlabRoot = "path/to/matlab";
+fs.writeFileSync(path.join(os.tmpdir(), "ephemeral_matlab_root"), matlabRoot);
+const batchInstallRoot = path.join("/", "opt", "matlab-batch");
 
 // create assertAgent and getVariable mocks, support not added in this version of task-lib
 import tl = require("azure-pipelines-task-lib/mock-task");
@@ -31,8 +40,15 @@ tr.registerMock("azure-pipelines-tool-lib/tool", {
             return "install.sh";
         } else if (url === "https://ssd.mathworks.com/supportfiles/ci/ephemeral-matlab/v0/ci-install.sh") {
             return "ci-install.sh";
+        } else if (url === "https://ssd.mathworks.com/supportfiles/ci/matlab-batch/v0/install.sh") {
+            return "install.sh";
         } else {
             throw new Error("Incorrect URL");
+        }
+    },
+    prependPath(toolPath: string) {
+        if ( toolPath !== path.join(matlabRoot, "bin") && toolPath !== batchInstallRoot) {
+            throw new Error(`Unexpected path: ${toolPath}`);
         }
     },
 });
@@ -51,8 +67,16 @@ const a: ma.TaskLibAnswers = {
     },
     exec: {
         "sudo -E /bin/bash install.sh R2020a": {
-            code: 1,
-            stdout: "Failed to install MATLAB dependencies",
+            code: 0,
+            stdout: "Installed MATLAB dependencies",
+        },
+        "sudo -E /bin/bash ci-install.sh --release R2020a --skip-activation": {
+            code: 0,
+            stdout: "Installed MATLAB without activating",
+        },
+        "sudo -E /bin/bash install.sh /opt/matlab-batch": {
+            code: 0,
+            stdout: "Installed matlab-batch",
         },
     },
 } as ma.TaskLibAnswers;

@@ -8,7 +8,21 @@ const tr = new mr.TaskMockRunner(tp);
 
 tr.setInput("release", "R2020a");
 
-process.env.SYSTEM_SERVERTYPE = "hosted";
+// create assertAgent and getVariable mocks, support not added in this version of task-lib
+import tl = require("azure-pipelines-task-lib/mock-task");
+const tlClone = Object.assign({}, tl);
+// @ts-ignore
+tlClone.getVariable = (variable: string) => {
+    if (variable.toLocaleLowerCase() === "system.servertype") {
+        return "hosted";
+    }
+    return null;
+};
+// @ts-ignore
+tlClone.assertAgent = (variable: string) => {
+    return;
+};
+tr.registerMock("azure-pipelines-task-lib/mock-task", tlClone);
 
 tr.registerMock("azure-pipelines-tool-lib/tool", {
     downloadTool() {
