@@ -14,6 +14,7 @@ steps:
       sourceFolder: code
       codeCoverageCobertura: code-coverage/coverage.xml
       testResultsJUnit: test-results/results.xml
+      useParallel: true
   - task: PublishTestResults@2
     inputs:
       testResultsFormat: 'JUnit'
