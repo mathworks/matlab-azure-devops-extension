@@ -25,6 +25,11 @@
           "name": "filterTests",
           "displayName": "Filter Tests"
         }
+        ,
+        {
+          "name": "runCustomization",
+          "displayName": "Run Customization"
+        }
     ],
     "inputs": [
         {
@@ -104,8 +109,8 @@
             "label": "Use Parallel",
             "defaultValue": false,
             "required": false,
-            "groupName": "filterTests",
-            "helpMarkDown": "lorem ipsum"
+            "groupName": "runCustomization",
+            "helpMarkDown": "Whether to run tests in parallel. This feature requires a Parallel Computing Toolbox license, and might not be compatible with other options. If incompatible, testing occurs in serial regardless of the value of this feature."
         },
         {
             "name": "strict",
@@ -113,8 +118,8 @@
             "label": "Strict",
             "defaultValue": false,
             "required": false,
-            "groupName": "filterTests",
-            "helpMarkDown": "lorem ipsum"
+            "groupName": "runCustomization",
+            "helpMarkDown": "Whether to apply strict checks when running the tests. For example, the framework generates a qualification failure if a test issues a warning."
         },
         {
             "name": "loggingLevel",
@@ -122,8 +127,8 @@
             "label": "Logging Level",
             "defaultValue": "",
             "required": false,
-            "groupName": "filterTests",
-            "helpMarkDown": "lorem ipsum"
+            "groupName": "runCustomization",
+            "helpMarkDown": "Maximum verbosity level for logged diagnostics included for the test run."
         },
         {
             "name": "outputDetail",
@@ -131,8 +136,8 @@
             "label": "Output Detail",
             "defaultValue": "",
             "required": false,
-            "groupName": "filterTests",
-            "helpMarkDown": "lorem ipsum"
+            "groupName": "runCustomization",
+            "helpMarkDown": "Display level for event details output by the test run."
         }
     ],
     "instanceNameFormat": "Run MATLAB Tests",
