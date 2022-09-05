@@ -97,6 +97,42 @@
             "groupName": "testArtifacts",
             "required": false,
             "helpMarkDown": "Path to write test results report in JUnit XML format."
+        },
+        {
+            "name": "useParallel",
+            "type": "boolean",
+            "label": "Use Parallel",
+            "defaultValue": false,
+            "required": false,
+            "groupName": "filterTests",
+            "helpMarkDown": "lorem ipsum"
+        },
+        {
+            "name": "strict",
+            "type": "boolean",
+            "label": "Strict",
+            "defaultValue": false,
+            "required": false,
+            "groupName": "filterTests",
+            "helpMarkDown": "lorem ipsum"
+        },
+        {
+            "name": "loggingLevel",
+            "type": "string",
+            "label": "Logging Level",
+            "defaultValue": "",
+            "required": false,
+            "groupName": "filterTests",
+            "helpMarkDown": "lorem ipsum"
+        },
+        {
+            "name": "outputDetail",
+            "type": "string",
+            "label": "Output Detail",
+            "defaultValue": "",
+            "required": false,
+            "groupName": "filterTests",
+            "helpMarkDown": "lorem ipsum"
         }
     ],
     "instanceNameFormat": "Run MATLAB Tests",
