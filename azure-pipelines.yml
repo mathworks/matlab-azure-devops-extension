@@ -20,8 +20,8 @@ steps:
       testResultsJUnit: test-results/results.xml
       useParallel: true
       strict: true
-      loggingLevel: Verbose
-      outputDetail: Verbose
+      loggingLevel: 'Verbose'
+      outputDetail: 'Verbose'
   - task: PublishTestResults@2
     inputs:
       testResultsFormat: 'JUnit'
