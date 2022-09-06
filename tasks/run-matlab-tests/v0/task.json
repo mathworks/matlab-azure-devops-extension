@@ -24,8 +24,7 @@
         {
           "name": "filterTests",
           "displayName": "Filter Tests"
-        }
-        ,
+        },
         {
           "name": "runCustomization",
           "displayName": "Run Customization"
