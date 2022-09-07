@@ -86,8 +86,8 @@ interface IRunTestsOptions {
     CoberturaModelCoverage?: string;
     SimulinkTestResults?: string;
     PDFTestReport?: string;
-    UseParallel?: boolean;
-    Strict?: boolean;
+    UseParallel?: string;
+    Strict?: string;
     LoggingLevel?: string;
     OutputDetail?: string;
 }
