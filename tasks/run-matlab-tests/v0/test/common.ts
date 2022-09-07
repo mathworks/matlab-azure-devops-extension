@@ -14,7 +14,7 @@ export function runCmdArg(
                     useParallel: string,
                     strict: string,
                     loggingLevel: string,
-                    outputDetail: string
+                    outputDetail: string,
                 ) {
     return "addpath('" + path.join(path.dirname(__dirname), "scriptgen") + "');" +
         "testScript = genscript('Test'," +
