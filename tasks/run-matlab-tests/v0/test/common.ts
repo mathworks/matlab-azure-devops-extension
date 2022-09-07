@@ -11,6 +11,10 @@ export function runCmdArg(
                     modelCoverageCobertura: string,
                     testResultsSimulinkTest: string,
                     testResultsPDF: string,
+                    useParallel: string,
+                    strict: string,
+                    loggingLevel: string,
+                    outputDetail: string
                 ) {
     return "addpath('" + path.join(path.dirname(__dirname), "scriptgen") + "');" +
         "testScript = genscript('Test'," +
@@ -21,7 +25,11 @@ export function runCmdArg(
             "'SelectByTag','" + selectByTag + "'," +
             "'CoberturaModelCoverage','" + modelCoverageCobertura + "'," +
             "'SimulinkTestResults','" + testResultsSimulinkTest + "'," +
-            "'PDFTestReport','" + testResultsPDF + "');" +
+            "'PDFTestReport','" + testResultsPDF + "'," +
+            "'UseParallel','" + useParallel + "'," +
+            "'Strict','" + strict + "'," +
+            "'LoggingLevel','" + loggingLevel + "'," +
+            "'OutputDetail','" + outputDetail + "');" +
         `disp('Running MATLAB script with contents:');` +
         `disp(testScript.Contents);` +
         `fprintf('__________\\n\\n');` +
