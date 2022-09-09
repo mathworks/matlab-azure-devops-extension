@@ -24,10 +24,6 @@
         {
           "name": "filterTests",
           "displayName": "Filter Tests"
-        },
-        {
-          "name": "runCustomization",
-          "displayName": "Run Customization"
         }
     ],
     "inputs": [
@@ -101,42 +97,6 @@
             "groupName": "testArtifacts",
             "required": false,
             "helpMarkDown": "Path to write test results report in JUnit XML format."
-        },
-        {
-            "name": "useParallel",
-            "type": "boolean",
-            "label": "Use Parallel",
-            "defaultValue": false,
-            "required": false,
-            "groupName": "runCustomization",
-            "helpMarkDown": "Whether to run tests in parallel. This feature requires a Parallel Computing Toolbox license, and might not be compatible with other options. If incompatible, testing occurs in serial regardless of the value of this feature."
-        },
-        {
-            "name": "strict",
-            "type": "boolean",
-            "label": "Strict",
-            "defaultValue": false,
-            "required": false,
-            "groupName": "runCustomization",
-            "helpMarkDown": "Whether to apply strict checks when running the tests. For example, the framework generates a qualification failure if a test issues a warning."
-        },
-        {
-            "name": "loggingLevel",
-            "type": "string",
-            "label": "Logging Level",
-            "defaultValue": "",
-            "required": false,
-            "groupName": "runCustomization",
-            "helpMarkDown": "Maximum verbosity level for logged diagnostics included for the test run."
-        },
-        {
-            "name": "outputDetail",
-            "type": "string",
-            "label": "Output Detail",
-            "defaultValue": "",
-            "required": false,
-            "groupName": "runCustomization",
-            "helpMarkDown": "Display level for event details output by the test run."
         }
     ],
     "instanceNameFormat": "Run MATLAB Tests",
