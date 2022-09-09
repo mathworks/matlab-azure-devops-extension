@@ -11,6 +11,10 @@ export function runCmdArg(
                     modelCoverageCobertura: string,
                     testResultsSimulinkTest: string,
                     testResultsPDF: string,
+                    useParallel: string,
+                    strict: string,
+                    loggingLevel: string,
+                    outputDetail: string,
                 ) {
     return "addpath('" + path.join(path.dirname(__dirname), "scriptgen") + "');" +
         "testScript = genscript('Test'," +
