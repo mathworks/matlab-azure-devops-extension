@@ -104,7 +104,7 @@
         },
         {
             "name": "useParallel",
-            "type": "boolean",
+            "type": "string",
             "label": "Use Parallel",
             "defaultValue": false,
             "required": false,
@@ -113,7 +113,7 @@
         },
         {
             "name": "strict",
-            "type": "boolean",
+            "type": "string",
             "label": "Strict",
             "defaultValue": false,
             "required": false,
