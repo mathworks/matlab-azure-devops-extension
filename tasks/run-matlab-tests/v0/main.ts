@@ -63,7 +63,7 @@ async function runTests(options: IRunTestsOptions) {
             `'CoberturaModelCoverage','${options.CoberturaModelCoverage || ""}',` +
             `'SimulinkTestResults','${options.SimulinkTestResults || ""}',` +
             `'PDFTestReport','${options.PDFTestReport || ""}',` +
-            `'UseParallel','${options.UseParallel || ""}');` +
+            `'LoggingLevel','${options.LoggingLevel || ""}');` +
         `disp('Running MATLAB script with contents:');` +
         `disp(testScript.Contents);` +
         `fprintf('__________\\n\\n');` +
