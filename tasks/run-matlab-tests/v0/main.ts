@@ -62,11 +62,7 @@ async function runTests(options: IRunTestsOptions) {
             `'SelectByTag','${options.SelectByTag || ""}',` +
             `'CoberturaModelCoverage','${options.CoberturaModelCoverage || ""}',` +
             `'SimulinkTestResults','${options.SimulinkTestResults || ""}',` +
-            `'PDFTestReport','${options.PDFTestReport || ""}',` +
-            `'UseParallel','${options.UseParallel || ""}',` +
-            `'Strict','${options.Strict || ""}',` +
-            `'LoggingLevel','${options.LoggingLevel || ""}',` +
-            `'OutputDetail','${options.OutputDetail || ""}');` +
+            `'PDFTestReport','${options.PDFTestReport || ""}');` +
         `disp('Running MATLAB script with contents:');` +
         `disp(testScript.Contents);` +
         `fprintf('__________\\n\\n');` +
