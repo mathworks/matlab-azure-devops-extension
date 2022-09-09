@@ -25,7 +25,11 @@ export function runCmdArg(
             "'SelectByTag','" + selectByTag + "'," +
             "'CoberturaModelCoverage','" + modelCoverageCobertura + "'," +
             "'SimulinkTestResults','" + testResultsSimulinkTest + "'," +
-            "'PDFTestReport','" + testResultsPDF + "');" +
+            "'PDFTestReport','" + testResultsPDF + "'," +
+            "'UseParallel','" + useParallel + "'," +
+            "'Strict','" + strict + "'," +
+            "'LoggingLevel','" + loggingLevel + "'," +
+            "'OutputDetail','" + outputDetail + "');" +
         `disp('Running MATLAB script with contents:');` +
         `disp(testScript.Contents);` +
         `fprintf('__________\\n\\n');` +
