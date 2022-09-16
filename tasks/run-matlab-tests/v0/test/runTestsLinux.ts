@@ -33,7 +33,7 @@ const a: ma.TaskLibAnswers = {
         [runCmdPath]: true,
     },
     exec: {
-        [runCmdPath + " " + runCmdArg("results.xml", "coverage.xml", "source", "tests/filteredTest", "FILTERED", "modelcoverage.xml", "stmresults.mldatx", "results.pdf", true, true, "Verbose", "Verbose")]: {
+        [runCmdPath + " " + runCmdArg("results.xml", "coverage.xml", "source", "tests/filteredTest", "FILTERED", "modelcoverage.xml", "stmresults.mldatx", "results.pdf", "true", "true", "Verbose", "Verbose")]: {
             code: 0,
             stdout: "ran tests",
         },
