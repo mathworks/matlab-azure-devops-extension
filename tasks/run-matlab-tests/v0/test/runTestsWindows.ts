@@ -16,8 +16,8 @@ tr.setInput("selectByTag", "FILTERED");
 tr.setInput("modelCoverageCobertura", "modelcoverage.xml");
 tr.setInput("testResultsSimulinkTest", "stmresults.mldatx");
 tr.setInput("testResultsPDF", "results.pdf");
-tr.setInput("useParallel", true);
-tr.setInput("strict", true);
+tr.setInput("useParallel", "true");
+tr.setInput("strict", "true");
 tr.setInput("loggingLevel", "Verbose");
 tr.setInput("outputDetail", "Verbose");
 
