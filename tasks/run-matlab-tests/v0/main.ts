@@ -17,8 +17,8 @@ async function run() {
             CoberturaModelCoverage: taskLib.getInput("modelCoverageCobertura"),
             SimulinkTestResults: taskLib.getInput("testResultsSimulinkTest"),
             PDFTestReport: taskLib.getInput("testResultsPDF"),
-            UseParallel: taskLib.getInput("useParallel"),
-            Strict: taskLib.getInput("strict"),
+            UseParallel: taskLib.getBoolInput("useParallel"),
+            Strict: taskLib.getBoolInput("strict"),
             LoggingLevel: taskLib.getInput("loggingLevel"),
             OutputDetail: taskLib.getInput("outputDetail")};
         await runTests(options);
@@ -63,8 +63,8 @@ async function runTests(options: IRunTestsOptions) {
             `'CoberturaModelCoverage','${options.CoberturaModelCoverage || ""}',` +
             `'SimulinkTestResults','${options.SimulinkTestResults || ""}',` +
             `'PDFTestReport','${options.PDFTestReport || ""}',` +
-            `'UseParallel','${options.UseParallel || ""}',` +
-            `'Strict','${options.Strict || ""}',` +
+            `'UseParallel',${options.UseParallel || ""},` +
+            `'Strict',${options.Strict || ""},` +
             `'LoggingLevel','${options.LoggingLevel || ""}',` +
             `'OutputDetail','${options.OutputDetail || ""}');` +
         `disp('Running MATLAB script with contents:');` +
@@ -86,8 +86,8 @@ interface IRunTestsOptions {
     CoberturaModelCoverage?: string;
     SimulinkTestResults?: string;
     PDFTestReport?: string;
-    UseParallel?: string;
-    Strict?: string;
+    UseParallel?: boolean;
+    Strict?: boolean;
     LoggingLevel?: string;
     OutputDetail?: string;
 }

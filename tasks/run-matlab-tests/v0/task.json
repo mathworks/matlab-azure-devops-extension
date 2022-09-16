@@ -109,7 +109,7 @@
             "defaultValue": false,
             "required": false,
             "groupName": "runCustomization",
-            "helpMarkDown": "Whether to run tests in parallel. This feature requires a Parallel Computing Toolbox license, and might not be compatible with other options. If incompatible, testing occurs in serial regardless of the value of this feature."
+            "helpMarkDown": "Whether to run tests in parallel (requires Parallel Computing Toolbox). This feature might not be compatible with certain arguments, in which case, tests run in serial regardless of the specified value."
         },
         {
             "name": "strict",
@@ -118,7 +118,7 @@
             "defaultValue": false,
             "required": false,
             "groupName": "runCustomization",
-            "helpMarkDown": "Whether to apply strict checks when running the tests. For example, the framework generates a qualification failure if a test issues a warning."
+            "helpMarkDown": "Whether to apply strict checks when running the tests. For example, the task generates a qualification failure if a test issues a warning."
         },
         {
             "name": "loggingLevel",
@@ -136,7 +136,7 @@
             "defaultValue": "",
             "required": false,
             "groupName": "runCustomization",
-            "helpMarkDown": "Display level for event details output by the test run."
+            "helpMarkDown": "Display level for event details produced by the test run."
         }
     ],
     "instanceNameFormat": "Run MATLAB Tests",
