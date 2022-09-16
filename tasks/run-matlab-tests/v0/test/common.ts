@@ -11,8 +11,8 @@ export function runCmdArg(
                     modelCoverageCobertura: string,
                     testResultsSimulinkTest: string,
                     testResultsPDF: string,
-                    useParallel: string,
-                    strict: string,
+                    useParallel: boolean,
+                    strict: boolean,
                     loggingLevel: string,
                     outputDetail: string,
                 ) {
@@ -26,8 +26,8 @@ export function runCmdArg(
             "'CoberturaModelCoverage','" + modelCoverageCobertura + "'," +
             "'SimulinkTestResults','" + testResultsSimulinkTest + "'," +
             "'PDFTestReport','" + testResultsPDF + "'," +
-            "'UseParallel','" + useParallel + "'," +
-            "'Strict','" + strict + "'," +
+            "'UseParallel'," + useParallel + "," +
+            "'Strict'," + strict + "," +
             "'LoggingLevel','" + loggingLevel + "'," +
             "'OutputDetail','" + outputDetail + "');" +
         `disp('Running MATLAB script with contents:');` +
