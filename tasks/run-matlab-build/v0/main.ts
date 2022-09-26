@@ -43,10 +43,11 @@ async function runBuild(options: IRunBuildOptions) {
     const runToolPath = path.join(__dirname, "bin", platformDir, `run-matlab-command${ext}`);
     chmodSync(runToolPath, "777");
     const runTool = taskLib.tool(runToolPath);
-    runTool.arg(`buildtool`);
+    let buildtoolCommand: string = "buildtool";
     if (options.Tasks) {
-        runTool.arg(options.Tasks);
+        buildtoolCommand = buildtoolCommand + " " + options.Tasks;
     }
+    runTool.arg(buildtoolCommand);
     const exitCode = await runTool.exec();
     if (exitCode !== 0) {
         throw new Error(taskLib.loc("BuildFailed"));
