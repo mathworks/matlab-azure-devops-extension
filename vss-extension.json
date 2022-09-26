@@ -68,6 +68,16 @@
             }
         },
         {
+            "id": "RunMATLABBuild",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "tasks/run-matlab-build"
+            }
+        },
+        {
             "id": "RunMATLABCommand",
             "type": "ms.vss-distributed-task.task",
             "targets": [
