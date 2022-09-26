@@ -329,14 +329,14 @@ stages:
             displayName: Create buildfile.m in project root
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABBuild.RunMATLABBuild@0
             displayName: Run build with default tasks
-          - bash: |
-              set -e
-              grep "building" buildlog.txt
-              grep "testing" buildlog.txt
-              ! grep "deploying" buildlog.txt
-              ! grep "checking" buildlog.txt
-              rm buildlog.txt
-            displayName: Verify that correct tasks appear in buildlog.txt
+          # - bash: |
+          #     set -e
+          #     grep "building" buildlog.txt
+          #     grep "testing" buildlog.txt
+          #     ! grep "deploying" buildlog.txt
+          #     ! grep "checking" buildlog.txt
+          #     rm buildlog.txt
+          #   displayName: Verify that correct tasks appear in buildlog.txt
           # - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABBuild.RunMATLABBuild@0
           #   displayName: Run build with specified task
           #   inputs:
