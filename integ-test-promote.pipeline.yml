@@ -285,7 +285,7 @@ stages:
               test -f test-results/matlab/results.pdf
             displayName: Verify PDF report was created
             condition: eq(variables['Agent.OS'], 'Linux')
-      - job: test_run_tests
+      - job: test_run_build
         strategy:
           matrix:
             microsoft_hosted_linux:
