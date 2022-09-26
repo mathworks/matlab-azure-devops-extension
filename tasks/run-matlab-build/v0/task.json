@@ -3,7 +3,7 @@
     "id": "c61c6fcc-00f1-4aa0-8513-31aad3340512",
     "name": "RunMATLABBuild",
     "friendlyName": "Run MATLAB Build",
-    "description": "Run a MATLAB builds using the MATLAB Build Tool.",
+    "description": "Run builds using the MATLAB build tool. Use this command to run the tasks in the plan returned by a file named buildfile.m in the root of your repository. To use the run-build command, you need MATLAB R2022b or a later release.",
     "helpMarkDown": "",
     "category": "Build",
     "author": "The MathWorks, Inc.",
@@ -19,7 +19,7 @@
             "label": "Tasks",
             "required": false,
             "defaultValue": "",
-            "helpMarkDown": "Space-separated list of tasks to execute."
+            "helpMarkDown": "Space-separated list of tasks to run. If not specified, the action runs the default tasks in the plan returned by buildfile.m as well as all the tasks on which they depend."
         }
     ],
     "instanceNameFormat": "Run MATLAB Build",
