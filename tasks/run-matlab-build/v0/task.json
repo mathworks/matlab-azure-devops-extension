@@ -29,6 +29,6 @@
         }
     },
     "messages": {
-        "BuildFailed": "Build failed with non-zero exit code."
+        "BuildFailed": "Build failed with nonzero exit code."
     }
 }
