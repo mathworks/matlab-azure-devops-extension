@@ -11,8 +11,8 @@ export function runCmdArg(
                     modelCoverageCobertura: string,
                     testResultsSimulinkTest: string,
                     testResultsPDF: string,
-                    useParallel: string,
-                    strict: string,
+                    useParallel: boolean,
+                    strict: boolean,
                     loggingLevel: string,
                     outputDetail: string,
                 ) {
