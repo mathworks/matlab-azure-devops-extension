@@ -133,7 +133,7 @@
             "name": "outputDetail",
             "type": "string",
             "label": "Output Detail",
-            "defaultValue": "Default",
+            "defaultValue": "",
             "required": false,
             "groupName": "runCustomization",
             "helpMarkDown": "Display level for event details produced by the test run."

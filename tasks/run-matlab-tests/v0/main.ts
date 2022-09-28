@@ -66,7 +66,7 @@ async function runTests(options: IRunTestsOptions) {
             `'UseParallel',${options.UseParallel || false},` +
             `'Strict',${options.Strict || false},` +
             `'LoggingLevel','${options.LoggingLevel || "Terse"}',` +
-            `'OutputDetail','${options.OutputDetail || "Default"}');` +
+            `'OutputDetail','${options.OutputDetail || ""}');` +
         `disp('Running MATLAB script with contents:');` +
         `disp(testScript.Contents);` +
         `fprintf('__________\\n\\n');` +
