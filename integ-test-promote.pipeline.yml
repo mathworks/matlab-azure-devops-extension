@@ -211,8 +211,8 @@ stages:
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests with default verbosity level for logged diagnostics and event details
             inputs:
-              outputDetail: "Default"
-              loggingLevel: "Default"
+              outputDetail: "Detailed"
+              loggingLevel: "Terse"
               sourceFolder: src
           - bash: |
               set -e
