@@ -1,7 +1,7 @@
 resources:
   pipelines:
     - pipeline: test_verify
-      source: integ_test_promote
+      source: integ-test-promote
       trigger: true
 
 trigger: none
