@@ -16,6 +16,10 @@ tr.setInput("selectByTag", "FILTERED");
 tr.setInput("modelCoverageCobertura", "modelcoverage.xml");
 tr.setInput("testResultsSimulinkTest", "stmresults.mldatx");
 tr.setInput("testResultsPDF", "results.pdf");
+tr.setInput("useParallel", "true");
+tr.setInput("strict", "true");
+tr.setInput("loggingLevel", "Verbose");
+tr.setInput("outputDetail", "Verbose");
 
 const runCmdPath = path.join(path.dirname(__dirname), "bin", "win64", "run-matlab-command.exe");
 
@@ -29,7 +33,7 @@ const a: ma.TaskLibAnswers = {
         [runCmdPath]: true,
     },
     exec: {
-        [runCmdPath + " " + runCmdArg("results.xml", "coverage.xml", "source", "tests/filteredTest", "FILTERED", "modelcoverage.xml", "stmresults.mldatx", "results.pdf")]: {
+        [runCmdPath + " " + runCmdArg("results.xml", "coverage.xml", "source", "tests/filteredTest", "FILTERED", "modelcoverage.xml", "stmresults.mldatx", "results.pdf", true, true, "Verbose", "Verbose")]: {
             code: 0,
             stdout: "ran tests",
         },

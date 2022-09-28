@@ -188,6 +188,22 @@ stages:
             inputs:
               testResultsJUnit: test-results/matlab/selectbytag.xml
               selectByTag: FILTERED
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
+            displayName: Run MATLAB tests in parallel
+            inputs:
+              useParallel: true
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
+            displayName: Run MATLAB tests with strict checks
+            inputs:
+              strict: true
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
+            displayName: Run MATLAB tests with maximum verbosity level for logged diagnostics
+            inputs:
+              loggingLevel: "Verbose"
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
+            displayName: Run MATLAB tests with maximum display level for event details
+            inputs:
+              outputDetail: "Verbose"
           - bash: |
               set -e
               grep -q FirstTest test-results/matlab/results.xml
