@@ -1,0 +1,17 @@
+resources:
+  pipelines:
+    - pipeline: test_verify
+      source: integ_test_promote
+      trigger: true
+
+trigger: none
+pr: none
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - bash: |
+      echo Hello World!
+      echo 123
+    displayName: Print
