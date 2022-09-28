@@ -124,7 +124,7 @@
             "name": "loggingLevel",
             "type": "string",
             "label": "Logging Level",
-            "defaultValue": "Default",
+            "defaultValue": "Terse",
             "required": false,
             "groupName": "runCustomization",
             "helpMarkDown": "Maximum verbosity level for logged diagnostics included for the test run."
