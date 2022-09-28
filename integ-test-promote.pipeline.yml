@@ -202,10 +202,11 @@ stages:
             displayName: Run MATLAB tests with maximum verbosity level for logged diagnostics
             inputs:
               loggingLevel: "Verbose"
-          # - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
-          #   displayName: Run MATLAB tests with maximum display level for event details
-          #   inputs:
-          #     outputDetail: "Verbose"
+              sourceFolder: src
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
+            displayName: Run MATLAB tests with maximum display level for event details
+            inputs:
+              outputDetail: "Verbose"
           - bash: |
               set -e
               grep -q FirstTest test-results/matlab/results.xml
