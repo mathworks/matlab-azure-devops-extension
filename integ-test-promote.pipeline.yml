@@ -211,7 +211,7 @@ stages:
               grep -v FirstTest test-results/matlab/selectbytag.xml
               grep -v simpleTest test-results/matlab/selectbytag.xml
             displayName: Verify test filtered by tag name
-            - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests in parallel
             inputs:
               useParallel: true
