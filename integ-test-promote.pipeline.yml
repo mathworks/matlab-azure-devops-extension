@@ -233,7 +233,7 @@ stages:
             inputs:
               command: type console.log;
           - bash: |
-              set -e
+              # set -e
               grep -q myvar console.log
             displayName: Verify tests ran with strict checks
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
