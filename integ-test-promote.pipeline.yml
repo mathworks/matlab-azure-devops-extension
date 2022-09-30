@@ -147,6 +147,7 @@ stages:
             condition: not(startsWith(variables['Agent.Name'], 'vmss'))
           - bash: |
               echo 'myvar = 123' > startup.m
+              echo 'diary myDiary' >> startup.m
               mkdir src
               echo 'function c=add(a,b);c=a+b;' > src/add.m
               mkdir tests
@@ -172,10 +173,10 @@ stages:
           #   displayName: Run MATLAB statement
           #   inputs:
           #     command: edit(fullfile(userpath,'startup.m'));
-          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
-            displayName: Run MATLAB statement
-            inputs:
-              command: diary myDiary;
+          # - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
+          #   displayName: Run MATLAB statement
+          #   inputs:
+          #     command: diary myDiary;
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests with defaults
             inputs:
