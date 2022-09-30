@@ -168,10 +168,10 @@ stages:
               end
               EOF
             displayName: Make MATLAB tests
-          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
-            displayName: Run MATLAB statement
-            inputs:
-              command: edit(fullfile(userpath,'startup.m'));
+          # - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
+          #   displayName: Run MATLAB statement
+          #   inputs:
+          #     command: edit(fullfile(userpath,'startup.m'));
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run MATLAB statement
             inputs:
