@@ -124,7 +124,7 @@
             "name": "loggingLevel",
             "type": "string",
             "label": "Logging Level",
-            "defaultValue": "Default",
+            "defaultValue": "",
             "required": false,
             "groupName": "runCustomization",
             "helpMarkDown": "Maximum verbosity level for logged diagnostics included for the test run."
@@ -133,7 +133,7 @@
             "name": "outputDetail",
             "type": "string",
             "label": "Output Detail",
-            "defaultValue": "Default",
+            "defaultValue": "",
             "required": false,
             "groupName": "runCustomization",
             "helpMarkDown": "Display level for event details produced by the test run."
