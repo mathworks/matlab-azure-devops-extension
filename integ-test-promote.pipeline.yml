@@ -220,6 +220,7 @@ stages:
               grep -q "Starting parallel pool (parpool)" console.log
               grep -q "Connected to the parallel pool" console.log
             displayName: Verify tests ran in parallel
+            condition: startsWith(variables['Agent.Name'], 'vmss')
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests with strict checks
             inputs:
@@ -232,7 +233,7 @@ stages:
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests with maximum verbosity level for logged diagnostics
             inputs:
-              loggingLevel: "Verbose"
+              loggingLevel: Verbose
               sourceFolder: src
           - bash: |
               set -e
@@ -241,7 +242,7 @@ stages:
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests with maximum display level for event details
             inputs:
-              outputDetail: "Verbose"
+              outputDetail: Verbose
               sourceFolder: src
           - bash: |
               set -e
