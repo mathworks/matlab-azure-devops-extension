@@ -207,9 +207,9 @@ stages:
               grep -v FirstTest test-results/matlab/selectbytag.xml
               grep -v simpleTest test-results/matlab/selectbytag.xml
             displayName: Verify test filtered by tag name
-          # - bash: |
-          #     echo 'diary console.log' >> startup.m
-          #   displayName: Setup diary for logging
+          - bash: |
+              echo 'diary console.log' >> startup.m
+            displayName: Setup diary for logging
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests in parallel
             inputs:
@@ -219,22 +219,22 @@ stages:
           #   displayName: Run MATLAB statement
           #   inputs:
           #     command: type console.log;
-          # - bash: |
-          #     set -e
-          #     grep -q myvar console.log
-          #   displayName: Verify tests ran in parallel
           - bash: |
-              echo 'diary console.log' >> startup.m
-            displayName: Setup diary for logging
+              set -e
+              grep -q parallel console.log
+            displayName: Verify tests ran in parallel
+          # - bash: |
+          #     echo 'diary console.log' >> startup.m
+          #   displayName: Setup diary for logging
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests with strict checks
             inputs:
               strict: true
               sourceFolder: src
-          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
-            displayName: Run MATLAB statement
-            inputs:
-              command: type console.log;
+          # - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
+          #   displayName: Run MATLAB statement
+          #   inputs:
+          #     command: type console.log;
           - bash: |
               dir
               cat console.log
@@ -249,11 +249,19 @@ stages:
             inputs:
               loggingLevel: "Verbose"
               sourceFolder: src
+          - bash: |
+              set -e
+              grep -q 'LoggingLevel', 4 console.log
+            displayName: Verify tests ran
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests with maximum display level for event details
             inputs:
               outputDetail: "Verbose"
               sourceFolder: src
+          - bash: |
+              set -e
+              grep -q 'OutputDetail', 4 console.log
+            displayName: Verify tests ran
           - bash: |
               mkdir simtests
               cat << EOF > simtests/createModel.m
