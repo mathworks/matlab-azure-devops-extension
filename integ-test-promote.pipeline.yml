@@ -215,6 +215,7 @@ stages:
             inputs:
               useParallel: true
               sourceFolder: src
+              #
           - bash: |
               set -e
               grep -q "Connected to the parallel pool" console.log
