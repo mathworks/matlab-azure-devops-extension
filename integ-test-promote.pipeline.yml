@@ -239,7 +239,7 @@ stages:
               dir
               cat console.log
               grep -q FailOnWarningsPlugin console.log
-            displayName: Debug
+            displayName: Debug task
           - bash: |
               set -e
               grep -q FailOnWarningsPlugin console.log
