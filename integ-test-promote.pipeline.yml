@@ -251,7 +251,7 @@ stages:
               sourceFolder: src
           - bash: |
               set -e
-              grep -q 'LoggingLevel', 4 console.log
+              grep -q "'LoggingLevel', 4" console.log
             displayName: Verify tests ran
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests with maximum display level for event details
@@ -260,7 +260,7 @@ stages:
               sourceFolder: src
           - bash: |
               set -e
-              grep -q 'OutputDetail', 4 console.log
+              grep -q "'OutputDetail', 4" console.log
             displayName: Verify tests ran
           - bash: |
               mkdir simtests
