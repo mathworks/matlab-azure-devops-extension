@@ -222,6 +222,7 @@ stages:
           - bash: |
               set -e
               grep -q "Starting parallel pool (parpool)" console.log
+              grep -q "Connected to the parallel pool" console.log
             displayName: Verify tests ran in parallel
           # - bash: |
           #     echo 'diary console.log' >> startup.m
