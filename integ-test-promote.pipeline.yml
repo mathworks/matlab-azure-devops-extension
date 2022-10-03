@@ -221,7 +221,6 @@ stages:
           #     command: type console.log;
           - bash: |
               set -e
-#              grep -q "Starting parallel pool (parpool)" console.log
               grep -q "Connected to the parallel pool" console.log
             displayName: Verify tests ran in parallel
             condition: startsWith(variables['Agent.Name'], 'vmss')
