@@ -215,10 +215,11 @@ stages:
             inputs:
               useParallel: true
               sourceFolder: src
-              #
           - bash: |
               set -e
-              grep -q "Connected to the parallel pool" console.log
+              # grep -q "Starting parallel pool (parpool)" console.log
+              cat console.log
+              # grep -q "Connected to the parallel pool" console.log
             displayName: Verify tests ran in parallel
             condition: startsWith(variables['Agent.Name'], 'vmss')
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
