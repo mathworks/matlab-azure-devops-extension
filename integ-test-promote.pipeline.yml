@@ -285,6 +285,83 @@ stages:
               test -f test-results/matlab/results.pdf
             displayName: Verify PDF report was created
             condition: eq(variables['Agent.OS'], 'Linux')
+            
+      - job: test_run_build
+        strategy:
+          matrix:
+            microsoft_hosted_linux:
+              poolName: Azure Pipelines
+              vmImage: ubuntu-22.04
+            microsoft_hosted_macos:
+              poolName: Azure Pipelines
+              vmImage: macOS-latest
+            microsoft_hosted_windows:
+              poolName: Azure Pipelines
+              vmImage: windows-latest
+        pool:
+          name: $(poolName)
+          vmImage: $(vmImage)
+        steps:
+          - checkout: none
+          - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
+            displayName: Install MATLAB on Microsoft-hosted agents
+            condition: not(startsWith(variables['Agent.Name'], 'vmss'))
+          - bash: |
+              cat << EOF > buildfile.m
+              function plan = buildfile
+              plan = buildplan(localfunctions);
+              plan("test").Dependencies = "build";
+              plan("deploy").Dependencies = "test";
+              plan.DefaultTasks = "test";
+
+              function buildTask(~)
+              f = fopen('buildlog.txt', 'a+'); fprintf(f, 'building\n'); fclose(f);
+              function testTask(~)
+
+              f = fopen('buildlog.txt', 'a+'); fprintf(f, 'testing\n'); fclose(f);
+              function deployTask(~)
+
+              f = fopen('buildlog.txt', 'a+'); fprintf(f, 'deploying\n'); fclose(f);
+              function checkTask(~)
+
+              f = fopen('buildlog.txt', 'a+'); fprintf(f, 'checking\n'); fclose(f);
+              EOF
+            displayName: Create buildfile.m in project root
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABBuild.RunMATLABBuild@0
+            displayName: Run build with default tasks
+          - bash: |
+              set -e
+              grep "building" buildlog.txt
+              grep "testing" buildlog.txt
+              ! grep "deploying" buildlog.txt
+              ! grep "checking" buildlog.txt
+              rm buildlog.txt
+            displayName: Verify that correct tasks appear in buildlog.txt
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABBuild.RunMATLABBuild@0
+            displayName: Run build with specified task
+            inputs:
+              tasks: deploy
+          - bash: |
+              set -e
+              grep "building" buildlog.txt
+              grep "testing" buildlog.txt
+              grep "deploying" buildlog.txt
+              ! grep "checking" buildlog.txt
+              rm buildlog.txt
+            displayName: Verify that correct tasks appear in buildlog.txt
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABBuild.RunMATLABBuild@0
+            displayName: Run build with multiple specified tasks
+            inputs:
+              tasks: deploy check
+          - bash: |
+              set -e
+              grep "building" buildlog.txt
+              grep "testing" buildlog.txt
+              grep "deploying" buildlog.txt
+              grep "checking" buildlog.txt
+              rm buildlog.txt
+            displayName: Verify that correct tasks appear in buildlog.txt
+
   - stage: publish_prerelease
     displayName: Publish prerelease
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
