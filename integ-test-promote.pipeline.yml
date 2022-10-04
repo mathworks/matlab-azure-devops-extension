@@ -209,7 +209,6 @@ stages:
             displayName: Verify test filtered by tag name
           - bash: |
               echo 'diary console.log' >> startup.m
-              echo "if exist('console.log', 'file') ; delete('console.log'); end" > finish.m
             displayName: Setup diary for logging
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests in parallel
@@ -261,6 +260,9 @@ stages:
               set -e
               grep -q "'OutputDetail', 4" console.log
             displayName: Verify tests ran
+          - bash: |
+              cat console.log
+            displayName: Debug
           - bash: |
               mkdir simtests
               cat << EOF > simtests/createModel.m
