@@ -209,6 +209,7 @@ stages:
             displayName: Verify test filtered by tag name
           - bash: |
               echo 'diary console.log' >> startup.m
+              echo 'if exist('console.log', 'file') ; delete('console.log'); end' > finish.m
             displayName: Setup diary for logging
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests in parallel
@@ -222,11 +223,17 @@ stages:
               # grep -q "Connected to the parallel pool" console.log
             displayName: Verify tests ran in parallel
             condition: startsWith(variables['Agent.Name'], 'vmss')
+          - bash: |
+              cat console.log
+            displayName: Debug
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests with strict checks
             inputs:
               strict: true
               sourceFolder: src
+          - bash: |
+              cat console.log
+            displayName: Debug
           - bash: |
               dir
               cat console.log
