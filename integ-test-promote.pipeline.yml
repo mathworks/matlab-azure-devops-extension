@@ -211,17 +211,6 @@ stages:
               echo 'diary console.log' >> startup.m
             displayName: Setup diary for logging
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
-            displayName: Run MATLAB tests in parallel
-            inputs:
-              useParallel: true
-              sourceFolder: src
-          - bash: |
-              set -e
-              grep -q "Starting parallel pool (parpool)" console.log
-              grep -q "Connected to the parallel pool" console.log
-            displayName: Verify tests ran in parallel
-            condition: startsWith(variables['Agent.Name'], 'vmss')
-          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests with strict checks
             inputs:
               strict: true
@@ -231,14 +220,15 @@ stages:
               grep -q "runner.addPlugin(FailOnWarningsPlugin())" console.log
             displayName: Verify tests ran with strict checks
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
-            displayName: Run MATLAB tests with maximum verbosity level for logged diagnostics
+            displayName: Run MATLAB tests in parallel
             inputs:
-              loggingLevel: Verbose
+              useParallel: true
               sourceFolder: src
           - bash: |
               set -e
-              grep -q "'LoggingLevel', 4" console.log
-            displayName: Verify tests ran with maximum verbosity level for logged diagnostics
+              grep -q "Starting parallel pool (parpool)" console.log
+            displayName: Verify tests ran in parallel
+            condition: startsWith(variables['Agent.Name'], 'vmss')
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests with maximum display level for event details
             inputs:
@@ -246,8 +236,17 @@ stages:
               sourceFolder: src
           - bash: |
               set -e
-              grep -q "'OutputDetail', 4" console.log
+              grep -q "TestRunner.withTextOutput('OutputDetail', 4)" console.log
             displayName: Verify tests ran with maximum display level for event details
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
+            displayName: Run MATLAB tests with maximum verbosity level for logged diagnostics
+            inputs:
+              loggingLevel: Verbose
+              sourceFolder: src
+          - bash: |
+              set -e
+              grep -q "TestRunner.withTextOutput('LoggingLevel', 4)" console.log
+            displayName: Verify tests ran with maximum verbosity level for logged diagnostics
           - bash: |
               mkdir simtests
               cat << EOF > simtests/createModel.m

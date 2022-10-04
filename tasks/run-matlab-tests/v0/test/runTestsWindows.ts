@@ -16,10 +16,10 @@ tr.setInput("selectByTag", "FILTERED");
 tr.setInput("modelCoverageCobertura", "modelcoverage.xml");
 tr.setInput("testResultsSimulinkTest", "stmresults.mldatx");
 tr.setInput("testResultsPDF", "results.pdf");
-tr.setInput("useParallel", "true");
 tr.setInput("strict", "true");
-tr.setInput("loggingLevel", "Verbose");
+tr.setInput("useParallel", "true");
 tr.setInput("outputDetail", "Verbose");
+tr.setInput("loggingLevel", "Verbose");
 
 const runCmdPath = path.join(path.dirname(__dirname), "bin", "win64", "run-matlab-command.exe");
 

@@ -103,15 +103,6 @@
             "helpMarkDown": "Path to write test results report in JUnit XML format."
         },
         {
-            "name": "useParallel",
-            "type": "boolean",
-            "label": "Use Parallel",
-            "defaultValue": false,
-            "required": false,
-            "groupName": "runCustomization",
-            "helpMarkDown": "Whether to run tests in parallel (requires Parallel Computing Toolbox). This feature might not be compatible with certain arguments, in which case, tests run in serial regardless of the specified value."
-        },
-        {
             "name": "strict",
             "type": "boolean",
             "label": "Strict",
@@ -121,13 +112,13 @@
             "helpMarkDown": "Whether to apply strict checks when running the tests. For example, the task generates a qualification failure if a test issues a warning."
         },
         {
-            "name": "loggingLevel",
-            "type": "string",
-            "label": "Logging Level",
-            "defaultValue": "",
+            "name": "useParallel",
+            "type": "boolean",
+            "label": "Use Parallel",
+            "defaultValue": false,
             "required": false,
             "groupName": "runCustomization",
-            "helpMarkDown": "Maximum verbosity level for logged diagnostics included for the test run."
+            "helpMarkDown": "Whether to run tests in parallel (requires Parallel Computing Toolbox). This feature might not be compatible with certain arguments, in which case, tests run in serial regardless of the specified value."
         },
         {
             "name": "outputDetail",
@@ -137,6 +128,15 @@
             "required": false,
             "groupName": "runCustomization",
             "helpMarkDown": "Display level for event details produced by the test run."
+        },
+        {
+            "name": "loggingLevel",
+            "type": "string",
+            "label": "Logging Level",
+            "defaultValue": "",
+            "required": false,
+            "groupName": "runCustomization",
+            "helpMarkDown": "Maximum verbosity level for logged diagnostics included for the test run."
         }
     ],
     "instanceNameFormat": "Run MATLAB Tests",
