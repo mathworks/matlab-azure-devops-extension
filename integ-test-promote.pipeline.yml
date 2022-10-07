@@ -209,61 +209,48 @@ stages:
             displayName: Verify test filtered by tag name
           - bash: |
               echo 'diary console.log' >> startup.m
-            displayName: Setup diary for logging
-          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
-            displayName: Run MATLAB tests in parallel
-            inputs:
-              useParallel: False
-              sourceFolder: src
-          - bash: |
-              set -e
-              # grep -q "Starting parallel pool (parpool)" console.log
-              cat console.log
-              # grep -q "Connected to the parallel pool" console.log
-            displayName: Verify tests ran in parallel
-            condition: startsWith(variables['Agent.Name'], 'vmss')
-          - bash: |
-              cat console.log
-            displayName: Debug
+            displayName: Set up diary for logging
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests with strict checks
             inputs:
-              strict: no
+              strict: true
               sourceFolder: src
-              
-          - bash: |
-              cat console.log
-            displayName: Debug
-          - bash: |
-              dir
-              cat console.log
-              grep -q FailOnWarningsPlugin console.log
-            displayName: Debug task
           - bash: |
               set -e
-              grep -q FailOnWarningsPlugin console.log
+              grep -q "runner.addPlugin(FailOnWarningsPlugin())" console.log
+              rm console.log
             displayName: Verify tests ran with strict checks
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
-            displayName: Run MATLAB tests with maximum verbosity level for logged diagnostics
+            displayName: Run MATLAB tests in parallel
             inputs:
-              loggingLevel: Verbose
+              useParallel: true
               sourceFolder: src
           - bash: |
               set -e
-              grep -q "'LoggingLevel', 4" console.log
-            displayName: Verify tests ran
+              grep -q "Starting parallel pool (parpool)" console.log
+              rm console.log
+            displayName: Verify tests ran in parallel
+            condition: startsWith(variables['Agent.Name'], 'vmss')
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
-            displayName: Run MATLAB tests with maximum display level for event details
+            displayName: Run MATLAB tests with detailed display level for event details
             inputs:
-              outputDetail: Verbose
+              outputDetail: Detailed
               sourceFolder: src
           - bash: |
               set -e
-              grep -q "'OutputDetail', 4" console.log
-            displayName: Verify tests ran
+              grep -q "TestRunner.withTextOutput('OutputDetail', 3)" console.log
+              rm console.log
+            displayName: Verify tests ran with detailed display level for event details
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
+            displayName: Run MATLAB tests with detailed verbosity level for logged diagnostics
+            inputs:
+              loggingLevel: Detailed
+              sourceFolder: src
           - bash: |
-              cat console.log
-            displayName: Debug
+              set -e
+              grep -q "TestRunner.withTextOutput('LoggingLevel', 3)" console.log
+              rm console.log
+            displayName: Verify tests ran with detailed verbosity level for logged diagnostics
           - bash: |
               mkdir simtests
               cat << EOF > simtests/createModel.m
@@ -342,6 +329,83 @@ stages:
               test -f test-results/matlab/results.pdf
             displayName: Verify PDF report was created
             condition: eq(variables['Agent.OS'], 'Linux')
+            
+      - job: test_run_build
+        strategy:
+          matrix:
+            microsoft_hosted_linux:
+              poolName: Azure Pipelines
+              vmImage: ubuntu-22.04
+            microsoft_hosted_macos:
+              poolName: Azure Pipelines
+              vmImage: macOS-latest
+            microsoft_hosted_windows:
+              poolName: Azure Pipelines
+              vmImage: windows-latest
+        pool:
+          name: $(poolName)
+          vmImage: $(vmImage)
+        steps:
+          - checkout: none
+          - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
+            displayName: Install MATLAB on Microsoft-hosted agents
+            condition: not(startsWith(variables['Agent.Name'], 'vmss'))
+          - bash: |
+              cat << EOF > buildfile.m
+              function plan = buildfile
+              plan = buildplan(localfunctions);
+              plan("test").Dependencies = "build";
+              plan("deploy").Dependencies = "test";
+              plan.DefaultTasks = "test";
+
+              function buildTask(~)
+              f = fopen('buildlog.txt', 'a+'); fprintf(f, 'building\n'); fclose(f);
+              function testTask(~)
+
+              f = fopen('buildlog.txt', 'a+'); fprintf(f, 'testing\n'); fclose(f);
+              function deployTask(~)
+
+              f = fopen('buildlog.txt', 'a+'); fprintf(f, 'deploying\n'); fclose(f);
+              function checkTask(~)
+
+              f = fopen('buildlog.txt', 'a+'); fprintf(f, 'checking\n'); fclose(f);
+              EOF
+            displayName: Create buildfile.m in project root
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABBuild.RunMATLABBuild@0
+            displayName: Run build with default tasks
+          - bash: |
+              set -e
+              grep "building" buildlog.txt
+              grep "testing" buildlog.txt
+              ! grep "deploying" buildlog.txt
+              ! grep "checking" buildlog.txt
+              rm buildlog.txt
+            displayName: Verify that correct tasks appear in buildlog.txt
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABBuild.RunMATLABBuild@0
+            displayName: Run build with specified task
+            inputs:
+              tasks: deploy
+          - bash: |
+              set -e
+              grep "building" buildlog.txt
+              grep "testing" buildlog.txt
+              grep "deploying" buildlog.txt
+              ! grep "checking" buildlog.txt
+              rm buildlog.txt
+            displayName: Verify that correct tasks appear in buildlog.txt
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABBuild.RunMATLABBuild@0
+            displayName: Run build with multiple specified tasks
+            inputs:
+              tasks: deploy check
+          - bash: |
+              set -e
+              grep "building" buildlog.txt
+              grep "testing" buildlog.txt
+              grep "deploying" buildlog.txt
+              grep "checking" buildlog.txt
+              rm buildlog.txt
+            displayName: Verify that correct tasks appear in buildlog.txt
+
   - stage: publish_prerelease
     displayName: Publish prerelease
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
