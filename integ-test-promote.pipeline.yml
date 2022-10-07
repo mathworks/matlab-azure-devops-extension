@@ -230,6 +230,7 @@ stages:
             inputs:
               strict: no
               sourceFolder: src
+              
           - bash: |
               cat console.log
             displayName: Debug
