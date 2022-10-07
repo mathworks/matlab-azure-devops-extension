@@ -213,7 +213,7 @@ stages:
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests with strict checks
             inputs:
-              strict: False
+              strict: no
               sourceFolder: src
           - bash: |
               set -e
