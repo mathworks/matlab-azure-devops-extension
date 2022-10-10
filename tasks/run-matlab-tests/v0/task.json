@@ -118,7 +118,7 @@
             "defaultValue": false,
             "required": false,
             "groupName": "customizeTestRun",
-            "helpMarkDown": "Whether to run tests in parallel on a self-hosted runner (requires Parallel Computing Toolbox). This feature might not be compatible with certain arguments, in which case, tests run in serial regardless of the specified value."
+            "helpMarkDown": "Whether to run tests in parallel on a self-hosted agent (requires Parallel Computing Toolbox). This feature might not be compatible with certain arguments, in which case, tests run in serial regardless of the specified value."
         },
         {
             "name": "outputDetail",
