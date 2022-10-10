@@ -16,7 +16,11 @@ async function run() {
             SelectByTag: taskLib.getInput("selectByTag"),
             CoberturaModelCoverage: taskLib.getInput("modelCoverageCobertura"),
             SimulinkTestResults: taskLib.getInput("testResultsSimulinkTest"),
-            PDFTestReport: taskLib.getInput("testResultsPDF")};
+            PDFTestReport: taskLib.getInput("testResultsPDF"),
+            Strict: taskLib.getBoolInput("strict"),
+            UseParallel: taskLib.getBoolInput("useParallel"),
+            OutputDetail: taskLib.getInput("outputDetail"),
+            LoggingLevel: taskLib.getInput("loggingLevel")};
         await runTests(options);
     } catch (err) {
         taskLib.setResult(taskLib.TaskResult.Failed, (err as Error).message);
@@ -58,7 +62,11 @@ async function runTests(options: IRunTestsOptions) {
             `'SelectByTag','${options.SelectByTag || ""}',` +
             `'CoberturaModelCoverage','${options.CoberturaModelCoverage || ""}',` +
             `'SimulinkTestResults','${options.SimulinkTestResults || ""}',` +
-            `'PDFTestReport','${options.PDFTestReport || ""}');` +
+            `'PDFTestReport','${options.PDFTestReport || ""}',` +
+            `'Strict',${options.Strict || false},` +
+            `'UseParallel',${options.UseParallel || false},` +
+            `'OutputDetail','${options.OutputDetail || ""}',` +
+            `'LoggingLevel','${options.LoggingLevel || ""}');` +
         `disp('Running MATLAB script with contents:');` +
         `disp(testScript.Contents);` +
         `fprintf('__________\\n\\n');` +
@@ -78,6 +86,10 @@ interface IRunTestsOptions {
     CoberturaModelCoverage?: string;
     SimulinkTestResults?: string;
     PDFTestReport?: string;
+    Strict?: boolean;
+    UseParallel?: boolean;
+    OutputDetail?: string;
+    LoggingLevel?: string;
 }
 
 run();

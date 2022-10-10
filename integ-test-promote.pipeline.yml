@@ -208,6 +208,50 @@ stages:
               grep -v simpleTest test-results/matlab/selectbytag.xml
             displayName: Verify test filtered by tag name
           - bash: |
+              echo 'diary console.log' >> startup.m
+            displayName: Set up diary for logging
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
+            displayName: Run MATLAB tests with strict checks
+            inputs:
+              strict: true
+              sourceFolder: src
+          - bash: |
+              set -e
+              grep -q "runner.addPlugin(FailOnWarningsPlugin())" console.log
+              rm console.log
+            displayName: Verify tests ran with strict checks
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
+            displayName: Run MATLAB tests in parallel
+            inputs:
+              useParallel: true
+              sourceFolder: src
+          - bash: |
+              set -e
+              grep -q "Starting parallel pool (parpool)" console.log
+              rm console.log
+            displayName: Verify tests ran in parallel
+            condition: startsWith(variables['Agent.Name'], 'vmss')
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
+            displayName: Run MATLAB tests with detailed display level for event details
+            inputs:
+              outputDetail: Detailed
+              sourceFolder: src
+          - bash: |
+              set -e
+              grep -q "TestRunner.withTextOutput('OutputDetail', 3)" console.log
+              rm console.log
+            displayName: Verify tests ran with detailed display level for event details
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
+            displayName: Run MATLAB tests with detailed verbosity level for logged diagnostics
+            inputs:
+              loggingLevel: Detailed
+              sourceFolder: src
+          - bash: |
+              set -e
+              grep -q "TestRunner.withTextOutput('LoggingLevel', 3)" console.log
+              rm console.log
+            displayName: Verify tests ran with detailed verbosity level for logged diagnostics
+          - bash: |
               mkdir simtests
               cat << EOF > simtests/createModel.m
               % Create model

@@ -20,7 +20,7 @@ const a: ma.TaskLibAnswers = {
         [runCmdPath]: true,
     },
     exec: {
-        [runCmdPath + " " + runCmdArg("", "", "", "", "", "", "", "")]: {
+        [runCmdPath + " " + runCmdArg("", "", "", "", "", "", "", "", false, false, "", "")]: {
             code: 1,
             stdout: "tests failed",
         },
