@@ -26,8 +26,8 @@
           "displayName": "Filter Tests"
         },
         {
-          "name": "runCustomization",
-          "displayName": "Run Customization"
+          "name": "customizeTestRun",
+          "displayName": "Customize Test Run"
         }
     ],
     "inputs": [
@@ -108,7 +108,7 @@
             "label": "Strict",
             "defaultValue": false,
             "required": false,
-            "groupName": "runCustomization",
+            "groupName": "customizeTestRun",
             "helpMarkDown": "Whether to apply strict checks when running the tests. For example, the task generates a qualification failure if a test issues a warning."
         },
         {
@@ -117,8 +117,8 @@
             "label": "Use Parallel",
             "defaultValue": false,
             "required": false,
-            "groupName": "runCustomization",
-            "helpMarkDown": "Whether to run tests in parallel (requires Parallel Computing Toolbox). This feature might not be compatible with certain arguments, in which case, tests run in serial regardless of the specified value."
+            "groupName": "customizeTestRun",
+            "helpMarkDown": "Whether to run tests in parallel on a self-hosted runner (requires Parallel Computing Toolbox). This feature might not be compatible with certain arguments, in which case, tests run in serial regardless of the specified value."
         },
         {
             "name": "outputDetail",
@@ -126,7 +126,7 @@
             "label": "Output Detail",
             "defaultValue": "",
             "required": false,
-            "groupName": "runCustomization",
+            "groupName": "customizeTestRun",
             "helpMarkDown": "Display level for event details produced by the test run."
         },
         {
@@ -135,7 +135,7 @@
             "label": "Logging Level",
             "defaultValue": "",
             "required": false,
-            "groupName": "runCustomization",
+            "groupName": "customizeTestRun",
             "helpMarkDown": "Maximum verbosity level for logged diagnostics included for the test run."
         }
     ],
