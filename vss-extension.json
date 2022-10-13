@@ -41,6 +41,9 @@
         },
         "support": {
             "uri": "mailto:continuous-integration@mathworks.com"
+        },
+        "privacypolicy": {
+            "uri": "https://www.mathworks.com/company/aboutus/policies_statements/privacy-policy.html"
         }
     },
     "repository": {
