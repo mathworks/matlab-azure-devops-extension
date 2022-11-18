@@ -1,6 +1,6 @@
-This extension enables you to build and test your MATLAB&reg; project as part of your pipeline. For example, you can automatically identify any code issues in your project, run tests and generate test and coverage artifacts, or package your files into a toolbox.
+This extension enables you to build and test your MATLAB&reg; project as part of your pipeline. For example, you can automatically identify any code issues in your project, run tests and generate test and coverage artifacts, and package your files into a toolbox.
 
-To run your pipeline using this extension, install the extension to your Azure DevOps organization. To [install the extension](https://docs.microsoft.com/en-us/azure/devops/marketplace/install-extension?view=azure-devops&tabs=browser), press the **Get it free** button at the top of this page. You can use the extension with self-hosted or Microsoft&reg;-hosted [agents](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/agents?view=azure-devops&tabs=browser):
+To run your pipeline using this extension, install the extension to your Azure&reg; DevOps organization. To [install the extension](https://docs.microsoft.com/en-us/azure/devops/marketplace/install-extension?view=azure-devops&tabs=browser), click the **Get it free** button at the top of this page. You can use the extension with self-hosted or Microsoft&reg;-hosted [agents](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/agents?view=azure-devops&tabs=browser):
 
 - To use a self-hosted agent, you must set up a computer with MATLAB as your self-hosted agent and register the agent with Azure Pipelines. The agent uses the topmost MATLAB version on the system path to execute your pipeline.
 
@@ -10,11 +10,11 @@ To run your pipeline using this extension, install the extension to your Azure D
 When you author your pipeline in a file named `azure-pipelines.yml` in the root of your repository, the extension provides you with four different tasks:
 
 * To run a MATLAB build, use the [Run MATLAB Build](#run-matlab-build) task.
-* To run MATLAB and Simulink tests and generate artifacts, use the [Run MATLAB Tests](#run-matlab-tests) task.
+* To run MATLAB and Simulink&reg; tests and generate artifacts, use the [Run MATLAB Tests](#run-matlab-tests) task.
 * To run a MATLAB script, function, or statement, use the [Run MATLAB Command](#run-matlab-command) task.
 * To install MATLAB on a Microsoft-hosted agent, use the [Install MATLAB](#install-matlab) task.
 
-### Run MATLAB Build
+### Run a MATLAB Build
 Use the [Run MATLAB Build](#run-matlab-build) task to run a build using the [MATLAB build tool](https://www.mathworks.com/help/matlab/matlab_prog/overview-of-matlab-build-tool.html). You can use this task to run the MATLAB build tasks specified in a file named `buildfile.m` in the root of your repository. To use the **Run MATLAB Build** task, you need MATLAB R2022b or a later release.
 
 For example, author a pipeline to run a task named `mytask` as well as all the tasks on which it depends.
@@ -28,7 +28,7 @@ steps:
 ``` 
 
 ### Run Tests in MATLAB Project
-Use the [Run MATLAB Tests](#run-matlab-tests) task to run tests authored using the MATLAB unit testing framework or Simulink&reg; Test&trade;. You can use this task to generate various test and coverage artifacts. You can then publish the artifacts to Azure Pipelines. 
+Use the [Run MATLAB Tests](#run-matlab-tests) task to run tests authored using the MATLAB unit testing framework or Simulink Test&trade;. You can use this task to generate various test and coverage artifacts. You can then publish the artifacts to Azure Pipelines. 
 
 For example, author a pipeline to run the tests in your [MATLAB project](https://www.mathworks.com/help/matlab/projects.html) automatically, and then generate a PDF test results report, a JUnit test results report, and a Cobertura code coverage report at specified locations on the build agent. Use tasks to publish the generated artifacts to Azure Pipelines once the test run is complete.
 
@@ -76,7 +76,7 @@ steps:
 ### Specify MATLAB in Pipeline
 When you use the **Run MATLAB Build**, **Run MATLAB Tests**, or **Run MATLAB Command** tasks in your pipeline, the self-hosted agent uses the topmost MATLAB version on the system path. The pipeline fails if the agent cannot find any version of MATLAB on the path.
 
-You can prepend your desired version of MATLAB to the PATH environment variable of the agent. For example, prepend MATLAB R2022a to the path and use it to run your script.
+You can prepend your preferred version of MATLAB to the PATH environment variable of the agent. For example, prepend MATLAB R2022a to the path and use it to run your script.
 
 ```YAML
 pool: myPool
@@ -137,13 +137,13 @@ Argument                  | Description
 `selectByTag`             | (Optional) Test tag used to select test suite elements. To create a test suite, MATLAB uses only the test elements with the specified tag.<br/>**Example:** `Unit`
 `strict`                  | (Optional) Whether to apply strict checks when running tests, specified as `false` or `true`. By default, the value is `false`. If you specify a value of `true`, the task generates a qualification failure whenever a test issues a warning.
 `useParallel`             | (Optional) Whether to run tests in parallel on a self-hosted agent, specified as `false` or `true`. By default, the value is `false` and tests run in serial. If the test runner configuration is suited for parallelization, you can specify a value of `true` to run tests in parallel. This argument requires a Parallel Computing Toolbox™ license and is supported only on self-hosted agents.
-`outputDetail`            | (Optional) Amount of event detail displayed for the test run, specified as `none`, `terse`, `concise`, `detailed`, or `verbose`. Selecting a value for this argument is the same as specifying the `OutputDetail` name-value argument of [`runtests`](https://www.mathworks.com/help/matlab/ref/runtests.html) as that value.
-`loggingLevel`            | (Optional) Maximum verbosity level for logged diagnostics included for the test run, specified as `none`, `terse`, `concise`, `detailed`, or `verbose`. Selecting a value for this argument is the same as specifying the `LoggingLevel` name-value argument of `runtests` as that value. 
-`testResultsPDF`          | (Optional) Path to write test results report in PDF format. On macOS platforms, this argument is supported in MATLAB R2020b and later.<br/>**Example:** `test-results/results.pdf`         
-`testResultsJUnit`        | (Optional) Path to write test results report in JUnit XML format.<br/>**Example:** `test-results/results.xml`
-`testResultsSimulinkTest` | (Optional) Path to export Simulink Test Manager results in MLDATX format. This argument requires a Simulink Test license, and is supported in MATLAB R2019a and later.<br/>**Example:** `test-results/results.mldatx`
-`codeCoverageCobertura`   | (Optional) Path to write code coverage report in Cobertura XML format.<br/>**Example:** `code-coverage/coverage.xml`
-`modelCoverageCobertura`  | (Optional) Path to write model coverage report in Cobertura XML format. This argument requires a Simulink Coverage™ license, and is supported in MATLAB R2018b and later.<br/>**Example:** `model-coverage/coverage.xml`
+`outputDetail`            | (Optional) Amount of event detail displayed for the test run, specified as `none`, `terse`, `concise`, `detailed`, or `verbose`. By default, the task displays failing and logged events at the `detailed` level and test run progress at the `concise` level.
+`loggingLevel`            | (Optional) Maximum verbosity level for logged diagnostics included for the test run, specified as `none`, `terse`, `concise`, `detailed`, or `verbose`. By default, the task includes diagnostics logged at the `terse` level. 
+`testResultsPDF`          | (Optional) Path to write the test results report in PDF format. On macOS platforms, this argument is supported in MATLAB R2020b and later.<br/>**Example:** `test-results/results.pdf`         
+`testResultsJUnit`        | (Optional) Path to write the test results report in JUnit XML format.<br/>**Example:** `test-results/results.xml`
+`testResultsSimulinkTest` | (Optional) Path to export Simulink Test Manager results in MLDATX format. This argument requires a Simulink Test license and is supported in MATLAB R2019a and later.<br/>**Example:** `test-results/results.mldatx`
+`codeCoverageCobertura`   | (Optional) Path to write the code coverage report in Cobertura XML format.<br/>**Example:** `code-coverage/coverage.xml`
+`modelCoverageCobertura`  | (Optional) Path to write the model coverage report in Cobertura XML format. This argument requires a Simulink Coverage™ license and is supported in MATLAB R2018b and later.<br/>**Example:** `model-coverage/coverage.xml`
 
 >**Note:** To customize the pretest state of the system, you can specify startup code that automatically executes before your tests run. For information on how to specify startup or shutdown files in a MATLAB project, see [Automate Startup and Shutdown Tasks](https://www.mathworks.com/help/matlab/matlab_prog/automate-startup-and-shutdown-tasks.html). If your pipeline does not use a MATLAB project, specify the commands you want executed at startup in a `startup.m` file instead, and save the file to the root of your repository. See [`startup`](https://www.mathworks.com/help/matlab/ref/startup.html) for more information.
 
