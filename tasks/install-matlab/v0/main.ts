@@ -5,7 +5,7 @@ import * as toolLib from "azure-pipelines-tool-lib/tool";
 import * as fs from "fs";
 import * as os from "os";
 import * as path from "path";
-import {platform} from "./utils";
+import {architecture, platform} from "./utils";
 
 async function run() {
     try {
@@ -21,6 +21,11 @@ async function install(release?: string) {
     const serverType = taskLib.getVariable("System.ServerType");
     if (!serverType || serverType.toLowerCase() !== "hosted") {
         throw new Error(taskLib.loc("InstallNotSupportedOnSelfHosted"));
+    }
+
+    if (architecture() !== "x64") {
+        const msg = `This task is not supported on ${platform()} runners using the ${architecture()} architecture.`;
+        throw new Error(msg);
     }
 
     let exitCode = 0;
@@ -49,33 +54,66 @@ async function install(release?: string) {
         throw new Error(taskLib.loc("FailedToAddToPath", err.message));
     }
 
-    // install ephemeral version of MATLAB
-    const installArgs: string[] = [];
-    if (release !== undefined) {
-        installArgs.push("--release", release);
+    // setup mpm
+    const mpmRootUrl: string = "https://www.mathworks.com/mpm/";
+    let mpmUrl: string;
+    switch (platform()) {
+        case "win32":
+            mpmUrl = mpmRootUrl + "win64/mpm";
+            break;
+        case "linux":
+            mpmUrl = mpmRootUrl + "glnxa64/mpm";
+            break;
+        default:
+            return Promise.reject(Error(`This action is not supported on ${platform} runners using the ${architecture} architecture.`));
     }
-    const skipActivation = skipActivationFlag(process.env);
-    if (skipActivation) {
-        installArgs.push(skipActivation);
+    let mpm: string = await toolLib.downloadTool(mpmUrl);
+    if (platform() === "win32") {
+       const mpmExtractedPath: string = await toolLib.extractZip(mpm);
+       mpm = path.join(mpmExtractedPath, "bin", "win64",  "mpm.exe");
     }
 
-    exitCode = await curlsh("https://ssd.mathworks.com/supportfiles/ci/ephemeral-matlab/v0/ci-install.sh", installArgs);
+    let bash = sh();
+    bash.arg(`chmod +x ${mpm}`);
+    exitCode = await bash.exec();
     if (exitCode !== 0) {
-        throw new Error(taskLib.loc("FailedToExecuteInstallScript", exitCode));
+        return Promise.reject(Error("Unable to set up mpm."));
     }
 
-    // prepend MATLAB to path
-    let root: string;
-    try {
-        root = fs.readFileSync(path.join(os.tmpdir(), "ephemeral_matlab_root")).toString();
-        toolLib.prependPath(path.join(root, "bin"));
-    } catch (err: any) {
-        throw new Error(taskLib.loc("FailedToAddToPath", err.message));
+    // install MATLAB using mpm
+    let toolpath: string = toolLib.findLocalTool("MATLAB", "2022.2.0");
+    let alreadyExists = false;
+    if (toolpath) {
+        // core.info(`Found MATLAB ${release} in cache at ${toolpath}.`);
+        alreadyExists = true;
+    } else {
+        fs.writeFileSync(".keep", "");
+        toolpath = await toolLib.cacheFile(".keep", ".keep", "MATLAB", "2022.2.0");
     }
-}
 
-function skipActivationFlag(env: NodeJS.ProcessEnv): string {
-    return (env.MATHWORKS_TOKEN !== undefined && env.MATHWORKS_ACCOUNT !== undefined) ? "--skip-activation" : "";
+    // remove spaces and flatten product list
+    // let parsedProducts = products.flatMap(p => p.split(" "));
+    let parsedProducts = [];
+    // Add MATLAB and PCT by default
+    parsedProducts.push("MATLAB", "Parallel_Computing_Toolbox");
+    // Remove duplicates
+    parsedProducts = [...new Set(parsedProducts)];
+    let mpmArguments: string[] = [
+        "install",
+        `--release=${release}`,
+        `--destination=${toolpath}`,
+        "--products",
+    ];
+    mpmArguments = mpmArguments.concat(parsedProducts);
+
+    bash = sh();
+    bash.arg(mpmArguments);
+    exitCode = await bash.exec();
+
+    if (exitCode !== 0) {
+        return Promise.reject(Error(`Script exited with non-zero code ${exitCode}`));
+    }
+
 }
 
 function installRoot(programName: string) {
@@ -93,6 +131,13 @@ async function curlsh(url: string, args: string | string[]) {
     // download script
     const scriptPath = await toolLib.downloadTool(url);
 
+    const bash = sh();
+    bash.arg(scriptPath);
+    bash.arg(args);
+    return bash.exec();
+}
+
+function sh() {
     // execute script
     const bashPath = taskLib.which("bash", true);
     let bash;
@@ -101,9 +146,7 @@ async function curlsh(url: string, args: string | string[]) {
     } else {
         bash = taskLib.tool("sudo").arg("-E").line(bashPath);
     }
-    bash.arg(scriptPath);
-    bash.arg(args);
-    return bash.exec();
+    return bash;
 }
 
 run();
