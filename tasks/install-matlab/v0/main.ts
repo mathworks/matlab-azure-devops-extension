@@ -28,6 +28,9 @@ async function install(release?: string) {
     }
 
     let exitCode = 0;
+    if (!release || release.toLowerCase() === "latest") {
+        release = "r2022b";
+    }
 
     // install core system dependencies on Linux
     if (platform() === "linux") {
