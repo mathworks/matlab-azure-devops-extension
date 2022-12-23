@@ -94,6 +94,14 @@ async function install(release?: string) {
     mpmArguments = mpmArguments.concat(parsedProducts);
 
     exitCode = await taskLib.exec(mpm, mpmArguments);
+    if (platform() === "win32") {
+        exitCode = await taskLib.exec(mpm, mpmArguments);
+    } else {
+        const bash = sh();
+        bash.arg(mpm);
+        bash.arg(mpmArguments);
+        exitCode = await bash.exec();
+    }
     try {
         toolLib.prependPath(path.join(toolpath, "bin"));
     } catch (err: any) {
