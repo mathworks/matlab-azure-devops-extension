@@ -10,8 +10,6 @@ describe("InstallMATLAB V0 Suite", () => {
         const tr = new mt.MockTestRunner(tp);
 
         tr.run();
-        console.log(tr.stdout);
-        console.log(tr.stderr);
 
         assert(tr.succeeded, "should have succeeded");
         assert(tr.stdOutContained("Installed MATLAB"), "should have executed install script");
@@ -24,8 +22,6 @@ describe("InstallMATLAB V0 Suite", () => {
         const tr = new mt.MockTestRunner(tp);
 
         tr.run();
-        console.log(tr.stdout);
-        console.log(tr.stderr);
 
         assert(tr.succeeded, "should have succeeded");
         assert(tr.stdOutContained("Installed MATLAB"), "should have executed install script");
