@@ -63,10 +63,6 @@ async function install(release?: string) {
        mpm = path.join(mpmExtractedPath, "bin", "win64",  "mpm.exe");
     }
 
-    let bash = sh();
-    bash.arg("chmod");
-    bash.arg(["+x", mpm]);
-    exitCode = await bash.exec();
     if (exitCode !== 0) {
         return Promise.reject(Error("Unable to set up mpm."));
     }
@@ -97,10 +93,7 @@ async function install(release?: string) {
     ];
     mpmArguments = mpmArguments.concat(parsedProducts);
 
-    bash = sh();
-    bash.arg(mpm);
-    bash.arg(mpmArguments);
-    exitCode = await bash.exec();
+    exitCode = await taskLib.exec(mpm, mpmArguments);
     try {
         toolLib.prependPath(path.join(toolpath, "bin"));
     } catch (err: any) {
