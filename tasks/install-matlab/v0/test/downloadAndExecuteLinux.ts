@@ -11,8 +11,7 @@ const tr = new mr.TaskMockRunner(tp);
 
 tr.setInput("release", "R2020a");
 
-const matlabRoot = "path/to/matlab";
-fs.writeFileSync(path.join(os.tmpdir(), "ephemeral_matlab_root"), matlabRoot);
+const matlabRoot = path.join("opt", "toolcache", "MATLAB", "2022.2.0");
 const batchInstallRoot =  path.join("/", "opt", "matlab-batch");
 
 // create assertAgent and getVariable mocks, support not added in this version of task-lib
@@ -33,7 +32,6 @@ tr.registerMock("azure-pipelines-task-lib/mock-task", tlClone);
 
 tr.registerMock("azure-pipelines-tool-lib/tool", {
     downloadTool(url: string) {
-        console.log(url);
         if (url === "https://ssd.mathworks.com/supportfiles/ci/matlab-deps/v0/install.sh") {
             return "install.sh";
         } else if (url === "https://www.mathworks.com/mpm/glnxa64/mpm") {
@@ -48,7 +46,7 @@ tr.registerMock("azure-pipelines-tool-lib/tool", {
         return "/opt/toolcache/" + toolName + "/" + toolVersion;
     },
     prependPath(toolPath: string) {
-        if ( toolPath !== path.join(matlabRoot, "bin") && toolPath !== batchInstallRoot) {
+        if ( !toolPath.includes(matlabRoot) && toolPath !== batchInstallRoot) {
             throw new Error(`Unexpected path: ${toolPath}`);
         }
     },
