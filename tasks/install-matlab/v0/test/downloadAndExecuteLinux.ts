@@ -85,6 +85,10 @@ const a: ma.TaskLibAnswers = {
             code: 0,
             stdout: "Installed matlab-batch",
         },
+        "sudo -E /bin/bash chmod +x mpm": {
+            code: 0,
+            stdout: "Installed matlab-batch",
+        },
     },
 } as ma.TaskLibAnswers;
 tr.setAnswers(a);

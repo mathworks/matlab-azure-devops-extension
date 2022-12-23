@@ -64,8 +64,8 @@ async function install(release?: string) {
     }
 
     let bash = sh();
-    // bash.arg(`chmod +x ${mpm}`);
-    // exitCode = await bash.exec();
+    bash.arg(`chmod +x ${mpm}`);
+    exitCode = await bash.exec();
     if (exitCode !== 0) {
         return Promise.reject(Error("Unable to set up mpm."));
     }

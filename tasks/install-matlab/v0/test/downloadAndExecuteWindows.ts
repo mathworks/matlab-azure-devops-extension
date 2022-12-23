@@ -82,6 +82,14 @@ const a: ma.TaskLibAnswers = {
             code: 0,
             stdout: "Installed matlab-batch",
         },
+        "bash.exe chmod +x mpm\\bin\\win64\\mpm.exe": {
+            code: 0,
+            stdout: "Installed matlab-batch",
+        },
+        "bash.exe chmod +x mpm/bin/win64/mpm.exe": {
+            code: 0,
+            stdout: "Installed matlab-batch",
+        },
     },
 } as ma.TaskLibAnswers;
 tr.setAnswers(a);
