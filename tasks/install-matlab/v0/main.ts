@@ -3,7 +3,6 @@
 import * as taskLib from "azure-pipelines-task-lib/task";
 import * as toolLib from "azure-pipelines-tool-lib/tool";
 import * as fs from "fs";
-import * as os from "os";
 import * as path from "path";
 import {architecture, platform} from "./utils";
 
@@ -42,18 +41,6 @@ async function install(release?: string) {
         }
     }
 
-    // install matlab-batch
-    const batchInstallDir = installRoot("matlab-batch");
-    exitCode = await curlsh("https://ssd.mathworks.com/supportfiles/ci/matlab-batch/v0/install.sh", batchInstallDir);
-    if (exitCode !== 0) {
-        throw new Error(taskLib.loc("FailedToExecuteInstallScript", exitCode));
-    }
-    try {
-        toolLib.prependPath(batchInstallDir);
-    } catch (err: any) {
-        throw new Error(taskLib.loc("FailedToAddToPath", err.message));
-    }
-
     // setup mpm
     const mpmRootUrl: string = "https://www.mathworks.com/mpm/";
     let mpmUrl: string;
@@ -74,8 +61,8 @@ async function install(release?: string) {
     }
 
     let bash = sh();
-    bash.arg(`chmod +x ${mpm}`);
-    exitCode = await bash.exec();
+    // bash.arg(`chmod +x ${mpm}`);
+    // exitCode = await bash.exec();
     if (exitCode !== 0) {
         return Promise.reject(Error("Unable to set up mpm."));
     }
@@ -107,8 +94,26 @@ async function install(release?: string) {
     mpmArguments = mpmArguments.concat(parsedProducts);
 
     bash = sh();
+    bash.arg(mpm);
     bash.arg(mpmArguments);
     exitCode = await bash.exec();
+    try {
+        toolLib.prependPath(path.join(toolpath, "bin"));
+    } catch (err: any) {
+        throw new Error(taskLib.loc("FailedToAddToPath", err.message));
+    }
+
+    // install matlab-batch
+    const batchInstallDir = installRoot("matlab-batch");
+    exitCode = await curlsh("https://ssd.mathworks.com/supportfiles/ci/matlab-batch/v0/install.sh", batchInstallDir);
+    if (exitCode !== 0) {
+        throw new Error(taskLib.loc("FailedToExecuteInstallScript", exitCode));
+    }
+    try {
+        toolLib.prependPath(batchInstallDir);
+    } catch (err: any) {
+        throw new Error(taskLib.loc("FailedToAddToPath", err.message));
+    }
 
     if (exitCode !== 0) {
         return Promise.reject(Error(`Script exited with non-zero code ${exitCode}`));
