@@ -29,18 +29,6 @@ describe("InstallMATLAB V0 Suite", () => {
         done();
     });
 
-    it("should succeed with --skip-activation flag for private repos", (done) => {
-        const tp = path.join(__dirname, "downloadAndExecutePrivate.js");
-        const tr = new mt.MockTestRunner(tp);
-
-        tr.run();
-
-        assert(tr.succeeded, "should have succeeded");
-        assert(tr.stdOutContained("Installed MATLAB"), "should have executed install script");
-
-        done();
-    });
-
     it("should fail when downloading install script fails", (done) => {
         const tp = path.join(__dirname, "failDownload.js");
         const tr = new mt.MockTestRunner(tp);

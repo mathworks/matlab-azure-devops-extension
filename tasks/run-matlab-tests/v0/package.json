@@ -3,9 +3,8 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "postinstall": "npm run getBinDep && npm run getScriptgenDep",
-        "getBinDep": "../../../scripts/setupdeps.sh",
-        "getScriptgenDep": "wget -q https://ssd.mathworks.com/supportfiles/ci/matlab-script-generator/v0/matlab-script-generator.zip -O scriptgen.zip; unzip -qod scriptgen scriptgen.zip; rm scriptgen.zip"
+        "postinstall": "npm run getBinDep",
+        "getBinDep": ".\\..\\..\\..\\scripts\\setupdeps.sh"
     },
     "dependencies": {
         "@types/node": "^15.0.2",

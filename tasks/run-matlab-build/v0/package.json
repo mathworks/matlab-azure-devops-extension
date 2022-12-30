@@ -4,7 +4,7 @@
     "private": true,
     "scripts": {
         "postinstall": "npm run getBinDep",
-        "getBinDep": "../../../scripts/setupdeps.sh"
+        "getBinDep": ".\\..\\..\\..\\scripts\\setupdeps.sh"
     },
     "dependencies": {
         "@types/node": "^15.0.2",
