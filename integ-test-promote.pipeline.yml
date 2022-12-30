@@ -81,7 +81,7 @@ stages:
           vmImage: $(vmImage)
         steps:
           - checkout: none
-          - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@1-beta
+          - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@1
             displayName: Install MATLAB
           - bash: |
               set -e
@@ -108,7 +108,7 @@ stages:
           vmImage: $(vmImage)
         steps:
           - checkout: none
-          - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@1-beta
+          - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@1
             displayName: Install MATLAB
             inputs:
               release: R2021a
