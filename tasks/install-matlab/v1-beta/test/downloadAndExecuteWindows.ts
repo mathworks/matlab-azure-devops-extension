@@ -11,8 +11,7 @@ const tr = new mr.TaskMockRunner(tp);
 
 tr.setInput("release", "R2020a");
 
-const matlabRoot = "C:\\path\\to\\matlab";
-fs.writeFileSync(path.join(os.tmpdir(), "ephemeral_matlab_root"), matlabRoot);
+const matlabRoot = path.join("C:", "toolcache", "MATLAB", "2022.2.0");
 const batchInstallRoot = path.join("C:", "Program Files", "matlab-batch");
 
 // create assertAgent and getVariable mocks, support not added in this version of task-lib
@@ -48,7 +47,7 @@ tr.registerMock("azure-pipelines-tool-lib/tool", {
         return zipPath;
     },
     prependPath(toolPath: string) {
-        if ( toolPath !== path.join(matlabRoot, "bin") && toolPath !== batchInstallRoot) {
+        if ( !toolPath.includes(matlabRoot) && toolPath !== batchInstallRoot) {
             throw new Error(`Unexpected path: ${toolPath}`);
         }
     },
@@ -71,7 +70,7 @@ const a: ma.TaskLibAnswers = {
             code: 0,
             stdout: "Installed MATLAB",
         },
-        "bash.exe mpm/bin/win64/mpm.exe install --release=R2020a --destination=C:\\toolcache\\MATLAB\\2022.2.0 --products MATLAB Parallel_Computing_Toolbox": {
+        "bash.exe mpm/bin/win64/mpm.exe install --release=R2020a --destination=C:/toolcache/MATLAB/2022.2.0 --products MATLAB Parallel_Computing_Toolbox": {
             code: 0,
             stdout: "Installed MATLAB",
         },
@@ -80,6 +79,14 @@ const a: ma.TaskLibAnswers = {
             stdout: "Installed matlab-batch",
         },
         "bash.exe install.sh C:/Program Files/matlab-batch": {
+            code: 0,
+            stdout: "Installed matlab-batch",
+        },
+        "bash.exe chmod +x mpm\\bin\\win64\\mpm.exe": {
+            code: 0,
+            stdout: "Installed matlab-batch",
+        },
+        "bash.exe chmod +x mpm/bin/win64/mpm.exe": {
             code: 0,
             stdout: "Installed matlab-batch",
         },
