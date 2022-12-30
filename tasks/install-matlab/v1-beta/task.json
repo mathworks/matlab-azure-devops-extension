@@ -1,6 +1,6 @@
 {
     "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
-    "id": "58caf775-fc9e-48d3-a2ba-1568912e6a00",
+    "id": "553fa7ff-af12-4821-8ace-6bf3dc410e62",
     "name": "InstallMATLAB",
     "friendlyName": "Install MATLAB",
     "description": "Install MATLAB on a Linux-based Microsoft-hosted agent. Currently, this task is available only for public projects and does not include transformation products, such as MATLAB Coder and MATLAB Compiler.",
