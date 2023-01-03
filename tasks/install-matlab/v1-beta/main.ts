@@ -62,7 +62,7 @@ async function install(release?: string) {
        const mpmExtractedPath: string = await toolLib.extractZip(mpm);
        mpm = path.join(mpmExtractedPath, "bin", "win64",  "mpm.exe");
     } else {
-        taskLib.exec("chmod", ["+x", mpm]);
+        exitCode = await taskLib.exec("chmod", ["+x", mpm]);
     }
 
     if (exitCode !== 0) {
