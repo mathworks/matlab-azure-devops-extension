@@ -55,7 +55,7 @@ async function install(release?: string) {
             mpmUrl = mpmRootUrl + "glnxa64/mpm";
             break;
         default:
-            return Promise.reject(Error(`This action is not supported on ${platform} runners using the ${architecture} architecture.`));
+            return Promise.reject(Error(`This action is not supported on ${platform()} runners using the ${architecture()} architecture.`));
     }
     let mpm: string = await toolLib.downloadTool(mpmUrl);
     if (platform() === "win32") {
@@ -64,7 +64,7 @@ async function install(release?: string) {
     }
 
     if (exitCode !== 0) {
-        return Promise.reject(Error("Unable to set up mpm."));
+        throw new Error("Unable to set up mpm.");
     }
 
     // install MATLAB using mpm
@@ -79,8 +79,8 @@ async function install(release?: string) {
     }
 
     // remove spaces and flatten product list
-    // let parsedProducts = products.flatMap(p => p.split(" "));
-    let parsedProducts = [];
+    const products = taskLib.getInput("products") || "MATLAB Parallel_Computing_Toolbox";
+    let parsedProducts = products.split(" ");
     // Add MATLAB and PCT by default
     parsedProducts.push("MATLAB", "Parallel_Computing_Toolbox");
     // Remove duplicates
@@ -93,14 +93,8 @@ async function install(release?: string) {
     ];
     mpmArguments = mpmArguments.concat(parsedProducts);
 
-    if (platform() === "win32") {
-        exitCode = await taskLib.exec(mpm, mpmArguments);
-    } else {
-        const bash = sh();
-        bash.arg(mpm);
-        bash.arg(mpmArguments);
-        exitCode = await bash.exec();
-    }
+    exitCode = await taskLib.exec(mpm, mpmArguments);
+
     try {
         toolLib.prependPath(path.join(toolpath, "bin"));
     } catch (err: any) {
@@ -140,13 +134,6 @@ async function curlsh(url: string, args: string | string[]) {
     // download script
     const scriptPath = await toolLib.downloadTool(url);
 
-    const bash = sh();
-    bash.arg(scriptPath);
-    bash.arg(args);
-    return bash.exec();
-}
-
-function sh() {
     // execute script
     const bashPath = taskLib.which("bash", true);
     let bash;
@@ -155,7 +142,9 @@ function sh() {
     } else {
         bash = taskLib.tool("sudo").arg("-E").line(bashPath);
     }
-    return bash;
+    bash.arg(scriptPath);
+    bash.arg(args);
+    return bash.exec();
 }
 
 run();

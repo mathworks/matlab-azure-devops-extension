@@ -2,14 +2,13 @@
 
 import ma = require("azure-pipelines-task-lib/mock-answer");
 import mr = require("azure-pipelines-task-lib/mock-run");
-import * as fs from "fs";
-import * as os from "os";
 import path = require("path");
 
 const tp = path.join(__dirname, "..", "main.js");
 const tr = new mr.TaskMockRunner(tp);
 
 tr.setInput("release", "R2020a");
+tr.setInput("products", "Simulink");
 
 const matlabRoot = path.join("C:", "toolcache", "MATLAB", "2022.2.0");
 const batchInstallRoot = path.join("C:", "Program Files", "matlab-batch");
@@ -60,29 +59,19 @@ tr.registerMock("./utils", {
 
 const a: ma.TaskLibAnswers = {
     which: {
-        bash: "bash.exe",
+        "bash": "bash.exe",
+        "mpm/bin/win64/mpm.exe": "mpm/bin/win64/mpm.exe",
     },
     checkPath: {
         "bash.exe": true,
+        "mpm/bin/win64/mpm.exe": true,
     },
     exec: {
-        "bash.exe mpm\\bin\\win64\\mpm.exe install --release=R2020a --destination=C:\\toolcache\\MATLAB\\2022.2.0 --products MATLAB Parallel_Computing_Toolbox": {
+        "mpm/bin/win64/mpm.exe install --release=R2020a --destination=C:/toolcache/MATLAB/2022.2.0 --products Simulink MATLAB Parallel_Computing_Toolbox": {
             code: 0,
             stdout: "Installed MATLAB",
-        },
-        "bash.exe mpm/bin/win64/mpm.exe install --release=R2020a --destination=C:/toolcache/MATLAB/2022.2.0 --products MATLAB Parallel_Computing_Toolbox": {
-            code: 0,
-            stdout: "Installed MATLAB",
-        },
-        "bash.exe install.sh C:\\Program Files\\matlab-batch": {
-            code: 0,
-            stdout: "Installed matlab-batch",
         },
         "bash.exe install.sh C:/Program Files/matlab-batch": {
-            code: 0,
-            stdout: "Installed matlab-batch",
-        },
-        "bash.exe chmod +x mpm\\bin\\win64\\mpm.exe": {
             code: 0,
             stdout: "Installed matlab-batch",
         },

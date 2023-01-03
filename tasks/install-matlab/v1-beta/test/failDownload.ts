@@ -18,6 +18,10 @@ tlClone.getVariable = (variable: string) => {
     }
     return null;
 };
+tr.registerMock("./utils", {
+    platform: () => "win32",
+    architecture: () => "x64",
+});
 // @ts-ignore
 tlClone.assertAgent = (variable: string) => {
     return;

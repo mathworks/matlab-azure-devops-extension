@@ -2,8 +2,6 @@
 
 import ma = require("azure-pipelines-task-lib/mock-answer");
 import mr = require("azure-pipelines-task-lib/mock-run");
-import * as fs from "fs";
-import * as os from "os";
 import path = require("path");
 
 const tp = path.join(__dirname, "..", "main.js");
@@ -14,9 +12,8 @@ tr.setInput("release", "R2020a");
 process.env.MATHWORKS_ACCOUNT = "euclid@mathworks.com";
 process.env.MATHWORKS_TOKEN = "token123456";
 
-const matlabRoot = "path/to/matlab";
-fs.writeFileSync(path.join(os.tmpdir(), "ephemeral_matlab_root"), matlabRoot);
-const batchInstallRoot = path.join("/", "opt", "matlab-batch");
+const matlabRoot = path.join("opt", "toolcache", "MATLAB", "2022.2.0");
+const batchInstallRoot =  path.join("/", "opt", "matlab-batch");
 
 // create assertAgent and getVariable mocks, support not added in this version of task-lib
 import tl = require("azure-pipelines-task-lib/mock-task");

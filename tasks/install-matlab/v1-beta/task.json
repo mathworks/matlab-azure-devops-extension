@@ -8,8 +8,8 @@
     "category": "Tool",
     "author": "The MathWorks, Inc.",
     "version": {
-        "Major": 0,
-        "Minor": 1,
+        "Major": 1,
+        "Minor": 0,
         "Patch": 0
     },
     "inputs": [
@@ -20,6 +20,14 @@
             "required": false,
             "defaultValue": "latest",
             "helpMarkDown": "MATLAB release to install. You can specify R2020a or a later release. If you do not specify `release`, the task installs the latest release of MATLAB."
+        },
+        {
+            "name": "products",
+            "type": "string",
+            "label": "Products",
+            "required": false,
+            "defaultValue": "MATLAB Parallel_Computing_Toolbox",
+            "helpMarkDown": "A space-separated list of MathWorks products to install."
         }
     ],
     "instanceNameFormat": "Install MATLAB",
