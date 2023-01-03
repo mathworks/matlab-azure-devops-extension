@@ -57,7 +57,7 @@ async function install(release?: string) {
         default:
             return Promise.reject(Error(`This action is not supported on ${platform()} runners using the ${architecture()} architecture.`));
     }
-    let mpm: string = await toolLib.downloadTool(mpmUrl);
+    let mpm: string = await toolLib.downloadTool(mpmUrl, "mpm");
     if (platform() === "win32") {
        const mpmExtractedPath: string = await toolLib.extractZip(mpm);
        mpm = path.join(mpmExtractedPath, "bin", "win64",  "mpm.exe");
