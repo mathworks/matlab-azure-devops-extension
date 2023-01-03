@@ -59,14 +59,20 @@ tr.registerMock("./utils", {
 const a: ma.TaskLibAnswers = {
     which: {
         bash: "/bin/bash",
-        mpm: "mpm",
+        chmod: "/bin/chmod",
+        mpm: "/runner-temp/mpm",
     },
     checkPath: {
         "/bin/bash": true,
-        "mpm": true,
+        "/bin/chmod": true,
+        "/runner-temp/mpm": true,
     },
     exec: {
-        "mpm install --release=R2020a --destination=/opt/toolcache/MATLAB/2022.2.0 --products Simulink MATLAB Parallel_Computing_Toolbox": {
+        "/runner-temp/mpm install --release=R2020a --destination=/opt/toolcache/MATLAB/2022.2.0 --products Simulink MATLAB Parallel_Computing_Toolbox": {
+            code: 0,
+            stdout: "Installed MATLAB",
+        },
+        "/bin/chmod +x mpm": {
             code: 0,
             stdout: "Installed MATLAB",
         },

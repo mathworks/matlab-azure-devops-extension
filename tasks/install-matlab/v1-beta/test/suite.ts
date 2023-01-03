@@ -4,7 +4,7 @@ import * as assert from "assert";
 import * as mt from "azure-pipelines-task-lib/mock-test";
 import * as path from "path";
 
-describe("InstallMATLAB V0 Suite", () => {
+describe("InstallMATLAB V1 Suite", () => {
     it("should succeed downloading and executing install script on linux", (done) => {
         const tp = path.join(__dirname, "downloadAndExecuteLinux.js");
         const tr = new mt.MockTestRunner(tp);

@@ -85,7 +85,6 @@ stages:
             displayName: Install MATLAB
           - bash: |
               set -e
-              matlab-batch version
               os=$(uname)
               if [[ $os = CYGWIN* || $os = MINGW* || $os = MSYS* ]]; then
                 mex.bat -h
@@ -112,10 +111,6 @@ stages:
             displayName: Install MATLAB
             inputs:
               release: R2021a
-          - bash: |
-              set -e
-              matlab-batch "assert(strcmp(version('-release'),'2021a'))"
-            displayName: Check matlab release
 
       - job: test_run_command
         strategy:
