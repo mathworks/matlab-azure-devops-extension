@@ -44,7 +44,7 @@ tr.registerMock("azure-pipelines-tool-lib/tool", {
         }
     },
     prependPath(toolPath: string) {
-        if ( !toolPath.includes(matlabRoot) && toolPath !== batchInstallRoot) {
+        if ( toolPath !== path.join(matlabRoot, "bin") && toolPath !== batchInstallRoot) {
             throw new Error(`Unexpected path: ${toolPath}`);
         }
     },
