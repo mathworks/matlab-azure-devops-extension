@@ -50,7 +50,7 @@ const a: ma.TaskLibAnswers = {
         "/bin/bash": true,
     },
     exec: {
-        "sudo -E /bin/bash install.sh R2020a": {
+        "sudo -E /bin/bash install.sh r2020a": {
             code: 1,
             stdout: "Failed to install MATLAB dependencies",
         },

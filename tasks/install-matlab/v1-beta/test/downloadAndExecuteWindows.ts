@@ -10,7 +10,7 @@ const tr = new mr.TaskMockRunner(tp);
 tr.setInput("release", "R2020a");
 tr.setInput("products", "Simulink");
 
-const matlabRoot = path.join("C:", "toolcache", "MATLAB", "2022.2.0");
+const matlabRoot = path.join("C:", "toolcache", "MATLAB", "2020.1.999");
 const batchInstallRoot = path.join("C:", "Program Files", "matlab-batch");
 
 // create assertAgent and getVariable mocks, support not added in this version of task-lib
@@ -67,7 +67,7 @@ const a: ma.TaskLibAnswers = {
         "mpm/bin/win64/mpm.exe": true,
     },
     exec: {
-        "mpm/bin/win64/mpm.exe install --release=R2020a --destination=C:/toolcache/MATLAB/2022.2.0 --products Simulink MATLAB Parallel_Computing_Toolbox": {
+        "mpm/bin/win64/mpm.exe install --release=r2020aLatest --destination=C:/toolcache/MATLAB/2020.1.999 --products Simulink MATLAB Parallel_Computing_Toolbox": {
             code: 0,
             stdout: "Installed MATLAB",
         },

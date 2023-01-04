@@ -10,7 +10,7 @@ const tr = new mr.TaskMockRunner(tp);
 tr.setInput("release", "R2020a");
 tr.setInput("products", "Simulink");
 
-const matlabRoot = path.join("opt", "toolcache", "MATLAB", "2022.2.0");
+const matlabRoot = path.join("opt", "toolcache", "MATLAB", "2020.1.999");
 const batchInstallRoot =  path.join("/", "opt", "matlab-batch");
 
 // create assertAgent and getVariable mocks, support not added in this version of task-lib
@@ -68,7 +68,7 @@ const a: ma.TaskLibAnswers = {
         "/runner-temp/mpm": true,
     },
     exec: {
-        "/runner-temp/mpm install --release=R2020a --destination=/opt/toolcache/MATLAB/2022.2.0 --products Simulink MATLAB Parallel_Computing_Toolbox": {
+        "/runner-temp/mpm install --release=r2020aLatest --destination=/opt/toolcache/MATLAB/2020.1.999 --products Simulink MATLAB Parallel_Computing_Toolbox": {
             code: 0,
             stdout: "Installed MATLAB",
         },
@@ -76,7 +76,7 @@ const a: ma.TaskLibAnswers = {
             code: 0,
             stdout: "Installed MATLAB",
         },
-        "sudo -E /bin/bash install.sh R2020a": {
+        "sudo -E /bin/bash install.sh r2020a": {
             code: 0,
             stdout: "Installed MATLAB dependencies",
         },

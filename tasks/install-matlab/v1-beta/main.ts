@@ -3,20 +3,28 @@
 import * as taskLib from "azure-pipelines-task-lib/task";
 import * as toolLib from "azure-pipelines-tool-lib/tool";
 import * as fs from "fs";
+import * as https from "https";
 import * as path from "path";
 import {architecture, platform} from "./utils";
+
+interface Release {
+    name: string;
+    version: string;
+    update: string;
+}
 
 async function run() {
     try {
         taskLib.setResourcePath(path.join( __dirname, "task.json"));
         const release = taskLib.getInput("release");
-        await install(release);
+        const products = taskLib.getInput("products");
+        await install(release, products);
     } catch (err) {
         taskLib.setResult(taskLib.TaskResult.Failed, (err as Error).message);
     }
 }
 
-async function install(release?: string) {
+async function install(release?: string, products?: string) {
     const serverType = taskLib.getVariable("System.ServerType");
     if (!serverType || serverType.toLowerCase() !== "hosted") {
         throw new Error(taskLib.loc("InstallNotSupportedOnSelfHosted"));
@@ -28,15 +36,17 @@ async function install(release?: string) {
     }
 
     let exitCode = 0;
-    if (!release || release.toLowerCase() === "latest") {
-        release = "r2022b";
+    if (!release) {
+        release = "latest";
     }
+
+    const parsedRelease: Release = await getReleaseInfo(release);
 
     // install core system dependencies on Linux
     if (platform() === "linux") {
         const depArgs: string[] = [];
         if (release !== undefined) {
-            depArgs.push(release);
+            depArgs.push(parsedRelease.name);
         }
         exitCode = await curlsh("https://ssd.mathworks.com/supportfiles/ci/matlab-deps/v0/install.sh", depArgs);
         if (exitCode !== 0) {
@@ -55,7 +65,7 @@ async function install(release?: string) {
             mpmUrl = mpmRootUrl + "glnxa64/mpm";
             break;
         default:
-            return Promise.reject(Error(`This action is not supported on ${platform()} runners using the ${architecture()} architecture.`));
+            return Promise.reject(Error(`This action is not supported on ${platform} runners using the ${architecture} architecture.`));
     }
     let mpm: string = await toolLib.downloadTool(mpmUrl);
     if (platform() === "win32") {
@@ -70,18 +80,20 @@ async function install(release?: string) {
     }
 
     // install MATLAB using mpm
-    let toolpath: string = toolLib.findLocalTool("MATLAB", "2022.2.0");
+    let toolpath: string = toolLib.findLocalTool("MATLAB", parsedRelease.version);
     let alreadyExists = false;
     if (toolpath) {
         // core.info(`Found MATLAB ${release} in cache at ${toolpath}.`);
         alreadyExists = true;
     } else {
         fs.writeFileSync(".keep", "");
-        toolpath = await toolLib.cacheFile(".keep", ".keep", "MATLAB", "2022.2.0");
+        toolpath = await toolLib.cacheFile(".keep", ".keep", "MATLAB", parsedRelease.version);
     }
 
     // remove spaces and flatten product list
-    const products = taskLib.getInput("products") || "MATLAB Parallel_Computing_Toolbox";
+    if (!products) {
+        products = "";
+    }
     let parsedProducts = products.split(" ");
     // Add MATLAB and PCT by default
     parsedProducts.push("MATLAB", "Parallel_Computing_Toolbox");
@@ -89,7 +101,7 @@ async function install(release?: string) {
     parsedProducts = [...new Set(parsedProducts)];
     let mpmArguments: string[] = [
         "install",
-        `--release=${release}`,
+        `--release=${parsedRelease.name + parsedRelease.update}`,
         `--destination=${toolpath}`,
         "--products",
     ];
@@ -149,4 +161,57 @@ async function curlsh(url: string, args: string | string[]) {
     return bash.exec();
 }
 
+async function resolveLatest(): Promise<string> {
+    return new Promise((resolve, reject) => {
+        https.get("https://ssd.mathworks.com/supportfiles/ci/matlab-release/v0/latest", (resp) => {
+            if (resp.statusCode != 200) {
+                reject(Error(`Unable to retrieve the MATLAB release information. Contact MathWorks at continuous-integration@mathworks.com if the problem persists.`));
+            }
+            resp.on("data", (d) => {
+                resolve(d.toString());
+            })
+        })
+    })
+}
+
+export async function getReleaseInfo(release: string): Promise<Release> {
+    // Get release name from input parameter
+    let name: string;
+    if ( release.toLowerCase().trim() === "latest") {
+        try {
+            name = await resolveLatest();    
+        }
+        catch {
+            return Promise.reject(Error(`Unable to retrieve the MATLAB release information. Contact MathWorks at continuous-integration@mathworks.com if the problem persists.`));
+        }
+    } else {
+        let nameMatch = release.toLowerCase().match(/r[0-9]{4}[a-b]/);
+        if ( !nameMatch ) {
+            return Promise.reject(Error(`${release} is invalid or unsupported. Specify the value as R2020a or a later release.`));
+        }
+        name = nameMatch[0];
+    }
+
+    // create semantic version of format year.semiannual.update from release
+    let year = name.slice(1,5);
+    let semiannual = name[5] === "a"? "1": "2";
+    let updateMatch = release.toLowerCase().match(/u[0-9]/);
+    let version = `${year}.${semiannual}`;
+    let update: string;
+    if (updateMatch) {
+        update = updateMatch[0]
+        version += `.${update[1]}`;
+    } else {
+        update = "Latest";
+        version += ".999"
+    }
+
+    return {
+        name: name,
+        version: version,
+        update: update,
+    }
+}
+
 run();
+
