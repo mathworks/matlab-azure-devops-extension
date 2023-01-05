@@ -33,7 +33,7 @@
     "instanceNameFormat": "Install MATLAB",
     "execution": {
         "Node10": {
-            "target": "src/main.js"
+            "target": "main.js"
         }
     },
     "messages": {

@@ -2,8 +2,8 @@
 
 import * as taskLib from "azure-pipelines-task-lib/task";
 import * as path from "path";
-import * as install from "./install";
-import {architecture, platform} from "./utils";
+import * as install from "./src/install";
+import {architecture, platform} from "./src/utils";
 
 async function run() {
     try {
