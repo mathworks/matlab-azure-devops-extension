@@ -6,7 +6,6 @@ import * as path from "path";
 import * as matlab from "./matlab";
 
 export async function setup(platform: string, architecture: string): Promise<string> {
-    let exitCode = 0;
     const mpmRootUrl: string = "https://www.mathworks.com/mpm/";
     let mpmUrl: string;
     switch (platform) {
@@ -21,10 +20,10 @@ export async function setup(platform: string, architecture: string): Promise<str
     }
     let mpm: string = await toolLib.downloadTool(mpmUrl);
     if (platform === "win32") {
-       const mpmExtractedPath: string = await toolLib.extractZip(mpm);
-       mpm = path.join(mpmExtractedPath, "bin", "win64",  "mpm.exe");
+        const mpmExtractedPath: string = await toolLib.extractZip(mpm);
+        mpm = path.join(mpmExtractedPath, "bin", "win64",  "mpm.exe");
     } else {
-        exitCode = await taskLib.exec("chmod", ["+x", mpm]);
+        await taskLib.exec("chmod", ["+x", mpm]);
     }
     return mpm;
 }

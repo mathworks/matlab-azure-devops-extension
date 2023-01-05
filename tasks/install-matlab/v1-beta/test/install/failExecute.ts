@@ -1,10 +1,10 @@
-// Copyright 2020 The MathWorks, Inc.
+// Copyright 2023 The MathWorks, Inc.
 
 import ma = require("azure-pipelines-task-lib/mock-answer");
 import mr = require("azure-pipelines-task-lib/mock-run");
 import path = require("path");
 
-const tp = path.join(__dirname, "..", "main.js");
+const tp = path.join(__dirname, "..", "..", "main.js");
 const tr = new mr.TaskMockRunner(tp);
 
 tr.setInput("release", "R2020a");

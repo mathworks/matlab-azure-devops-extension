@@ -1,17 +1,19 @@
-// Copyright 2020-2022 The MathWorks, Inc.
+// Copyright 2023 The MathWorks, Inc.
 
 import ma = require("azure-pipelines-task-lib/mock-answer");
 import mr = require("azure-pipelines-task-lib/mock-run");
 import path = require("path");
 
-const tp = path.join(__dirname, "..", "main.js");
+const tp = path.join(__dirname, "..", "..", "main.js");
 const tr = new mr.TaskMockRunner(tp);
 
 tr.setInput("release", "R2020a");
-tr.setInput("products", "Simulink");
 
-const matlabRoot = path.join("C:", "toolcache", "MATLAB", "2020.1.999");
-const batchInstallRoot = path.join("C:", "Program Files", "matlab-batch");
+process.env.MATHWORKS_ACCOUNT = "euclid@mathworks.com";
+process.env.MATHWORKS_TOKEN = "token123456";
+
+const matlabRoot = path.join("opt", "toolcache", "MATLAB", "2022.2.0");
+const batchInstallRoot =  path.join("/", "opt", "matlab-batch");
 
 // create assertAgent and getVariable mocks, support not added in this version of task-lib
 import tl = require("azure-pipelines-task-lib/mock-task");
@@ -31,51 +33,45 @@ tr.registerMock("azure-pipelines-task-lib/mock-task", tlClone);
 
 tr.registerMock("azure-pipelines-tool-lib/tool", {
     downloadTool(url: string) {
-        if (url === "https://www.mathworks.com/mpm/win64/mpm") {
-            return "mpm";
+        if (url === "https://ssd.mathworks.com/supportfiles/ci/matlab-deps/v0/install.sh") {
+            return "install.sh";
+        } else if (url === "https://ssd.mathworks.com/supportfiles/ci/ephemeral-matlab/v0/ci-install.sh") {
+            return "ci-install.sh";
         } else if (url === "https://ssd.mathworks.com/supportfiles/ci/matlab-batch/v0/install.sh") {
             return "install.sh";
         } else {
             throw new Error("Incorrect URL");
         }
     },
-    findLocalTool(toolName: string, toolVersion: string) {
-        return path.join("C:", "toolcache", toolName, toolVersion);
-    },
-    extractZip(zipPath: string) {
-        return zipPath;
-    },
     prependPath(toolPath: string) {
-        if ( !toolPath.includes(matlabRoot) && toolPath !== batchInstallRoot) {
+        if ( toolPath !== path.join(matlabRoot, "bin") && toolPath !== batchInstallRoot) {
             throw new Error(`Unexpected path: ${toolPath}`);
         }
     },
 });
 
 tr.registerMock("./src/utils", {
-    platform: () => "win32",
+    platform: () => "linux",
     architecture: () => "x64",
 });
 
 const a: ma.TaskLibAnswers = {
     which: {
-        "bash": "bash.exe",
-        "mpm/bin/win64/mpm.exe": "mpm/bin/win64/mpm.exe",
+        bash: "/bin/bash",
     },
     checkPath: {
-        "bash.exe": true,
-        "mpm/bin/win64/mpm.exe": true,
+        "/bin/bash": true,
     },
     exec: {
-        "bash.exe chmod +x mpm/bin/win64/mpm.exe": {
+        "sudo -E /bin/bash install.sh R2020a": {
             code: 0,
-            stdout: "Setup mpm",
+            stdout: "Installed MATLAB dependencies",
         },
-        "mpm/bin/win64/mpm.exe install --release=r2020aLatest --destination=C:/toolcache/MATLAB/2020.1.999 --products Simulink MATLAB Parallel_Computing_Toolbox": {
+        "sudo -E /bin/bash ci-install.sh --release R2020a --skip-activation": {
             code: 0,
-            stdout: "Installed MATLAB",
+            stdout: "Installed MATLAB without activating",
         },
-        "bash.exe install.sh C:/Program Files/matlab-batch": {
+        "sudo -E /bin/bash install.sh /opt/matlab-batch": {
             code: 0,
             stdout: "Installed matlab-batch",
         },
