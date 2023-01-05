@@ -12,7 +12,7 @@ describe("InstallMATLAB V1 Suite", () => {
         tr.run();
 
         assert(tr.succeeded, "should have succeeded");
-        assert(tr.stdOutContained("Installed MATLAB"), "should have executed install script");
+        assert(tr.stdOutContained("Installed matlab-batch"), "should have executed install script");
 
         done();
     });
@@ -24,7 +24,7 @@ describe("InstallMATLAB V1 Suite", () => {
         tr.run();
 
         assert(tr.succeeded, "should have succeeded");
-        assert(tr.stdOutContained("Installed MATLAB"), "should have executed install script");
+        assert(tr.stdOutContained("Installed matlab-batch"), "should have executed install script");
 
         done();
     });

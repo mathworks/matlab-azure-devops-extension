@@ -1,4 +1,4 @@
-// Copyright 2020-2022 The MathWorks, Inc.
+// Copyright 2023 The MathWorks, Inc.
 
 export function platform() {
     return process.platform;

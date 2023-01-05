@@ -4,7 +4,7 @@ import ma = require("azure-pipelines-task-lib/mock-answer");
 import mr = require("azure-pipelines-task-lib/mock-run");
 import path = require("path");
 
-const tp = path.join(__dirname, "..", "main.js");
+const tp = path.join(__dirname, "..", "src", "main.js");
 const tr = new mr.TaskMockRunner(tp);
 
 tr.setInput("release", "R2020a");
@@ -67,15 +67,15 @@ const a: ma.TaskLibAnswers = {
         "mpm/bin/win64/mpm.exe": true,
     },
     exec: {
+        "bash.exe chmod +x mpm/bin/win64/mpm.exe": {
+            code: 0,
+            stdout: "Setup mpm",
+        },
         "mpm/bin/win64/mpm.exe install --release=r2020aLatest --destination=C:/toolcache/MATLAB/2020.1.999 --products Simulink MATLAB Parallel_Computing_Toolbox": {
             code: 0,
             stdout: "Installed MATLAB",
         },
         "bash.exe install.sh C:/Program Files/matlab-batch": {
-            code: 0,
-            stdout: "Installed matlab-batch",
-        },
-        "bash.exe chmod +x mpm/bin/win64/mpm.exe": {
             code: 0,
             stdout: "Installed matlab-batch",
         },

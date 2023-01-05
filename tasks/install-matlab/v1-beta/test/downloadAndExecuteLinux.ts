@@ -4,7 +4,7 @@ import ma = require("azure-pipelines-task-lib/mock-answer");
 import mr = require("azure-pipelines-task-lib/mock-run");
 import path = require("path");
 
-const tp = path.join(__dirname, "..", "main.js");
+const tp = path.join(__dirname, "..", "src", "main.js");
 const tr = new mr.TaskMockRunner(tp);
 
 tr.setInput("release", "R2020a");
@@ -68,23 +68,19 @@ const a: ma.TaskLibAnswers = {
         "/runner-temp/mpm": true,
     },
     exec: {
+        "sudo -E /bin/bash install.sh r2020a": {
+            code: 0,
+            stdout: "Installed dependencies",
+        },
+        "/bin/chmod +x mpm": {
+            code: 0,
+            stdout: "Setup mpm",
+        },
         "/runner-temp/mpm install --release=r2020aLatest --destination=/opt/toolcache/MATLAB/2020.1.999 --products Simulink MATLAB Parallel_Computing_Toolbox": {
             code: 0,
             stdout: "Installed MATLAB",
         },
-        "/bin/chmod +x mpm": {
-            code: 0,
-            stdout: "Installed MATLAB",
-        },
-        "sudo -E /bin/bash install.sh r2020a": {
-            code: 0,
-            stdout: "Installed MATLAB dependencies",
-        },
         "sudo -E /bin/bash install.sh /opt/matlab-batch": {
-            code: 0,
-            stdout: "Installed matlab-batch",
-        },
-        "sudo -E /bin/bash chmod +x mpm": {
             code: 0,
             stdout: "Installed matlab-batch",
         },
