@@ -79,17 +79,15 @@ async function resolveLatest(): Promise<string> {
 export async function setupBatch(platform: string): Promise<void> {
     const batchInstallDir = script.defaultInstallRoot(platform, "matlab-batch");
     const exitCode = await script.downloadAndRunScript(platform, "https://ssd.mathworks.com/supportfiles/ci/matlab-batch/v0/install.sh", batchInstallDir);
+
     if (exitCode !== 0) {
-        throw new Error(taskLib.loc("FailedToExecuteInstallScript", exitCode));
+        return Promise.reject(Error(taskLib.loc("FailedToExecuteInstallScript", exitCode)));
     }
+
     try {
         toolLib.prependPath(batchInstallDir);
     } catch (err: any) {
         throw new Error(taskLib.loc("FailedToAddToPath", err.message));
-    }
-
-    if (exitCode !== 0) {
-        return Promise.reject(Error(`Script exited with non-zero code ${exitCode}`));
     }
     return;
 }

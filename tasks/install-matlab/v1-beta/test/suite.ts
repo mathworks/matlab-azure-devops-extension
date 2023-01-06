@@ -7,7 +7,7 @@ import scriptTests from "./script.test";
 
 describe("InstallMATLAB V1 Suite", () => {
     // installTests();
-    // matlabTests();
+    matlabTests();
     mpmTests();
-    // scriptTests();
+    scriptTests();
 });

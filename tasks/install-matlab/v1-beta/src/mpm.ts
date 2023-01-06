@@ -35,7 +35,7 @@ export async function install(
     mpmPath: string,
     release: matlab.IRelease,
     destination: string,
-    products: string
+    products: string,
 ): Promise<void> {
     let parsedProducts = products.split(" ");
     // Add MATLAB and PCT by default

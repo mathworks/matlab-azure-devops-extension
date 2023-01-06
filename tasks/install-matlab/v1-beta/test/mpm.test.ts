@@ -12,28 +12,30 @@ export default function suite() {
     let stubExtractZip: sinon.SinonStub;
     let stubExec: sinon.SinonStub;
 
-    beforeEach(() => {
-        stubDownloadTool = sinon.stub(toolLib, "downloadTool");
-        stubDownloadTool.callsFake((url, fileName?, handlers?) => {
-            return Promise.resolve("/path/to/mpm");
-        });
-        stubExtractZip = sinon.stub(toolLib, "extractZip");
-        stubExtractZip.callsFake((file, destination?) => {
-            return Promise.resolve("/path/to/mpm");
-        });
-        stubExec = sinon.stub(taskLib, "exec");
-        stubExec.callsFake((bin, args) => {
-            return Promise.resolve(0);
-        });
-    });
-
-    afterEach(() => {
-        stubDownloadTool.restore();
-        stubExtractZip.restore();
-        stubExec.restore();
-    });
-
     describe("mpm.ts test suite", () => {
+        beforeEach(() => {
+            // setup stubs
+            stubDownloadTool = sinon.stub(toolLib, "downloadTool");
+            stubDownloadTool.callsFake((url, fileName?, handlers?) => {
+                return Promise.resolve("/path/to/mpm");
+            });
+            stubExtractZip = sinon.stub(toolLib, "extractZip");
+            stubExtractZip.callsFake((file, destination?) => {
+                return Promise.resolve("/path/to/mpm");
+            });
+            stubExec = sinon.stub(taskLib, "exec");
+            stubExec.callsFake((bin, args) => {
+                return Promise.resolve(0);
+            });
+        });
+
+        afterEach(() => {
+            // restore stubs
+            stubDownloadTool.restore();
+            stubExtractZip.restore();
+            stubExec.restore();
+        });
+
         it(`setup works on linux`, async () => {
             const platform = "linux";
 
