@@ -1,6 +1,5 @@
 // Copyright 2023 The MathWorks, Inc.
 
-import * as taskLib from "azure-pipelines-task-lib/task";
 import * as toolLib from "azure-pipelines-tool-lib/tool";
 import * as fs from "fs";
 import * as https from "https";
@@ -16,7 +15,6 @@ export async function makeToolcacheDir(release: IRelease): Promise<[string, bool
     let toolpath: string = toolLib.findLocalTool("MATLAB", release.version);
     let alreadyExists = false;
     if (toolpath) {
-        // core.info(`Found MATLAB ${release} in cache at ${toolpath}.`);
         alreadyExists = true;
     } else {
         fs.writeFileSync(".keep", "");
@@ -79,17 +77,15 @@ async function resolveLatest(): Promise<string> {
 export async function setupBatch(platform: string): Promise<void> {
     const batchInstallDir = script.defaultInstallRoot(platform, "matlab-batch");
     const exitCode = await script.downloadAndRunScript(platform, "https://ssd.mathworks.com/supportfiles/ci/matlab-batch/v0/install.sh", batchInstallDir);
-    if (exitCode !== 0) {
-        throw new Error(taskLib.loc("FailedToExecuteInstallScript", exitCode));
-    }
-    try {
-        toolLib.prependPath(batchInstallDir);
-    } catch (err: any) {
-        throw new Error(taskLib.loc("FailedToAddToPath", err.message));
-    }
 
     if (exitCode !== 0) {
         return Promise.reject(Error(`Script exited with non-zero code ${exitCode}`));
+    }
+
+    try {
+        toolLib.prependPath(batchInstallDir);
+    } catch (err: any) {
+        throw new Error("Failed to add MATLAB to system path");
     }
     return;
 }

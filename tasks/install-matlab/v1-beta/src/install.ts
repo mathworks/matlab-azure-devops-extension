@@ -1,6 +1,5 @@
 // Copyright 2023 The MathWorks, Inc.
 
-import * as taskLib from "azure-pipelines-task-lib/task";
 import * as toolLib from "azure-pipelines-tool-lib/tool";
 import * as path from "path";
 import * as matlab from "./matlab";
@@ -8,29 +7,15 @@ import * as mpm from "./mpm";
 import * as script from "./script";
 
 export async function install(platform: string, architecture: string, release: string, products: string) {
-    // verify runner compatibility
-    const serverType = taskLib.getVariable("System.ServerType");
-    if (!serverType || serverType.toLowerCase() !== "hosted") {
-        throw new Error(taskLib.loc("InstallNotSupportedOnSelfHosted"));
-    }
-
-    if (architecture !== "x64") {
-        const msg = `This task is not supported on ${platform} runners using the ${architecture} architecture.`;
-        throw new Error(msg);
-    }
-
     const parsedRelease: matlab.IRelease = await matlab.getReleaseInfo(release);
 
     // install core system dependencies on Linux
     let exitCode = 0;
     if (platform === "linux") {
-        const depArgs: string[] = [];
-        if (release !== undefined) {
-            depArgs.push(parsedRelease.name);
-        }
+        const depArgs: string[] = [parsedRelease.name];
         exitCode = await script.downloadAndRunScript(platform, "https://ssd.mathworks.com/supportfiles/ci/matlab-deps/v0/install.sh", depArgs);
         if (exitCode !== 0) {
-            throw new Error(taskLib.loc("FailedToExecuteInstallScript", exitCode));
+            throw new Error(`Script exited with non-zero code ${exitCode}`);
         }
     }
 
@@ -47,7 +32,7 @@ export async function install(platform: string, architecture: string, release: s
     try {
         toolLib.prependPath(path.join(toolpath, "bin"));
     } catch (err: any) {
-        throw new Error(taskLib.loc("FailedToAddToPath", err.message));
+        throw new Error("Failed to add MATLAB to system path.");
     }
 
     // install matlab-batch

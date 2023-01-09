@@ -8,6 +8,9 @@ import * as matlab from "./matlab";
 export async function setup(platform: string, architecture: string): Promise<string> {
     const mpmRootUrl: string = "https://www.mathworks.com/mpm/";
     let mpmUrl: string;
+    if (architecture !== "x64") {
+        return Promise.reject(Error(`This action is not supported on ${platform} runners using the ${architecture} architecture.`));
+    }
     switch (platform) {
         case "win32":
             mpmUrl = mpmRootUrl + "win64/mpm";
@@ -23,17 +26,20 @@ export async function setup(platform: string, architecture: string): Promise<str
         const mpmExtractedPath: string = await toolLib.extractZip(mpm);
         mpm = path.join(mpmExtractedPath, "bin", "win64",  "mpm.exe");
     } else {
-        await taskLib.exec("chmod", ["+x", mpm]);
+        const exitCode = await taskLib.exec("chmod", ["+x", mpm]);
+        if (exitCode !== 0) {
+            return Promise.reject(Error("Unable to set up mpm."));
+        }
     }
     return mpm;
 }
 
-export async function install(mpmPath: string, release: matlab.IRelease, destination: string, products: string):
-    Promise<void> {
-    // remove spaces and flatten product list
-    if (!products) {
-        products = "";
-    }
+export async function install(
+    mpmPath: string,
+    release: matlab.IRelease,
+    destination: string,
+    products: string,
+): Promise<void> {
     let parsedProducts = products.split(" ");
     // Add MATLAB and PCT by default
     parsedProducts.push("MATLAB", "Parallel_Computing_Toolbox");
