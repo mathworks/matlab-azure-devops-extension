@@ -378,32 +378,24 @@ stages:
       - job: test_run_build
         strategy:
           matrix:
-            microsoft_hosted_linux_v0:
+            microsoft_hosted_linux:
               poolName: Azure Pipelines
               vmImage: ubuntu-22.04
               setupTask: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
-            microsoft_hosted_macos_v0:
+            microsoft_hosted_macos:
               poolName: Azure Pipelines
               vmImage: macOS-latest
               setupTask: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
-            microsoft_hosted_windows_v0:
+            microsoft_hosted_windows:
               poolName: Azure Pipelines
               vmImage: windows-latest
               setupTask: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
-            microsoft_hosted_linux_v1beta:
-              poolName: Azure Pipelines
-              vmImage: ubuntu-22.04
-              setupTask: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@1
-            microsoft_hosted_windows_v1beta:
-              poolName: Azure Pipelines
-              vmImage: windows-latest
-              setupTask: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@1
         pool:
           name: $(poolName)
           vmImage: $(vmImage)
         steps:
           - checkout: none
-          - task: $(setupTask)
+          - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
             displayName: Install MATLAB on Microsoft-hosted agents
             condition: not(startsWith(variables['Agent.Name'], 'vmss'))
           - bash: |
