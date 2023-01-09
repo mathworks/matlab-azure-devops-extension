@@ -93,7 +93,7 @@ stages:
               fi
             displayName: Check matlab and mex
 
-      - job: test_install_release_v1beta
+      - job: test_install_release_and_products_v1beta
         strategy:
           matrix:
             microsoft_hosted_linux:
@@ -110,7 +110,8 @@ stages:
           - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@1
             displayName: Install MATLAB
             inputs:
-              release: R2021a
+              release: R2022a
+              products: MATLAB Simulink
 
       - job: test_run_command
         strategy:
