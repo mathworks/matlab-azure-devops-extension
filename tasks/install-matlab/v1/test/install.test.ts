@@ -65,7 +65,7 @@ export default function suite() {
             assert(stubDownloadAndRunScript.notCalled);
         });
 
-        it("Installs MATLAB to folder MATLAB.app on Mac", async () => {
+        it("installs MATLAB to folder MATLAB.app on mac", async () => {
             const mpmPath = "/path/to/mpm";
             stubMpmSetup.callsFake((rel) => {
                 return mpmPath;
