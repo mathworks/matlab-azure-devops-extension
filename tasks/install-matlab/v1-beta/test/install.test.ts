@@ -23,11 +23,12 @@ export default function suite() {
         const release = "latest";
         const products = "MATLAB";
         const toolcacheDir = "/path/to/matlab";
+        const releaseInfo = {name: "r2022b", version: "2022.2.999", update: "latest"};
 
         beforeEach(() => {
             stubGetReleaseInfo = sinon.stub(matlab, "getReleaseInfo");
             stubGetReleaseInfo.callsFake((rel) => {
-                return {name: "r2022b", version: "2022.2.999", update: "latest"};
+                return releaseInfo;
             });
             stubDownloadAndRunScript = sinon.stub(script, "downloadAndRunScript");
             stubDownloadAndRunScript.callsFake((plat, url, args) => {
@@ -62,6 +63,18 @@ export default function suite() {
             assert.doesNotReject(async () => { await install.install(windows, architecture, release, products); });
             await install.install(windows, architecture, release, products);
             assert(stubDownloadAndRunScript.notCalled);
+        });
+
+        it("Installs MATLAB to folder MATLAB.app on Mac", async () => {
+            const mpmPath = "/path/to/mpm";
+            stubMpmSetup.callsFake((rel) => {
+                return mpmPath;
+            });
+
+            assert.doesNotReject(async () => { await install.install("darwin", architecture, release, products); });
+            await install.install("darwin", architecture, release, products).then(() => {
+                assert(stubMpmInstall.calledWithMatch(mpmPath, releaseInfo, toolcacheDir + "/MATLAB.app", products));
+            });
         });
 
         it("fails if setup script fails", async () => {
