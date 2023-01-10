@@ -5,13 +5,13 @@ import * as fs from "fs";
 import * as https from "https";
 import * as script from "./script";
 
-export interface IRelease {
+export interface Release {
     name: string;
     version: string;
     update: string;
 }
 
-export async function makeToolcacheDir(release: IRelease): Promise<[string, boolean]> {
+export async function makeToolcacheDir(release: Release): Promise<[string, boolean]> {
     let toolpath: string = toolLib.findLocalTool("MATLAB", release.version);
     let alreadyExists = false;
     if (toolpath) {
@@ -23,7 +23,7 @@ export async function makeToolcacheDir(release: IRelease): Promise<[string, bool
     return [toolpath, alreadyExists];
 }
 
-export async function getReleaseInfo(release: string): Promise<IRelease> {
+export async function getReleaseInfo(release: string): Promise<Release> {
     // Get release name from input parameter
     let name: string;
     if ( release.toLowerCase().trim() === "latest") {

@@ -7,7 +7,7 @@ import * as mpm from "./mpm";
 import * as script from "./script";
 
 export async function install(platform: string, architecture: string, release: string, products: string) {
-    const parsedRelease: matlab.IRelease = await matlab.getReleaseInfo(release);
+    const parsedRelease: matlab.Release = await matlab.getReleaseInfo(release);
 
     // install core system dependencies on Linux
     let exitCode = 0;

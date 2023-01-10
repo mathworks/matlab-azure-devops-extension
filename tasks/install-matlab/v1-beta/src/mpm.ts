@@ -36,7 +36,7 @@ export async function setup(platform: string, architecture: string): Promise<str
 
 export async function install(
     mpmPath: string,
-    release: matlab.IRelease,
+    release: matlab.Release,
     destination: string,
     products: string,
 ): Promise<void> {
