@@ -68,9 +68,6 @@ stages:
               set -e
               matlab -batch "assert(strcmp(version('-release'),'2021a'))"
             displayName: Check matlab release
-            env:
-              MATHWORKS_ACCOUNT: $(MATHWORKS_ACCOUNT)
-              MATHWORKS_TOKEN: $(MATHWORKS_TOKEN)
 
       - job: test_install_v1
         strategy:
