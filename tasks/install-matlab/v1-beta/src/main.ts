@@ -2,14 +2,14 @@
 
 import * as taskLib from "azure-pipelines-task-lib/task";
 import * as path from "path";
-import * as install from "./src/install";
-import {architecture, platform} from "./src/utils";
+import * as install from "./install";
+import {architecture, platform} from "./utils";
 
 async function run() {
     try {
-        taskLib.setResourcePath(path.join( __dirname, "task.json"));
+        taskLib.setResourcePath(path.join( __dirname, "..", "task.json"));
         const release = taskLib.getInput("release") || "latest";
-        const products = taskLib.getInput("products") || "MATLAB";
+        const products = taskLib.getInput("products") || "MATLAB Parallel_Computing_Toolbox";
         await install.install(platform(), architecture(), release, products);
     } catch (err) {
         taskLib.setResult(taskLib.TaskResult.Failed, (err as Error).message);

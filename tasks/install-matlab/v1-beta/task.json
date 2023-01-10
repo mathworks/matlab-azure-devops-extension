@@ -3,10 +3,11 @@
     "id": "553fa7ff-af12-4821-8ace-6bf3dc410e62",
     "name": "InstallMATLAB",
     "friendlyName": "Install MATLAB",
-    "description": "Install MATLAB on a Linux-based Microsoft-hosted agent. Currently, this task is available only for public projects and does not include transformation products, such as MATLAB Coder and MATLAB Compiler.",
+    "description": "Install MATLAB on a Microsoft-hosted agent. Public licensing is not available for transformation products, such as MATLAB Coder and MATLAB Compiler.",
     "helpMarkDown": "",
     "category": "Tool",
     "author": "The MathWorks, Inc.",
+    "preview": true,
     "version": {
         "Major": 1,
         "Minor": 0,
@@ -27,19 +28,13 @@
             "label": "Products",
             "required": false,
             "defaultValue": "MATLAB Parallel_Computing_Toolbox",
-            "helpMarkDown": "A space-separated list of MathWorks products to install."
+            "helpMarkDown": "Space-separated list of products to install. If a product name contains white-space characters, replace them with underscores."
         }
     ],
     "instanceNameFormat": "Install MATLAB",
     "execution": {
         "Node10": {
-            "target": "main.js"
+            "target": "src/main.js"
         }
-    },
-    "messages": {
-        "InstallNotSupportedOnSelfHosted": "Install MATLAB task is not supported on self-hosted agents. To install MATLAB on this machine, use the standard installer.",
-        "FailedToDownloadInstallScript": "Failed to download install script: %s",
-        "FailedToExecuteInstallScript": "Failed to execute install script. Exited with code '%s'.",
-        "FailedToAddToPath": "Failed to add MATLAB to system path: %s"
     }
 }

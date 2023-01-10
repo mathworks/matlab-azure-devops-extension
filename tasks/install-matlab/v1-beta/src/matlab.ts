@@ -79,13 +79,13 @@ export async function setupBatch(platform: string): Promise<void> {
     const exitCode = await script.downloadAndRunScript(platform, "https://ssd.mathworks.com/supportfiles/ci/matlab-batch/v0/install.sh", batchInstallDir);
 
     if (exitCode !== 0) {
-        return Promise.reject(Error(`Script exited with non-zero code ${exitCode}`));
+        return Promise.reject(Error(`Failed to install matlab-batch. Script exited with non-zero code ${exitCode}.`));
     }
 
     try {
         toolLib.prependPath(batchInstallDir);
     } catch (err: any) {
-        throw new Error("Failed to add MATLAB to system path");
+        throw new Error("Failed to add MATLAB to system path.");
     }
     return;
 }

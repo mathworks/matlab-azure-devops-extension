@@ -67,7 +67,7 @@ stages:
               matlab -batch "assert(strcmp(version('-release'),'2021a'))"
             displayName: Check matlab release
 
-      - job: test_install_v1beta
+      - job: test_install_v1
         strategy:
           matrix:
             microsoft_hosted_linux:
@@ -93,7 +93,7 @@ stages:
               fi
             displayName: Check matlab and mex
 
-      - job: test_install_release_and_products_v1beta
+      - job: test_install_release_and_products_v1
         strategy:
           matrix:
             microsoft_hosted_linux:

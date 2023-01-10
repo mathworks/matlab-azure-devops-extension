@@ -55,7 +55,7 @@ export async function install(
 
     const exitCode = await taskLib.exec(mpmPath, mpmArguments);
     if (exitCode !== 0) {
-        return Promise.reject(Error(`Script exited with non-zero code ${exitCode}`));
+        return Promise.reject(Error(`Failed to install MATLAB.`));
     }
     return;
 }

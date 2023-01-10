@@ -15,7 +15,7 @@ export async function install(platform: string, architecture: string, release: s
         const depArgs: string[] = [parsedRelease.name];
         exitCode = await script.downloadAndRunScript(platform, "https://ssd.mathworks.com/supportfiles/ci/matlab-deps/v0/install.sh", depArgs);
         if (exitCode !== 0) {
-            throw new Error(`Script exited with non-zero code ${exitCode}`);
+            throw new Error("Failed to install core system dependencies.");
         }
     }
 
