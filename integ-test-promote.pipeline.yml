@@ -10,6 +10,8 @@ pr: none
 stages:
   - stage: integration_test
     displayName: Integration test
+    variables:
+      - group: matlab-batch-token
     jobs:
       - job: test_install_v0
         strategy:
@@ -66,6 +68,9 @@ stages:
               set -e
               matlab -batch "assert(strcmp(version('-release'),'2021a'))"
             displayName: Check matlab release
+            env:
+              MATHWORKS_ACCOUNT: $(MATHWORKS_ACCOUNT)
+              MATHWORKS_TOKEN: $(MATHWORKS_TOKEN)
 
       - job: test_install_v1
         strategy:
@@ -85,6 +90,7 @@ stages:
             displayName: Install MATLAB
           - bash: |
               set -e
+              matlab-batch "assert(~isempty(ver('matlab')))"
               os=$(uname)
               if [[ $os = CYGWIN* || $os = MINGW* || $os = MSYS* ]]; then
                 mex.bat -h
@@ -92,6 +98,10 @@ stages:
                 mex -h
               fi
             displayName: Check matlab and mex
+            env:
+              MATHWORKS_ACCOUNT: $(MATHWORKS_ACCOUNT)
+              MATHWORKS_TOKEN: $(MATHWORKS_TOKEN)
+
 
       - job: test_install_release_and_products_v1
         strategy:
@@ -112,6 +122,19 @@ stages:
             inputs:
               release: R2022a
               products: MATLAB Simulink
+          - bash: |
+              set -e
+              matlab-batch "assert(strcmp(version('-release'),'2022a') && ~isempty(ver('simulink')))"
+              os=$(uname)
+              if [[ $os = CYGWIN* || $os = MINGW* || $os = MSYS* ]]; then
+                mex.bat -h
+              else
+                mex -h
+              fi
+            displayName: Check matlab and mex
+            env:
+              MATHWORKS_ACCOUNT: $(MATHWORKS_ACCOUNT)
+              MATHWORKS_TOKEN: $(MATHWORKS_TOKEN)
 
       - job: test_run_command
         strategy:
