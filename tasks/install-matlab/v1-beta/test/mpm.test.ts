@@ -55,6 +55,16 @@ export default function suite() {
             assert(stubExec.notCalled);
         });
 
+        it(`setup works on mac`, async () => {
+            const platform = "darwin";
+
+            const mpmPath = await mpm.setup(platform, arch);
+            assert(mpmPath === "/path/to/mpm/bin/maci64/mpm");
+            assert(stubDownloadTool.calledOnce);
+            assert(stubExtractZip.calledOnce);
+            assert(stubExec.notCalled);
+        });
+
         it(`setup rejects on unsupported platforms`, async () => {
             const platform = "sunos";
             assert.rejects(async () => { await mpm.setup(platform, arch); });

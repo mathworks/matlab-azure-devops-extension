@@ -78,6 +78,9 @@ stages:
             microsoft_hosted_linux:
               poolName: Azure Pipelines
               vmImage: ubuntu-22.04
+            microsoft_hosted_macos:
+              poolName: Azure Pipelines
+              vmImage: macOS-latest
             microsoft_hosted_windows:
               poolName: Azure Pipelines
               vmImage: windows-latest
@@ -109,6 +112,9 @@ stages:
             microsoft_hosted_linux:
               poolName: Azure Pipelines
               vmImage: ubuntu-22.04
+            microsoft_hosted_macos:
+              poolName: Azure Pipelines
+              vmImage: macOS-latest
             microsoft_hosted_windows:
               poolName: Azure Pipelines
               vmImage: windows-latest
