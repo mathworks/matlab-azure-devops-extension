@@ -1,0 +1,11 @@
+{
+    "name": "install-matlab",
+    "version": "1.0.0-beta",
+    "private": true,
+    "dependencies": {
+        "@types/node": "^15.0.2",
+        "@types/q": "^1.5.4",
+        "azure-pipelines-task-lib": "^3.4.0",
+        "azure-pipelines-tool-lib": "^1.0.2"
+    }
+}

@@ -1,0 +1,40 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
+    "id": "553fa7ff-af12-4821-8ace-6bf3dc410e62",
+    "name": "InstallMATLAB",
+    "friendlyName": "Install MATLAB",
+    "description": "Install MATLAB on a Microsoft-hosted agent. Public licensing is not available for transformation products, such as MATLAB Coder and MATLAB Compiler.",
+    "helpMarkDown": "",
+    "category": "Tool",
+    "author": "The MathWorks, Inc.",
+    "preview": true,
+    "version": {
+        "Major": 1,
+        "Minor": 0,
+        "Patch": 0
+    },
+    "inputs": [
+        {
+            "name": "release",
+            "type": "string",
+            "label": "Release",
+            "required": false,
+            "defaultValue": "latest",
+            "helpMarkDown": "MATLAB release to install. You can specify R2020a or a later release. If you do not specify `release`, the task installs the latest release of MATLAB."
+        },
+        {
+            "name": "products",
+            "type": "string",
+            "label": "Products",
+            "required": false,
+            "defaultValue": "MATLAB Parallel_Computing_Toolbox",
+            "helpMarkDown": "Space-separated list of products to install. If a product name contains white-space characters, replace them with underscores."
+        }
+    ],
+    "instanceNameFormat": "Install MATLAB",
+    "execution": {
+        "Node10": {
+            "target": "src/main.js"
+        }
+    }
+}

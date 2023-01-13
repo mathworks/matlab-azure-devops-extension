@@ -10,5 +10,5 @@ sh.config.fatal = true;
 
 for (let task of project.taskList) {
     sh.echo(`> testing ${task.fullName}`);
-    sh.exec("mocha " + path.join(task.buildPath, "test", "suite.js") + " --timeout 10000");
+    sh.exec("nyc mocha " + path.join(task.buildPath, "test", "suite.js") + " --timeout 10000");
 }
