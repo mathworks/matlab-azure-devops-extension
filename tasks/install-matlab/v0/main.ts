@@ -39,7 +39,7 @@ async function install(release?: string) {
 
     // install matlab-batch
     const batchInstallDir = installRoot("matlab-batch");
-    exitCode = await curlsh("https://ssd.mathworks.com/supportfiles/ci/matlab-batch/v0/install.sh", batchInstallDir);
+    exitCode = await curlsh("https://mw-ci-static-dev.s3.amazonaws.com/matlab-batch/v1/install.sh", batchInstallDir);
     if (exitCode !== 0) {
         throw new Error(taskLib.loc("FailedToExecuteInstallScript", exitCode));
     }
