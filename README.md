@@ -5,3 +5,4 @@ This extension provides tasks to build and test MATLAB and Simulink projects in 
 ## Usage
 
 Learn how to install and use the MATLAB extension on [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=MathWorks.matlab-azure-devops-extension).
+ 
