@@ -93,7 +93,7 @@ export default function suite() {
         });
 
         it("setup rejects on macos when the chmod fails", async () => {
-            const platform = "macos";
+            const platform = "darwin";
             stubExec.callsFake((bin, args?) => {
                 // non-zero exit code
                 return Promise.resolve(1);
