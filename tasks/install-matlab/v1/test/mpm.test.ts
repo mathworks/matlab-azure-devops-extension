@@ -62,7 +62,7 @@ export default function suite() {
             assert(mpmPath === "/path/to/mpm/bin/maci64/mpm");
             assert(stubDownloadTool.calledOnce);
             assert(stubExtractZip.calledOnce);
-            assert(stubExec.notCalled);
+            assert(stubExec.calledOnce);
         });
 
         it(`setup rejects on unsupported platforms`, async () => {

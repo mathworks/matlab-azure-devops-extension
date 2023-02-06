@@ -28,7 +28,7 @@
             "label": "Products",
             "required": false,
             "defaultValue": "MATLAB Parallel_Computing_Toolbox",
-            "helpMarkDown": "Space-separated list of products to install. If a product name contains white-space characters, replace them with underscores."
+            "helpMarkDown": "Space-separated list of products to install. If a product name contains white-space characters, replace them with underscores. For the full list of available products and their names, see https://www.mathworks.com/products.html."
         }
     ],
     "instanceNameFormat": "Install MATLAB",

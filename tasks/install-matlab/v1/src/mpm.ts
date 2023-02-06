@@ -13,6 +13,7 @@ export async function setup(platform: string, architecture: string): Promise<str
     }
     let mpm: string;
     let mpmExtractedPath: string;
+    let exitCode: number;
     switch (platform) {
         case "win32":
             mpmUrl = mpmRootUrl + "win64/mpm";
@@ -23,7 +24,7 @@ export async function setup(platform: string, architecture: string): Promise<str
         case "linux":
             mpmUrl = mpmRootUrl + "glnxa64/mpm";
             mpm = await toolLib.downloadTool(mpmUrl);
-            const exitCode = await taskLib.exec("chmod", ["+x", mpm]);
+            exitCode = await taskLib.exec("chmod", ["+x", mpm]);
             if (exitCode !== 0) {
                 return Promise.reject(Error("Unable to set up mpm."));
             }
@@ -33,6 +34,10 @@ export async function setup(platform: string, architecture: string): Promise<str
             mpm = await toolLib.downloadTool(mpmUrl);
             mpmExtractedPath = await toolLib.extractZip(mpm);
             mpm = path.join(mpmExtractedPath, "bin", "maci64",  "mpm");
+            exitCode = await taskLib.exec("chmod", ["+x", mpm]);
+            if (exitCode !== 0) {
+                return Promise.reject(Error("Unable to set up mpm."));
+            }
             break;
         default:
             return Promise.reject(Error(`This action is not supported on ${platform} runners using the ${architecture} architecture.`));
