@@ -83,7 +83,16 @@ export default function suite() {
             assert.rejects(async () => { await mpm.setup(platform, arch); });
         });
 
-        it("setup rejects when the chmod fails", async () => {
+        it("setup rejects on linux when the chmod fails", async () => {
+            const platform = "linux";
+            stubExec.callsFake((bin, args?) => {
+                // non-zero exit code
+                return Promise.resolve(1);
+            });
+            assert.rejects(async () => { await mpm.setup(platform, arch); });
+        });
+
+        it("setup rejects on macos when the chmod fails", async () => {
             const platform = "linux";
             stubExec.callsFake((bin, args?) => {
                 // non-zero exit code
