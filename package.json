@@ -2,6 +2,7 @@
     "name": "matlab-azure-devops-extension",
     "version": "0.1.0",
     "scripts": {
+        "bat": "npm run build && npm run test",
         "clean": "node ./scripts/clean.js",
         "lint": "tslint --project .",
         "compile": "node ./scripts/compile.js",
@@ -14,11 +15,17 @@
         "@types/mocha": "^8.2.2",
         "@types/node": "^15.0.2",
         "@types/shelljs": "^0.8.8",
+        "@types/sinon": "^10.0.13",
         "mocha": "^10.0.0",
+        "nyc": "^15.1.0",
         "shelljs": "^0.8.5",
+        "sinon": "^15.0.1",
         "sync-request": "^6.1.0",
         "tfx-cli": "^0.12.0",
         "tslint": "^5.20.1",
         "typescript": "^4.2.4"
+    },
+    "nyc": {
+        "exclude": "**/test/*"
     }
 }
