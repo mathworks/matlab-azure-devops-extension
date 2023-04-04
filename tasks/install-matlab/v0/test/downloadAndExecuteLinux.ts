@@ -11,6 +11,9 @@ const tr = new mr.TaskMockRunner(tp);
 
 tr.setInput("release", "R2020a");
 
+delete process.env.MATHWORKS_ACCOUNT;
+delete process.env.MATHWORKS_TOKEN;
+
 const matlabRoot = "path/to/matlab";
 fs.writeFileSync(path.join(os.tmpdir(), "ephemeral_matlab_root"), matlabRoot);
 const batchInstallRoot = path.join("/", "opt", "matlab-batch");
@@ -67,6 +70,10 @@ const a: ma.TaskLibAnswers = {
             stdout: "Installed MATLAB dependencies",
         },
         "sudo -E /bin/bash ci-install.sh --release R2020a": {
+            code: 0,
+            stdout: "Installed MATLAB",
+        },
+        "sudo -E /bin/bash ci-install.sh --release R2020a --skip-activation": {
             code: 0,
             stdout: "Installed MATLAB",
         },

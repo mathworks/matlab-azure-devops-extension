@@ -11,13 +11,23 @@ async function run() {
     try {
         taskLib.setResourcePath(path.join( __dirname, "task.json"));
         const command = taskLib.getInput("command", true);
-        await runCommand(command as string);
+        const startupopts = taskLib.getInput("startup-options");
+
+        console.log(startupopts);
+
+        if (startupopts) {
+            console.log("run with opts");
+            await runCommand(command as string, startupopts.split(" "));
+        } else {
+            console.log("run without opts");
+            await runCommand(command as string);
+        }
     } catch (err) {
         taskLib.setResult(taskLib.TaskResult.Failed, (err as Error).message);
     }
 }
 
-async function runCommand(command: string) {
+async function runCommand(command: string, args?: string[]) {
     // write command to script
     console.log(taskLib.loc("GeneratingScript", command));
     taskLib.assertAgent("2.115.0");
@@ -59,6 +69,11 @@ async function runCommand(command: string) {
     chmodSync(runToolPath, "777");
     const runTool = taskLib.tool(runToolPath);
     runTool.arg("cd('" + tempDirectory.replace(/'/g, "''") + "');" + scriptName);
+
+    if (args) {
+        runTool.arg(args);
+    }
+
     const exitCode = await runTool.exec();
     if (exitCode !== 0) {
         throw new Error(taskLib.loc("FailedToRunCommand"));

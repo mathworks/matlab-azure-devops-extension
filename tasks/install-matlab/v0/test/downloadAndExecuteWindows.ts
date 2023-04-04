@@ -11,6 +11,9 @@ const tr = new mr.TaskMockRunner(tp);
 
 tr.setInput("release", "R2020a");
 
+delete process.env.MATHWORKS_ACCOUNT;
+delete process.env.MATHWORKS_TOKEN;
+
 const matlabRoot = "C:\\path\\to\\matlab";
 fs.writeFileSync(path.join(os.tmpdir(), "ephemeral_matlab_root"), matlabRoot);
 const batchInstallRoot = path.join("C:", "Program Files", "matlab-batch");
