@@ -13,13 +13,9 @@ async function run() {
         const command = taskLib.getInput("command", true);
         const startupopts = taskLib.getInput("startup-options");
 
-        console.log(startupopts);
-
         if (startupopts) {
-            console.log("run with opts");
             await runCommand(command as string, startupopts.split(" "));
         } else {
-            console.log("run without opts");
             await runCommand(command as string);
         }
     } catch (err) {
