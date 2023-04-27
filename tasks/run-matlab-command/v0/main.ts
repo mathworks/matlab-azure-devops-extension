@@ -11,7 +11,7 @@ async function run() {
     try {
         taskLib.setResourcePath(path.join( __dirname, "task.json"));
         const command: string = taskLib.getInput("command", true) || "";
-        const startupOpts: string = taskLib.getInput("startupOptions") || "";
+        const startupOpts: string | undefined = taskLib.getInput("startupOptions");
 
         await runCommand(command, startupOpts);
     } catch (err) {
@@ -19,7 +19,7 @@ async function run() {
     }
 }
 
-async function runCommand(command: string, args: string) {
+async function runCommand(command: string, args?: string) {
     // write command to script
     console.log(taskLib.loc("GeneratingScript", command));
     taskLib.assertAgent("2.115.0");
@@ -62,7 +62,7 @@ async function runCommand(command: string, args: string) {
     const runTool = taskLib.tool(runToolPath);
     runTool.arg("cd('" + tempDirectory.replace(/'/g, "''") + "');" + scriptName);
 
-    if (args !== "") {
+    if (args) {
         runTool.arg(args.split(" "));
     }
 
