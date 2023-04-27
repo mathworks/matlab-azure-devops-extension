@@ -9,7 +9,7 @@ const tr = new mr.TaskMockRunner(tp);
 
 const flags = "-nojvm -nodesktop -logfile file";
 tr.setInput("command", "myscript");
-tr.setInput("startup-options", flags);
+tr.setInput("startupOptions", flags);
 
 tr.registerMock("./utils", {
     platform: () => "linux",

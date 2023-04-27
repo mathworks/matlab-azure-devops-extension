@@ -10,20 +10,16 @@ import { architecture, platform } from "./utils";
 async function run() {
     try {
         taskLib.setResourcePath(path.join( __dirname, "task.json"));
-        const command = taskLib.getInput("command", true);
-        const startupopts = taskLib.getInput("startup-options");
+        const command: string = taskLib.getInput("command", true) || "";
+        const startupopts: string = taskLib.getInput("startupOptions") || "";
 
-        if (startupopts) {
-            await runCommand(command as string, startupopts.split(" "));
-        } else {
-            await runCommand(command as string);
-        }
+        await runCommand(command, startupopts);
     } catch (err) {
         taskLib.setResult(taskLib.TaskResult.Failed, (err as Error).message);
     }
 }
 
-async function runCommand(command: string, args?: string[]) {
+async function runCommand(command: string, args: string) {
     // write command to script
     console.log(taskLib.loc("GeneratingScript", command));
     taskLib.assertAgent("2.115.0");
@@ -66,8 +62,8 @@ async function runCommand(command: string, args?: string[]) {
     const runTool = taskLib.tool(runToolPath);
     runTool.arg("cd('" + tempDirectory.replace(/'/g, "''") + "');" + scriptName);
 
-    if (args) {
-        runTool.arg(args);
+    if (args !== "") {
+        runTool.arg(args.split(" "));
     }
 
     const exitCode = await runTool.exec();

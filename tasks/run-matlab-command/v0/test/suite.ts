@@ -34,8 +34,6 @@ describe("RunMATLABCommand V0 Suite", () => {
         const tr = new mt.MockTestRunner(tp);
 
         tr.run();
-        console.log(tr.stdout);
-        console.log(tr.stderr);
 
         assert(tr.succeeded, "should have succeeded");
         assert(tr.stdOutContained("hello world"), "should have executed command");
@@ -48,8 +46,6 @@ describe("RunMATLABCommand V0 Suite", () => {
         const tr = new mt.MockTestRunner(tp);
 
         tr.run();
-        console.log(tr.stdout);
-        console.log(tr.stderr);
 
         assert(tr.succeeded, "should have succeeded");
         assert(tr.stdOutContained("hello world"), "should have executed command");
