@@ -1,4 +1,4 @@
-// Copyright 2020 The MathWorks, Inc.
+// Copyright 2020-2023 The MathWorks, Inc.
 
 import * as taskLib from "azure-pipelines-task-lib/task";
 import { chmodSync } from "fs";
@@ -10,14 +10,16 @@ import { architecture, platform } from "./utils";
 async function run() {
     try {
         taskLib.setResourcePath(path.join( __dirname, "task.json"));
-        const command = taskLib.getInput("command", true);
-        await runCommand(command as string);
+        const command: string = taskLib.getInput("command", true) || "";
+        const startupOpts: string | undefined = taskLib.getInput("startupOptions");
+
+        await runCommand(command, startupOpts);
     } catch (err) {
         taskLib.setResult(taskLib.TaskResult.Failed, (err as Error).message);
     }
 }
 
-async function runCommand(command: string) {
+async function runCommand(command: string, args?: string) {
     // write command to script
     console.log(taskLib.loc("GeneratingScript", command));
     taskLib.assertAgent("2.115.0");
@@ -59,6 +61,11 @@ async function runCommand(command: string) {
     chmodSync(runToolPath, "777");
     const runTool = taskLib.tool(runToolPath);
     runTool.arg("cd('" + tempDirectory.replace(/'/g, "''") + "');" + scriptName);
+
+    if (args) {
+        runTool.arg(args.split(" "));
+    }
+
     const exitCode = await runTool.exec();
     if (exitCode !== 0) {
         throw new Error(taskLib.loc("FailedToRunCommand"));

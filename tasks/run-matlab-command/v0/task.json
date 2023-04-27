@@ -20,6 +20,14 @@
             "required": true,
             "defaultValue": "",
             "helpMarkDown": "Script, function, or statement to execute. If the value of `command` is the name of a MATLAB script or function, do not specify the file extension. If you specify more than one MATLAB command, use a comma or semicolon to separate the commands."
+        },
+        {
+            "name": "startupOptions",
+            "type": "string",
+            "label": "Startup Options",
+            "required": false,
+            "defaultValue": "",
+            "helpMarkDown": "Start-up arguments to pass to MATLAB."
         }
     ],
     "instanceNameFormat": "Run MATLAB Command",

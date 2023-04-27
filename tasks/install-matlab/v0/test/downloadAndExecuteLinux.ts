@@ -1,4 +1,4 @@
-// Copyright 2020-2022 The MathWorks, Inc.
+// Copyright 2020-2023 The MathWorks, Inc.
 
 import ma = require("azure-pipelines-task-lib/mock-answer");
 import mr = require("azure-pipelines-task-lib/mock-run");
@@ -10,6 +10,9 @@ const tp = path.join(__dirname, "..", "main.js");
 const tr = new mr.TaskMockRunner(tp);
 
 tr.setInput("release", "R2020a");
+
+delete process.env.MATHWORKS_ACCOUNT;
+delete process.env.MATHWORKS_TOKEN;
 
 const matlabRoot = "path/to/matlab";
 fs.writeFileSync(path.join(os.tmpdir(), "ephemeral_matlab_root"), matlabRoot);
@@ -67,6 +70,10 @@ const a: ma.TaskLibAnswers = {
             stdout: "Installed MATLAB dependencies",
         },
         "sudo -E /bin/bash ci-install.sh --release R2020a": {
+            code: 0,
+            stdout: "Installed MATLAB",
+        },
+        "sudo -E /bin/bash ci-install.sh --release R2020a --skip-activation": {
             code: 0,
             stdout: "Installed MATLAB",
         },
