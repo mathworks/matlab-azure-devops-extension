@@ -11,9 +11,9 @@ async function run() {
     try {
         taskLib.setResourcePath(path.join( __dirname, "task.json"));
         const command: string = taskLib.getInput("command", true) || "";
-        const startupopts: string = taskLib.getInput("startupOptions") || "";
+        const startupOpts: string = taskLib.getInput("startupOptions") || "";
 
-        await runCommand(command, startupopts);
+        await runCommand(command, startupOpts);
     } catch (err) {
         taskLib.setResult(taskLib.TaskResult.Failed, (err as Error).message);
     }
