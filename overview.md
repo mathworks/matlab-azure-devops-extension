@@ -76,13 +76,13 @@ steps:
 ### Specify MATLAB in Pipeline
 When you use the **Run MATLAB Build**, **Run MATLAB Tests**, or **Run MATLAB Command** tasks in your pipeline, the self-hosted agent uses the topmost MATLAB version on the system path. The pipeline fails if the agent cannot find any version of MATLAB on the path.
 
-You can prepend your preferred version of MATLAB to the PATH environment variable of the agent. For example, prepend MATLAB R2022a to the path and use it to run your script.
+You can prepend your preferred version of MATLAB to the PATH environment variable of the agent. For example, prepend MATLAB R2023a to the path and use it to run your script.
 
 ```YAML
 pool: myPool
 steps:
-  - powershell: Write-Host '##vso[task.prependpath]C:\Program Files\MATLAB\R2022a\bin'  # Windows agent
-# - bash: echo '##vso[task.prependpath]/usr/local/MATLAB/R2022a/bin'  # Linux agent
+  - powershell: Write-Host '##vso[task.prependpath]C:\Program Files\MATLAB\R2023a\bin'  # Windows agent
+# - bash: echo '##vso[task.prependpath]/usr/local/MATLAB/R2023a/bin'  # Linux agent
   - task: RunMATLABCommand@0
     inputs:
       command: myscript
@@ -91,7 +91,7 @@ steps:
 ### Use MATLAB on Microsoft-Hosted Agent
 Before you run MATLAB code or Simulink models on a Microsoft-hosted agent, first use the [Install MATLAB](#install-matlab) task. The task installs your specified MATLAB release (R2020a or later) on a Linux&reg; virtual machine. If you do not specify a release, the task installs the latest release of MATLAB.
 
-For example, install MATLAB R2022a on a Microsoft-hosted agent, and then use the **Run MATLAB Command** task to run the commands in your script.
+For example, install MATLAB R2023a on a Microsoft-hosted agent, and then use the **Run MATLAB Command** task to run the commands in your script.
 
 ```YAML
 pool:
@@ -99,7 +99,7 @@ pool:
 steps:
   - task: InstallMATLAB@0
     inputs:
-      release: R2022a
+      release: R2023a
   - task: RunMATLABCommand@0
     inputs:
       command: myscript
@@ -116,7 +116,7 @@ Run a build using the MATLAB build tool. Starting in R2022b, you can use this ta
 
 Argument                  | Description    
 ------------------------- | --------------- 
-`tasks`                   | (Optional) Space-separated list of MATLAB build tasks to run. If not specified, the task runs the default tasks in `buildfile.m` as well as all the tasks on which they depend.</br>**Example:** `test`</br>**Example:** `compile test` 
+`tasks`                   | (Optional) Space-separated list of MATLAB build tasks to run. If not specified, the task runs the default tasks in `buildfile.m` as well as all the tasks on which they depend.</br>**Example:** `tasks: test`</br>**Example:** `tasks: compile test` 
 
 MATLAB exits with exit code 0 if the build runs successfully. Otherwise, MATLAB terminates with a nonzero exit code, which causes the pipeline to fail.
 
@@ -132,29 +132,28 @@ The **Run MATLAB Tests** task lets you customize your tests using optional argum
 
 Argument                  | Description    
 ------------------------- | ---------------
-`sourceFolder`            | (Optional) Location of the folder containing source code, relative to the project root folder. The specified folder and its subfolders are added to the top of the MATLAB search path. If you specify `sourceFolder` and then generate a code coverage report, MATLAB uses only the source code in the specified folder and its subfolders to generate the report. You can specify multiple folders using a colon-separated or semicolon-separated list.<br/>**Example:** `source`<br/>**Example:** `source/folderA; source/folderB`
-`selectByFolder`          | (Optional) Location of the folder used to select test suite elements, relative to the project root folder. To create a test suite, MATLAB uses only the tests in the specified folder and its subfolders. You can specify multiple folders using a colon-separated or semicolon-separated list.<br/>**Example:** `test`<br/>**Example:** `test/folderA; test/folderB`
-`selectByTag`             | (Optional) Test tag used to select test suite elements. To create a test suite, MATLAB uses only the test elements with the specified tag.<br/>**Example:** `Unit`
+`sourceFolder`            | (Optional) Location of the folder containing source code, relative to the project root folder. The specified folder and its subfolders are added to the top of the MATLAB search path. If you specify `sourceFolder` and then generate a code coverage report, MATLAB uses only the source code in the specified folder and its subfolders to generate the report. You can specify multiple folders using a colon-separated or semicolon-separated list.<br/>**Example:** `sourceFolder: source`<br/>**Example:** `sourceFolder: source/folderA; source/folderB`
+`selectByFolder`          | (Optional) Location of the folder used to select test suite elements, relative to the project root folder. To create a test suite, MATLAB uses only the tests in the specified folder and its subfolders. You can specify multiple folders using a colon-separated or semicolon-separated list.<br/>**Example:** `selectByFolder: test`<br/>**Example:** `selectByFolder: test/folderA; test/folderB`
+`selectByTag`             | (Optional) Test tag used to select test suite elements. To create a test suite, MATLAB uses only the test elements with the specified tag.<br/>**Example:** `selectByTag: Unit`
 `strict`                  | (Optional) Whether to apply strict checks when running tests, specified as `false` or `true`. By default, the value is `false`. If you specify a value of `true`, the task generates a qualification failure whenever a test issues a warning.
 `useParallel`             | (Optional) Whether to run tests in parallel on a self-hosted agent, specified as `false` or `true`. By default, the value is `false` and tests run in serial. If the test runner configuration is suited for parallelization, you can specify a value of `true` to run tests in parallel. This argument requires a Parallel Computing Toolbox™ license and is supported only on self-hosted agents.
 `outputDetail`            | (Optional) Amount of event detail displayed for the test run, specified as `none`, `terse`, `concise`, `detailed`, or `verbose`. By default, the task displays failing and logged events at the `detailed` level and test run progress at the `concise` level.
 `loggingLevel`            | (Optional) Maximum verbosity level for logged diagnostics included for the test run, specified as `none`, `terse`, `concise`, `detailed`, or `verbose`. By default, the task includes diagnostics logged at the `terse` level. 
-`testResultsPDF`          | (Optional) Path to write the test results report in PDF format. On macOS platforms, this argument is supported in MATLAB R2020b and later.<br/>**Example:** `test-results/results.pdf`         
-`testResultsJUnit`        | (Optional) Path to write the test results report in JUnit XML format.<br/>**Example:** `test-results/results.xml`
-`testResultsSimulinkTest` | (Optional) Path to export Simulink Test Manager results in MLDATX format. This argument requires a Simulink Test license and is supported in MATLAB R2019a and later.<br/>**Example:** `test-results/results.mldatx`
-`codeCoverageCobertura`   | (Optional) Path to write the code coverage report in Cobertura XML format.<br/>**Example:** `code-coverage/coverage.xml`
-`modelCoverageCobertura`  | (Optional) Path to write the model coverage report in Cobertura XML format. This argument requires a Simulink Coverage™ license and is supported in MATLAB R2018b and later.<br/>**Example:** `model-coverage/coverage.xml`
+`testResultsPDF`          | (Optional) Path to write the test results report in PDF format. On macOS platforms, this argument is supported in MATLAB R2020b and later.<br/>**Example:** `testResultsPDF: test-results/results.pdf`         
+`testResultsJUnit`        | (Optional) Path to write the test results report in JUnit XML format.<br/>**Example:** `testResultsJUnit: test-results/results.xml`
+`testResultsSimulinkTest` | (Optional) Path to export Simulink Test Manager results in MLDATX format. This argument requires a Simulink Test license and is supported in MATLAB R2019a and later.<br/>**Example:** `testResultsSimulinkTest: test-results/results.mldatx`
+`codeCoverageCobertura`   | (Optional) Path to write the code coverage report in Cobertura XML format.<br/>**Example:** `codeCoverageCobertura: code-coverage/coverage.xml`
+`modelCoverageCobertura`  | (Optional) Path to write the model coverage report in Cobertura XML format. This argument requires a Simulink Coverage™ license and is supported in MATLAB R2018b and later.<br/>**Example:** `modelCoverageCobertura: model-coverage/coverage.xml`
 
 >**Note:** To customize the pretest state of the system, you can specify startup code that automatically executes before your tests run. For information on how to specify startup or shutdown files in a MATLAB project, see [Automate Startup and Shutdown Tasks](https://www.mathworks.com/help/matlab/matlab_prog/automate-startup-and-shutdown-tasks.html). If your pipeline does not use a MATLAB project, specify the commands you want executed at startup in a `startup.m` file instead, and save the file to the root of your repository. See [`startup`](https://www.mathworks.com/help/matlab/ref/startup.html) for more information.
 
 ### Run MATLAB Command
 Execute a MATLAB script, function, or statement. Specify the task in your pipeline YAML using the `RunMATLABCommand` key.
 
-Argument                  | Description    
-------------------------- | --------------- 
-`command`                 | (Required) Script, function, or statement to execute. If the value of `command` is the name of a MATLAB script or function, do not specify the file extension. If you specify more than one script, function, or statement, use a comma or semicolon to separate them.<br/>**Example:** `myscript`<br/>**Example:** `results = runtests, assertSuccess(results);` 
-
-MATLAB exits with exit code 0 if the specified script, function, or statement executes successfully without error. Otherwise, MATLAB terminates with a nonzero exit code, which causes the pipeline to fail. To fail the pipeline in certain conditions, use the [`assert`](https://www.mathworks.com/help/matlab/ref/assert.html) or [`error`](https://www.mathworks.com/help/matlab/ref/error.html) functions.
+Argument                  | Description
+------------------------- | ---------------
+`command`                 | (Required) Script, function, or statement to execute. If the value of `command` is the name of a MATLAB script or function, do not specify the file extension. If you specify more than one script, function, or statement, use a comma or semicolon to separate them.<br/>MATLAB exits with exit code 0 if the specified script, function, or statement executes successfully without error. Otherwise, MATLAB terminates with a nonzero exit code, which causes the pipeline to fail. To fail the pipeline in certain conditions, use the [`assert`](https://www.mathworks.com/help/matlab/ref/assert.html) or [`error`](https://www.mathworks.com/help/matlab/ref/error.html) functions.<br/>**Example:** `command: myscript`<br/>**Example:** `command: results = runtests, assertSuccess(results);`
+`startupOptions`         | (Optional) MATLAB startup options. If you specify more than one option, use a space to separate them. For more information about startup options, see [Commonly Used Startup Options](https://www.mathworks.com/help/matlab/matlab_env/commonly-used-startup-options.html).<br/>Using this argument to specify the `-batch` or `-r` options is not supported.<br/>**Example:** `startupOptions: -nojvm`<br/>**Example:** `startupOptions: -nojvm -logfile mylogfile.log`
 
 When you use this task, all of the required files must be on the MATLAB search path. If your script or function is not in the root of your repository, you can use the [`addpath`](https://www.mathworks.com/help/matlab/ref/addpath.html), [`cd`](https://www.mathworks.com/help/matlab/ref/cd.html), or [`run`](https://www.mathworks.com/help/matlab/ref/run.html) functions to put it on the path. For example, to run `myscript.m` in a folder `myfolder` located in the root of the repository, you can specify `command` like this:
 
@@ -165,7 +164,7 @@ Install the specified MATLAB release on a Linux agent in the cloud. Specify the 
 
 Argument                  | Description    
 ------------------------- | --------------- 
-`release`                 | (Optional) MATLAB release to install. You can specify R2020a or a later release. If you do not specify `release`, the task installs the latest release of MATLAB.<br/>**Example:** `R2022a`
+`release`                 | (Optional) MATLAB release to install. You can specify R2020a or a later release. If you do not specify `release`, the task installs the latest release of MATLAB.<br/>**Example:** `release: R2023a`
 
 Currently, this task is available only for public projects. It does not install transformation products, such as MATLAB Coder and MATLAB Compiler.
 
