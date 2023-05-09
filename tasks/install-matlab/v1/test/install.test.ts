@@ -77,6 +77,13 @@ export default function suite() {
             });
         });
 
+        it("fails for unsupported release", async () => {
+            stubGetReleaseInfo.callsFake((rel) => {
+                return {name: "r2020a", version: "2020.1.999", update: "latest"};
+            });
+            assert.rejects(async () => { await install.install(platform, architecture, "r2020a", products); });
+        });
+
         it("fails if setup script fails", async () => {
             stubDownloadAndRunScript.callsFake((plat, url, args) => {
                 return Promise.resolve(1);

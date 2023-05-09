@@ -8,6 +8,9 @@ import * as script from "./script";
 
 export async function install(platform: string, architecture: string, release: string, products: string) {
     const parsedRelease: matlab.Release = await matlab.getReleaseInfo(release);
+    if (parsedRelease.name < "r2020b") {
+        throw new Error(`Release '${parsedRelease.name}' is not supported. Use 'R2020b' or a later release.`);
+    }
 
     // install core system dependencies on Linux
     let exitCode = 0;
