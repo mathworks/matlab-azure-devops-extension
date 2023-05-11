@@ -20,7 +20,7 @@
             "label": "Release",
             "required": false,
             "defaultValue": "latest",
-            "helpMarkDown": "MATLAB release to install. You can specify R2020a or a later release. If you do not specify `release`, the task installs the latest release of MATLAB."
+            "helpMarkDown": "MATLAB release to install. You can specify R2020b or a later release. If you do not specify `release`, the task installs the latest release of MATLAB."
         },
         {
             "name": "products",
