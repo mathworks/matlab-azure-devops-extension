@@ -27,7 +27,7 @@
             "label": "Startup Options",
             "required": false,
             "defaultValue": "",
-            "helpMarkDown": "Start-up options to pass to MATLAB."
+            "helpMarkDown": "Startup options to pass to MATLAB."
         }
     ],
     "instanceNameFormat": "Run MATLAB Command",
