@@ -1,4 +1,4 @@
-// Copyright 2020 The MathWorks, Inc.
+// Copyright 2020-2023 The MathWorks, Inc.
 
 import * as taskLib from "azure-pipelines-task-lib/task";
 import { chmodSync } from "fs";
@@ -21,13 +21,14 @@ async function run() {
             UseParallel: taskLib.getBoolInput("useParallel"),
             OutputDetail: taskLib.getInput("outputDetail"),
             LoggingLevel: taskLib.getInput("loggingLevel")};
-        await runTests(options);
+        const startupOpts: string | undefined = taskLib.getInput("startupOptions");
+        await runTests(options, startupOpts);
     } catch (err) {
         taskLib.setResult(taskLib.TaskResult.Failed, (err as Error).message);
     }
 }
 
-async function runTests(options: IRunTestsOptions) {
+async function runTests(options: IRunTestsOptions, args?: string) {
     if (architecture() !== "x64") {
         const msg = `This task is not supported on ${platform()} runners using the ${architecture()} architecture.`;
         throw new Error(msg);
@@ -71,6 +72,11 @@ async function runTests(options: IRunTestsOptions) {
         `disp(testScript.Contents);` +
         `fprintf('__________\\n\\n');` +
         `run(testScript);`);
+
+    if (args) {
+        runTool.arg(args.split(" "));
+    }
+
     const exitCode = await runTool.exec();
     if (exitCode !== 0) {
         throw new Error(taskLib.loc("FailedToRunTests"));
