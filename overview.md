@@ -116,9 +116,8 @@ Run a build using the MATLAB build tool. Starting in R2022b, you can use this ta
 
 Argument                  | Description    
 ------------------------- | --------------- 
-`tasks`                   | (Optional) Space-separated list of MATLAB build tasks to run. If not specified, the task runs the default tasks in `buildfile.m` as well as all the tasks on which they depend.</br>**Example:** `tasks: test`</br>**Example:** `tasks: compile test` 
-
-MATLAB exits with exit code 0 if the build runs successfully. Otherwise, MATLAB terminates with a nonzero exit code, which causes the pipeline to fail.
+`tasks`                   | (Optional) Space-separated list of MATLAB build tasks to run. If not specified, the task runs the default tasks in `buildfile.m` as well as all the tasks on which they depend.</br>MATLAB exits with exit code 0 if the build runs successfully. Otherwise, MATLAB terminates with a nonzero exit code, which causes the pipeline to fail.</br>**Example:** `tasks: test`</br>**Example:** `tasks: compile test` 
+`startupOptions`          | (Optional) MATLAB startup options. If you specify more than one option, use a space to separate them. For more information about startup options, see [Commonly Used Startup Options](https://www.mathworks.com/help/matlab/matlab_env/commonly-used-startup-options.html).<br/>Using this argument to specify the `-batch` or `-r` option is not supported.<br/>**Example:** `startupOptions: -nojvm`<br/>**Example:** `startupOptions: -nojvm -logfile "output.log"
 
 When you use this task, a file named `buildfile.m` must be in the project root directory. For more information about the build tool, see [Create and Run Tasks Using Build Tool](https://www.mathworks.com/help/matlab/matlab_prog/create-and-run-tasks-using-build-tool.html).
 
@@ -144,6 +143,7 @@ Argument                  | Description
 `testResultsSimulinkTest` | (Optional) Path to export Simulink Test Manager results in MLDATX format. This argument requires a Simulink Test license and is supported in MATLAB R2019a and later.<br/>**Example:** `testResultsSimulinkTest: test-results/results.mldatx`
 `codeCoverageCobertura`   | (Optional) Path to write the code coverage report in Cobertura XML format.<br/>**Example:** `codeCoverageCobertura: code-coverage/coverage.xml`
 `modelCoverageCobertura`  | (Optional) Path to write the model coverage report in Cobertura XML format. This argument requires a Simulink Coverage™ license and is supported in MATLAB R2018b and later.<br/>**Example:** `modelCoverageCobertura: model-coverage/coverage.xml`
+`startupOptions`          | (Optional) MATLAB startup options. If you specify more than one option, use a space to separate them. For more information about startup options, see [Commonly Used Startup Options](https://www.mathworks.com/help/matlab/matlab_env/commonly-used-startup-options.html).<br/>Using this argument to specify the `-batch` or `-r` option is not supported.<br/>**Example:** `startupOptions: -nojvm`<br/>**Example:** `startupOptions: -nojvm -logfile "output.log"
 
 >**Note:** To customize the pretest state of the system, you can specify startup code that automatically executes before your tests run. For information on how to specify startup or shutdown files in a MATLAB project, see [Automate Startup and Shutdown Tasks](https://www.mathworks.com/help/matlab/matlab_prog/automate-startup-and-shutdown-tasks.html). If your pipeline does not use a MATLAB project, specify the commands you want executed at startup in a `startup.m` file instead, and save the file to the root of your repository. See [`startup`](https://www.mathworks.com/help/matlab/ref/startup.html) for more information.
 
