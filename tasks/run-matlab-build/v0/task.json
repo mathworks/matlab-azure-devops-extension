@@ -20,6 +20,14 @@
             "required": false,
             "defaultValue": "",
             "helpMarkDown": "Space-separated list of tasks to run. If not specified, the task runs the default tasks in the file buildfile.m as well as all the tasks on which they depend."
+        },
+        {
+            "name": "startupOptions",
+            "type": "string",
+            "label": "Startup Options",
+            "required": false,
+            "defaultValue": "",
+            "helpMarkDown": "Startup options to pass to MATLAB."
         }
     ],
     "instanceNameFormat": "Run MATLAB Build",

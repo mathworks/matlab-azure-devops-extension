@@ -1,4 +1,4 @@
-// Copyright 2022 The MathWorks, Inc.
+// Copyright 2022-2023 The MathWorks, Inc.
 
 import * as taskLib from "azure-pipelines-task-lib/task";
 import { chmodSync } from "fs";
@@ -11,13 +11,14 @@ async function run() {
         const options: IRunBuildOptions = {
             Tasks: taskLib.getInput("tasks"),
         };
-        await runBuild(options);
+        const startupOpts: string | undefined = taskLib.getInput("startupOptions");
+        await runBuild(options, startupOpts);
     } catch (err) {
         taskLib.setResult(taskLib.TaskResult.Failed, (err as Error).message);
     }
 }
 
-async function runBuild(options: IRunBuildOptions) {
+async function runBuild(options: IRunBuildOptions, args?: string) {
     if (architecture() !== "x64") {
         const msg = `This task is not supported on ${platform()} runners using the ${architecture()} architecture.`;
         throw new Error(msg);
@@ -48,6 +49,11 @@ async function runBuild(options: IRunBuildOptions) {
         buildtoolCommand = buildtoolCommand + " " + options.Tasks;
     }
     runTool.arg(buildtoolCommand);
+
+    if (args) {
+        runTool.arg(args.split(" "));
+    }
+
     const exitCode = await runTool.exec();
     if (exitCode !== 0) {
         throw new Error(taskLib.loc("BuildFailed"));

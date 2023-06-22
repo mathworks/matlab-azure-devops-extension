@@ -1,4 +1,4 @@
-# Continuous Integration with MATLAB on Azure DevOps
+# Continuous Integration with MATLAB on Azure DevOps 
 
 This extension provides tasks to build and test MATLAB and Simulink projects in Azure DevOps environments.
 

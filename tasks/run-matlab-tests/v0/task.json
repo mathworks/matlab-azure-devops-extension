@@ -137,6 +137,14 @@
             "required": false,
             "groupName": "customizeTestRun",
             "helpMarkDown": "Maximum verbosity level for logged diagnostics included for the test run."
+        },
+        {
+            "name": "startupOptions",
+            "type": "string",
+            "label": "Startup Options",
+            "required": false,
+            "defaultValue": "",
+            "helpMarkDown": "Startup options to pass to MATLAB."
         }
     ],
     "instanceNameFormat": "Run MATLAB Tests",

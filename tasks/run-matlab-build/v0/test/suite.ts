@@ -1,4 +1,4 @@
-// Copyright 2022 The MathWorks, Inc.
+// Copyright 2022-2023 The MathWorks, Inc.
 
 import * as assert from "assert";
 import * as mt from "azure-pipelines-task-lib/mock-test";
@@ -19,6 +19,30 @@ describe("RunMATLABBuild V0 Suite", () => {
 
     it("should succeed running MATLAB build on windows", (done) => {
         const tp = path.join(__dirname, "runBuildWindows.js");
+        const tr = new mt.MockTestRunner(tp);
+
+        tr.run();
+
+        assert(tr.succeeded, "should have succeeded");
+        assert(tr.stdOutContained("ran test task"), "should have run test task");
+
+        done();
+    });
+
+    it("should succeed running MATLAB build on linux with startup options", (done) => {
+        const tp = path.join(__dirname, "runBuildWithStartupOptsLinux.js");
+        const tr = new mt.MockTestRunner(tp);
+
+        tr.run();
+
+        assert(tr.succeeded, "should have succeeded");
+        assert(tr.stdOutContained("ran test task"), "should have run test task");
+
+        done();
+    });
+
+    it("should succeed running MATLAB build on windows with startup options", (done) => {
+        const tp = path.join(__dirname, "runBuildWithStartupOptsWindows.js");
         const tr = new mt.MockTestRunner(tp);
 
         tr.run();
