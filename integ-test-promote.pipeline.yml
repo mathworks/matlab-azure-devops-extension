@@ -210,7 +210,7 @@ stages:
               mkdir subdir
               echo 'onetyone = 11' > subdir/startup.m
             displayName: Create subdir/startup.m
-          - task: MathWorks.matlab-azure-devops-extension-dev-RunMATLABCommand.RunMATLABCommand@0
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run MATLAB statement with subdir/startup
             inputs:
               command: >
