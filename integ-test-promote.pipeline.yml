@@ -197,17 +197,27 @@ stages:
             displayName: MATLAB runs startup.m automatically
             inputs:
               command: assert(myvar==123, 'myvar was not set as expected by startup.m')
-
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run MATLAB statement with startup options
             inputs:
               command: disp("Hello world!")
               startupOptions: -logfile mylog.log
-
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run MATLAB statement with startup options
             inputs:
               command: assert(isfile("mylog.log"), 'mylog.log was not created as expected')
+          - bash: |
+              mkdir subdir
+              echo 'onetyone = 11' > subdir/startup.m
+            displayName: Create subdir/startup.m
+          - task: MathWorks.matlab-azure-devops-extension-dev-RunMATLABCommand.RunMATLABCommand@0
+            displayName: Run MATLAB statement with subdir/startup
+            inputs:
+              command: >
+                assert(onetyone==11, 'onetyone was not set as expected by subdir/startup.m');
+                [~, folder] = fileparts(pwd());
+                assert(strcmp(folder, 'subdir'));
+              startupOptions: -sd subdir
 
       - job: test_run_tests
         strategy:
