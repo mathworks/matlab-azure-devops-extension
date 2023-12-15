@@ -32,7 +32,7 @@ stages:
           - checkout: none
           - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
             displayName: Install MATLAB
-e         - bash: |
+          - bash: |
               set -e
               matlab -batch version
               os=$(uname)
