@@ -125,7 +125,6 @@ stages:
               products: MATLAB Simulink
           - bash: |
               set -e
-              matlab-batch 
               os=$(uname)
               if [[ $os = CYGWIN* || $os = MINGW* || $os = MSYS* ]]; then
                 mex.bat -h
