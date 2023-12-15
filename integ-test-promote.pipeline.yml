@@ -162,8 +162,6 @@ stages:
           - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
             displayName: Install MATLAB on Microsoft-hosted agents
             condition: not(startsWith(variables['Agent.Name'], 'vmss'))
-            inputs:
-              release: R2023a
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run MATLAB statement
             inputs:
@@ -240,8 +238,6 @@ stages:
           - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
             displayName: Install MATLAB on Microsoft-hosted agents
             condition: not(startsWith(variables['Agent.Name'], 'vmss'))
-            inputs:
-              release: R2023a
           - bash: |
               echo 'myvar = 123' > startup.m
               mkdir src
@@ -451,8 +447,6 @@ stages:
           - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
             displayName: Install MATLAB on Microsoft-hosted agents
             condition: not(startsWith(variables['Agent.Name'], 'vmss'))
-            inputs:
-              release: R2023a
           - bash: |
               cat << EOF > buildfile.m
               function plan = buildfile
