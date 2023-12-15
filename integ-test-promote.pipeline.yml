@@ -98,7 +98,7 @@ stages:
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Check MATLAB version
             inputs:
-              assert(~isempty(ver('matlab')))
+              command: assert(~isempty(ver('matlab')))
 
 
       - job: test_install_release_and_products_v1
@@ -136,7 +136,7 @@ stages:
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Check MATLAB version
             inputs:
-              assert(strcmp(version('-release'),'2022a') && ~isempty(ver('simulink')))
+              command: assert(strcmp(version('-release'),'2022a') && ~isempty(ver('simulink')))
 
       - job: test_run_command
         strategy:
