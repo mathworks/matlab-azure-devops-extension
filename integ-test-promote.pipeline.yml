@@ -159,6 +159,9 @@ stages:
           - checkout: none
           - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
             displayName: Install MATLAB on Microsoft-hosted agents
+            # Use 23a due to licensing bug in 23b
+            inputs:
+              release: R2023a
             condition: not(startsWith(variables['Agent.Name'], 'vmss'))
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run MATLAB statement
@@ -235,6 +238,9 @@ stages:
           - checkout: none
           - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
             displayName: Install MATLAB on Microsoft-hosted agents
+            # Use 23a due to licensing bug in 23b
+            inputs:
+              release: R2023a
             condition: not(startsWith(variables['Agent.Name'], 'vmss'))
           - bash: |
               echo 'myvar = 123' > startup.m
@@ -444,6 +450,9 @@ stages:
           - checkout: none
           - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
             displayName: Install MATLAB on Microsoft-hosted agents
+            # Use 23a due to licensing bug in 23b
+            inputs:
+              release: R2023a
             condition: not(startsWith(variables['Agent.Name'], 'vmss'))
           - bash: |
               cat << EOF > buildfile.m
