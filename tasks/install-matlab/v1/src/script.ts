@@ -9,7 +9,7 @@ export async function downloadAndRunScript(platform: string, url: string, args: 
     const bashPath = taskLib.which("bash", true);
     const sudoPath = taskLib.which("sudo", false);
     let bash;
-    if (!sudoPath || platform === "win32") {
+    if (!sudoPath) {
         bash = taskLib.tool(bashPath);
     } else {
         bash = taskLib.tool("sudo").arg("-E").line(bashPath);
