@@ -6,8 +6,8 @@ import * as path from "path";
 
 export async function downloadAndRunScript(platform: string, url: string, args: string | string[]) {
     const scriptPath = await toolLib.downloadTool(url);
-    const bashPath = taskLib.which("bash", true);
-    const sudoPath = taskLib.which("sudo", false);
+    const bashPath = await taskLib.which("bash", true);
+    const sudoPath = await taskLib.which("sudo", false);
     let bash;
     if (!sudoPath) {
         bash = taskLib.tool(bashPath);

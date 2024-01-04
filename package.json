@@ -2,7 +2,7 @@
     "name": "matlab-azure-devops-extension",
     "version": "0.1.0",
     "scripts": {
-        "bat": "npm run build && npm run test",
+        "bat": "npm run clean && npm run build && npm run test",
         "clean": "node ./scripts/clean.js",
         "lint": "tslint --project .",
         "compile": "node ./scripts/compile.js",
