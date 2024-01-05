@@ -40,7 +40,7 @@ const a: ma.TaskLibAnswers = {
         "temp's/path": true,
     },
     exec: {
-        [runCmdPath + " cd('temp''s/path');command_1_2_3"]: {
+        [runCmdPath + " setenv('MW_ORIG_WORKING_FOLDER', cd('temp''s/path'));command_1_2_3"]: {
             code: 0,
             stdout: "hello world",
         },

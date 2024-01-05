@@ -12,18 +12,15 @@ export async function setup(platform: string, architecture: string): Promise<str
         return Promise.reject(Error(`This action is not supported on ${platform} runners using the ${architecture} architecture.`));
     }
     let mpm: string;
-    let mpmExtractedPath: string;
     let exitCode: number;
     switch (platform) {
         case "win32":
             mpmUrl = mpmRootUrl + "win64/mpm";
-            mpm = await toolLib.downloadTool(mpmUrl);
-            mpmExtractedPath = await toolLib.extractZip(mpm);
-            mpm = path.join(mpmExtractedPath, "bin", "win64",  "mpm.exe");
+            mpm = await toolLib.downloadTool(mpmUrl, "mpm.exe");
             break;
         case "linux":
             mpmUrl = mpmRootUrl + "glnxa64/mpm";
-            mpm = await toolLib.downloadTool(mpmUrl);
+            mpm = await toolLib.downloadTool(mpmUrl, "mpm");
             exitCode = await taskLib.exec("chmod", ["+x", mpm]);
             if (exitCode !== 0) {
                 return Promise.reject(Error("Unable to set up mpm."));
@@ -31,9 +28,7 @@ export async function setup(platform: string, architecture: string): Promise<str
             break;
         case "darwin":
             mpmUrl = mpmRootUrl + "maci64/mpm";
-            mpm = await toolLib.downloadTool(mpmUrl);
-            mpmExtractedPath = await toolLib.extractZip(mpm);
-            mpm = path.join(mpmExtractedPath, "bin", "maci64",  "mpm");
+            mpm = await toolLib.downloadTool(mpmUrl, "mpm");
             exitCode = await taskLib.exec("chmod", ["+x", mpm]);
             if (exitCode !== 0) {
                 return Promise.reject(Error("Unable to set up mpm."));

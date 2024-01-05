@@ -84,8 +84,6 @@ export default function suite() {
             const args = ["--release", "r2022b"];
             const exitCode = await script.downloadAndRunScript(platform, url, args);
 
-            console.log(mockToolRunner.args);
-
             assert(exitCode === 0);
             assert(!mockToolRunner.args.includes("-E"));
             assert(args.every((arg) => mockToolRunner.args.includes(arg)));

@@ -10,8 +10,6 @@ pr: none
 stages:
   - stage: integration_test
     displayName: Integration test
-    variables:
-      - group: matlab-batch-token
     jobs:
       - job: test_install_v0
         strategy:
@@ -90,7 +88,6 @@ stages:
             displayName: Install MATLAB
           - bash: |
               set -e
-              matlab-batch "assert(~isempty(ver('matlab')))"
               os=$(uname)
               if [[ $os = CYGWIN* || $os = MINGW* || $os = MSYS* ]]; then
                 mex.bat -h
@@ -98,9 +95,10 @@ stages:
                 mex -h
               fi
             displayName: Check matlab and mex
-            env:
-              MATHWORKS_ACCOUNT: $(MATHWORKS_ACCOUNT)
-              MATHWORKS_TOKEN: $(MATHWORKS_TOKEN)
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
+            displayName: Check MATLAB version
+            inputs:
+              command: assert(~isempty(ver('matlab')))
 
 
       - job: test_install_release_and_products_v1
@@ -127,7 +125,6 @@ stages:
               products: MATLAB Simulink
           - bash: |
               set -e
-              matlab-batch "assert(strcmp(version('-release'),'2022a') && ~isempty(ver('simulink')))"
               os=$(uname)
               if [[ $os = CYGWIN* || $os = MINGW* || $os = MSYS* ]]; then
                 mex.bat -h
@@ -135,9 +132,10 @@ stages:
                 mex -h
               fi
             displayName: Check matlab and mex
-            env:
-              MATHWORKS_ACCOUNT: $(MATHWORKS_ACCOUNT)
-              MATHWORKS_TOKEN: $(MATHWORKS_TOKEN)
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
+            displayName: Check MATLAB version
+            inputs:
+              command: assert(strcmp(version('-release'),'2022a') && ~isempty(ver('simulink')))
 
       - job: test_run_command
         strategy:
@@ -161,6 +159,9 @@ stages:
           - checkout: none
           - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
             displayName: Install MATLAB on Microsoft-hosted agents
+            # Use 23a due to licensing bug in 23b
+            inputs:
+              release: R2023a
             condition: not(startsWith(variables['Agent.Name'], 'vmss'))
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run MATLAB statement
@@ -197,17 +198,27 @@ stages:
             displayName: MATLAB runs startup.m automatically
             inputs:
               command: assert(myvar==123, 'myvar was not set as expected by startup.m')
-
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run MATLAB statement with startup options
             inputs:
               command: disp("Hello world!")
               startupOptions: -logfile mylog.log
-
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run MATLAB statement with startup options
             inputs:
               command: assert(isfile("mylog.log"), 'mylog.log was not created as expected')
+          - bash: |
+              mkdir subdir
+              echo 'onetyone = 11' > subdir/startup.m
+            displayName: Create subdir/startup.m
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
+            displayName: Run MATLAB statement with subdir/startup
+            inputs:
+              command: >
+                assert(onetyone==11, 'onetyone was not set as expected by subdir/startup.m');
+                [~, folder] = fileparts(pwd());
+                assert(strcmp(folder, 'subdir'));
+              startupOptions: -sd subdir
 
       - job: test_run_tests
         strategy:
@@ -227,6 +238,9 @@ stages:
           - checkout: none
           - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
             displayName: Install MATLAB on Microsoft-hosted agents
+            # Use 23a due to licensing bug in 23b
+            inputs:
+              release: R2023a
             condition: not(startsWith(variables['Agent.Name'], 'vmss'))
           - bash: |
               echo 'myvar = 123' > startup.m
@@ -436,6 +450,9 @@ stages:
           - checkout: none
           - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
             displayName: Install MATLAB on Microsoft-hosted agents
+            # Use 23a due to licensing bug in 23b
+            inputs:
+              release: R2023a
             condition: not(startsWith(variables['Agent.Name'], 'vmss'))
           - bash: |
               cat << EOF > buildfile.m

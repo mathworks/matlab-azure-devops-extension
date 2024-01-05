@@ -23,14 +23,13 @@ async function runCommand(command: string, args?: string) {
     // write command to script
     console.log(taskLib.loc("GeneratingScript", command));
     taskLib.assertAgent("2.115.0");
-    const workingDirectory = taskLib.getVariable("System.DefaultWorkingDirectory") || "";
     const tempDirectory = taskLib.getVariable("agent.tempDirectory") || "";
     taskLib.checkPath(tempDirectory, `${tempDirectory} (agent.tempDirectory)`);
     const scriptName = "command_" + uuidV4().replace(/-/g, "_");
     const scriptPath = path.join(tempDirectory, scriptName + ".m");
     await fs.writeFileSync(
         scriptPath,
-        "cd('" + workingDirectory.replace(/'/g, "''") + "');\n" + command,
+        "cd(getenv('MW_ORIG_WORKING_FOLDER'));\n" + command,
         { encoding: "utf8" });
 
     // run script
@@ -60,7 +59,7 @@ async function runCommand(command: string, args?: string) {
     const runToolPath = path.join(__dirname, "bin", platformDir, `run-matlab-command${ext}`);
     chmodSync(runToolPath, "777");
     const runTool = taskLib.tool(runToolPath);
-    runTool.arg("cd('" + tempDirectory.replace(/'/g, "''") + "');" + scriptName);
+    runTool.arg("setenv('MW_ORIG_WORKING_FOLDER', cd('" + tempDirectory.replace(/'/g, "''") + "'));" + scriptName);
 
     if (args) {
         runTool.arg(args.split(" "));

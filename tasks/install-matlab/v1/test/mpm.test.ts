@@ -9,7 +9,6 @@ import * as mpm from "../src/mpm";
 export default function suite() {
     const arch = "x64";
     let stubDownloadTool: sinon.SinonStub;
-    let stubExtractZip: sinon.SinonStub;
     let stubExec: sinon.SinonStub;
 
     describe("mpm.ts test suite", () => {
@@ -17,11 +16,7 @@ export default function suite() {
             // setup stubs
             stubDownloadTool = sinon.stub(toolLib, "downloadTool");
             stubDownloadTool.callsFake((url, fileName?, handlers?) => {
-                return Promise.resolve("/path/to/mpm");
-            });
-            stubExtractZip = sinon.stub(toolLib, "extractZip");
-            stubExtractZip.callsFake((file, destination?) => {
-                return Promise.resolve("/path/to/mpm");
+                return Promise.resolve(`/path/to/${fileName}`);
             });
             stubExec = sinon.stub(taskLib, "exec");
             stubExec.callsFake((bin, args) => {
@@ -32,7 +27,6 @@ export default function suite() {
         afterEach(() => {
             // restore stubs
             stubDownloadTool.restore();
-            stubExtractZip.restore();
             stubExec.restore();
         });
 
@@ -49,9 +43,8 @@ export default function suite() {
             const platform = "win32";
 
             const mpmPath = await mpm.setup(platform, arch);
-            assert(mpmPath === "/path/to/mpm/bin/win64/mpm.exe");
+            assert(mpmPath === "/path/to/mpm.exe");
             assert(stubDownloadTool.calledOnce);
-            assert(stubExtractZip.calledOnce);
             assert(stubExec.notCalled);
         });
 
@@ -59,9 +52,8 @@ export default function suite() {
             const platform = "darwin";
 
             const mpmPath = await mpm.setup(platform, arch);
-            assert(mpmPath === "/path/to/mpm/bin/maci64/mpm");
+            assert(mpmPath === "/path/to/mpm");
             assert(stubDownloadTool.calledOnce);
-            assert(stubExtractZip.calledOnce);
             assert(stubExec.calledOnce);
         });
 
