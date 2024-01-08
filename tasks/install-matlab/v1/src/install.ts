@@ -42,5 +42,5 @@ export async function install(platform: string, architecture: string, release: s
     }
 
     // install matlab-batch
-    await matlab.setupBatch(platform, architecture);
+    await matlab.setupBatch(platform);
 }
