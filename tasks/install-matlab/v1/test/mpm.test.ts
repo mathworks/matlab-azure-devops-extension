@@ -1,4 +1,4 @@
-// Copyright 2023 The MathWorks, Inc.
+// Copyright 2023-2024 The MathWorks, Inc.
 
 import * as assert from "assert";
 import * as taskLib from "azure-pipelines-task-lib/task";
@@ -108,7 +108,7 @@ export default function suite() {
                 "Parallel_Computing_Toolbox",
             ];
             assert.doesNotReject(async () => { mpm.install(mpmPath, releaseInfo, products, destination); });
-            mpm.install(mpmPath, releaseInfo, products, destination).then(() => {
+            mpm.install(mpmPath, releaseInfo, destination, products).then(() => {
                 assert(stubExec.calledWithMatch(mpmPath, expectedMpmArgs));
             });
         });
@@ -122,7 +122,7 @@ export default function suite() {
                 // non-zero exit code
                 return Promise.resolve(1);
             });
-            assert.rejects(async () => { mpm.install(mpmPath, releaseInfo, products, destination); });
+            assert.rejects(async () => mpm.install(mpmPath, releaseInfo, destination, products));
         });
     });
 }

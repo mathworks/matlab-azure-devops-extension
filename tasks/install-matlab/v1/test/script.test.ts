@@ -1,4 +1,4 @@
-// Copyright 2023 The MathWorks, Inc.
+// Copyright 2023-2024 The MathWorks, Inc.
 
 import * as assert from "assert";
 import * as taskLib from "azure-pipelines-task-lib/task";
@@ -53,6 +53,14 @@ export default function suite() {
         });
 
         it("downloadAndRunScript ideally works unix", async () => {
+            stubWhich.callsFake((file) => {
+                if (file === "bash") {
+                    return Promise.resolve("/bin/bash");
+                } else {
+                    return Promise.resolve("/bin/sudo");
+                }
+            });
+
             const platform = "linux";
             const url = "https://mathworks.com/myscript";
             const args = ["--release", "r2022b"];
@@ -63,10 +71,19 @@ export default function suite() {
         });
 
         it("downloadAndRunScript ideally works windows", async () => {
+            stubWhich.callsFake((file) => {
+                if (file === "bash") {
+                    return Promise.resolve("/bin/bash");
+                } else {
+                    return Promise.resolve("");
+                }
+            });
+
             const platform = "win32";
             const url = "https://mathworks.com/myscript";
             const args = ["--release", "r2022b"];
             const exitCode = await script.downloadAndRunScript(platform, url, args);
+
             assert(exitCode === 0);
             assert(!mockToolRunner.args.includes("-E"));
             assert(args.every((arg) => mockToolRunner.args.includes(arg)));

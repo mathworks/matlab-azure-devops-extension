@@ -2,7 +2,7 @@
     "name": "matlab-azure-devops-extension",
     "version": "0.1.0",
     "scripts": {
-        "bat": "npm run build && npm run test",
+        "bat": "npm run clean && npm run build && npm run test",
         "clean": "node ./scripts/clean.js",
         "lint": "tslint --project .",
         "compile": "node ./scripts/compile.js",
@@ -21,7 +21,7 @@
         "shelljs": "^0.8.5",
         "sinon": "^15.0.1",
         "sync-request": "^6.1.0",
-        "tfx-cli": "^0.12.0",
+        "tfx-cli": "^0.16.0",
         "tslint": "^5.20.1",
         "typescript": "^4.2.4"
     },
