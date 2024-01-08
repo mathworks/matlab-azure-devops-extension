@@ -1,9 +1,9 @@
 // Copyright 2023 The MathWorks, Inc.
 
-import * as taskLib from "azure-pipelines-task-lib/task";
 import * as toolLib from "azure-pipelines-tool-lib/tool";
 import * as fs from "fs";
 import * as https from "https";
+import * as script from "./script";
 
 export interface Release {
     name: string;
@@ -70,42 +70,18 @@ async function resolveLatest(): Promise<string> {
     });
 }
 
-export async function setupBatch(platform: string, architecture: string): Promise<void> {
-    const mpmRootUrl: string = "https://ssd.mathworks.com/supportfiles/ci/matlab-batch/v1/";
-    if (architecture !== "x64") {
-        return Promise.reject(Error(`This action is not supported on ${platform} runners using the ${architecture} architecture.`));
+export async function setupBatch(platform: string): Promise<void> {
+    const batchInstallDir = script.defaultInstallRoot(platform, "matlab-batch");
+    const exitCode = await script.downloadAndRunScript(platform, "https://ssd.mathworks.com/supportfiles/ci/matlab-batch/v0/install.sh", batchInstallDir);
+
+    if (exitCode !== 0) {
+        return Promise.reject(Error(`Failed to install matlab-batch. Script exited with non-zero code ${exitCode}.`));
     }
-    let matlabBatchUrl: string;
-    let matlabBatchPath: string;
-    let exitCode: number;
-    switch (platform) {
-        case "win32":
-            matlabBatchUrl = mpmRootUrl + "win64/matlab-batch.exe";
-            matlabBatchPath = await toolLib.downloadTool(matlabBatchUrl);
-            break;
-        case "linux":
-            matlabBatchUrl = mpmRootUrl + "glnxa64/matlab-batch";
-            matlabBatchPath = await toolLib.downloadTool(matlabBatchUrl);
-            exitCode = await taskLib.exec("chmod", ["+x", matlabBatchPath]);
-            if (exitCode !== 0) {
-                return Promise.reject(Error("Failed to set up matlab-batch."));
-            }
-            break;
-        case "darwin":
-            matlabBatchUrl = mpmRootUrl + "maci64/matlab-batch";
-            matlabBatchPath = await toolLib.downloadTool(matlabBatchUrl);
-            exitCode = await taskLib.exec("chmod", ["+x", matlabBatchPath]);
-            if (exitCode !== 0) {
-                return Promise.reject(Error("Failed to set up matlab-batch."));
-            }
-            break;
-        default:
-            return Promise.reject(Error(`This action is not supported on ${platform} runners using the ${architecture} architecture.`));
-    }
+
     try {
-        toolLib.prependPath(matlabBatchPath);
+        toolLib.prependPath(batchInstallDir);
     } catch (err: any) {
-        throw new Error("Failed to set up matlab-batch.");
+        throw new Error("Failed to add MATLAB to system path.");
     }
     return;
 }
