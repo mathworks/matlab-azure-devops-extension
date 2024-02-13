@@ -473,6 +473,10 @@ stages:
               function checkTask(~)
 
               f = fopen('buildlog.txt', 'a+'); fprintf(f, 'checking\n'); fclose(f);
+              
+              function errorTask(~)
+              f = fopen('buildlog.txt', 'a+'); fprintf(f, 'erroring\n'); fclose(f);
+              error('Error occured in errorTask');
               EOF
             displayName: Create buildfile.m in project root
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABBuild.RunMATLABBuild@0
@@ -507,6 +511,34 @@ stages:
               grep "testing" buildlog.txt
               grep "deploying" buildlog.txt
               grep "checking" buildlog.txt
+              rm buildlog.txt
+            displayName: Verify that correct tasks appear in buildlog.txt
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABBuild.RunMATLABBuild@0
+            displayName: Run build with task skipping
+            inputs:
+              tasks: deploy
+              build-options: -skip test
+          - bash: |
+              set -e
+              grep "building" buildlog.txt
+              ! grep "testing" buildlog.txt
+              grep "deploying" buildlog.txt
+              ! grep "checking" buildlog.txt
+              rm buildlog.txt
+            displayName: Verify that correct tasks appear in buildlog.txt
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABBuild.RunMATLABBuild@0
+            displayName: Run build with continue on failure
+            continueOnError: true
+            inputs:
+              tasks: error deploy
+              build-options: -continueOnFailure
+          - bash: |
+              set -e
+              grep "erroring" buildlog.txt
+              grep "building" buildlog.txt
+              grep "testing" buildlog.txt
+              grep "deploying" buildlog.txt
+              ! grep "checking" buildlog.txt
               rm buildlog.txt
             displayName: Verify that correct tasks appear in buildlog.txt
 

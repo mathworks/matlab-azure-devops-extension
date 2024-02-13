@@ -10,6 +10,7 @@ async function run() {
         taskLib.setResourcePath(path.join( __dirname, "task.json"));
         const options: IRunBuildOptions = {
             Tasks: taskLib.getInput("tasks"),
+            BuildOptions: taskLib.getInput("buildOptions"),
         };
         const startupOpts: string | undefined = taskLib.getInput("startupOptions");
         await runBuild(options, startupOpts);
@@ -48,6 +49,9 @@ async function runBuild(options: IRunBuildOptions, args?: string) {
     if (options.Tasks) {
         buildtoolCommand = buildtoolCommand + " " + options.Tasks;
     }
+    if (options.BuildOptions) {
+        buildtoolCommand = buildtoolCommand + " " + options.BuildOptions;
+    }
     runTool.arg(buildtoolCommand);
 
     if (args) {
@@ -62,6 +66,7 @@ async function runBuild(options: IRunBuildOptions, args?: string) {
 
 interface IRunBuildOptions {
     Tasks?: string;
+    BuildOptions?: string;
 }
 
 run();

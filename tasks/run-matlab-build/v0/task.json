@@ -22,6 +22,14 @@
             "helpMarkDown": "Space-separated list of tasks to run. If not specified, the task runs the default tasks in the file buildfile.m as well as all the tasks on which they depend."
         },
         {
+            "name": "buildOptions",
+            "type": "string",
+            "label": "Build Options",
+            "required": false,
+            "defaultValue": "",
+            "helpMarkDown": "Build options for MATLAB build tool."
+        },
+        {
             "name": "startupOptions",
             "type": "string",
             "label": "Startup Options",
