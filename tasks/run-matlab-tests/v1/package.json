@@ -1,10 +1,10 @@
 {
     "name": "run-matlab-tests",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "private": true,
     "scripts": {
         "postinstall": "npm run getBinDep && npm run getScriptgenDep",
-        "getBinDep": "../../../scripts/setupdepsv0.sh",
+        "getBinDep": "../../../scripts/setupdeps.sh",
         "getScriptgenDep": "wget -q https://ssd.mathworks.com/supportfiles/ci/matlab-script-generator/v0/matlab-script-generator.zip -O scriptgen.zip; unzip -qod scriptgen scriptgen.zip; rm scriptgen.zip"
     },
     "dependencies": {

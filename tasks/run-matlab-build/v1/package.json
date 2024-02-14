@@ -1,10 +1,10 @@
 {
-    "name": "run-matlab-command",
-    "version": "0.1.0",
+    "name": "run-matlab-build",
+    "version": "1.0.0",
     "private": true,
     "scripts": {
         "postinstall": "npm run getBinDep",
-        "getBinDep": "../../../scripts/setupdepsv0.sh"
+        "getBinDep": "../../../scripts/setupdeps.sh"
     },
     "dependencies": {
         "@types/node": "^15.0.2",
