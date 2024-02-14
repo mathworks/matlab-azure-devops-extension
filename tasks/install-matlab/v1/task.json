@@ -1,6 +1,6 @@
 {
     "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
-    "id": "AC1549CE-4CFD-4F4E-BC28-760FE239A3C8",
+    "id": "553fa7ff-af12-4821-8ace-6bf3dc410e62",
     "name": "InstallMATLAB",
     "friendlyName": "Install MATLAB",
     "description": "Install MATLAB on a Microsoft-hosted agent. Public licensing is not available for transformation products, such as MATLAB Coder and MATLAB Compiler.",
