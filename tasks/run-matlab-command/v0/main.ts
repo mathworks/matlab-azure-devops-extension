@@ -56,7 +56,7 @@ async function runCommand(command: string, args?: string) {
             throw new Error(`This task is not supported on ${platform()} runners using the ${architecture()} architecture.`);
     }
     console.log("========================== Starting Command Output ===========================");
-    const runToolPath = path.join(__dirname, "bin", platformDir, `run-matlab-command${ext}`);
+    const runToolPath = path.join(__dirname, "..", "..", "bin", "v1", platformDir, `run-matlab-command${ext}`);
     chmodSync(runToolPath, "777");
     const runTool = taskLib.tool(runToolPath);
     runTool.arg("setenv('MW_ORIG_WORKING_FOLDER', cd('" + tempDirectory.replace(/'/g, "''") + "'));" + scriptName);
