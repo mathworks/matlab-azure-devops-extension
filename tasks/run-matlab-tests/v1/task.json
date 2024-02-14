@@ -1,0 +1,159 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
+    "id": "d9f28863-c9b0-4133-9cb8-a6d4744f30ef",
+    "name": "RunMATLABTests",
+    "friendlyName": "Run MATLAB Tests",
+    "description": "Run all tests in a MATLAB project and generate test artifacts. MATLAB includes any files in your project that have a Test label. If your pipeline does not leverage a MATLAB project, then MATLAB includes all tests in the the root of your repository including its subfolders.",
+    "helpMarkDown": "",
+    "category": "Test",
+    "author": "The MathWorks, Inc.",
+    "version": {
+        "Major": 1,
+        "Minor": 0,
+        "Patch": 0
+    },
+    "groups": [
+        {
+            "name": "testArtifacts",
+            "displayName": "Generate Test Artifacts"
+        },
+        {
+            "name": "coverageArtifacts",
+            "displayName": "Generate Coverage Artifacts"
+        },
+        {
+          "name": "filterTests",
+          "displayName": "Filter Tests"
+        },
+        {
+          "name": "customizeTestRun",
+          "displayName": "Customize Test Run"
+        }
+    ],
+    "inputs": [
+        {
+            "name": "codeCoverageCobertura",
+            "type": "string",
+            "label": "Cobertura code coverage",
+            "defaultValue": "",
+            "required": false,
+            "groupName": "coverageArtifacts",
+            "helpMarkDown": "Path to write code coverage report in Cobertura XML format."
+        },
+        {
+            "name": "modelCoverageCobertura",
+            "type": "string",
+            "label": "Cobertura model coverage",
+            "defaultValue": "",
+            "groupName": "coverageArtifacts",
+            "required": false,
+            "helpMarkDown": "Path to write model coverage report in Cobertura XML format (requires Simulink Coverage™ license and is supported in MATLAB R2018b or later)."
+        },
+        {
+            "name": "testResultsSimulinkTest",
+            "type": "string",
+            "label": "Simulink test results",
+            "defaultValue": "",
+            "groupName": "testArtifacts",
+            "required": false,
+            "helpMarkDown": "Path to export Simulink Test Manager results in MLDATX format (requires Simulink Test license and is supported in MATLAB R2019a or later)."
+        },
+        {
+            "name": "testResultsPDF",
+            "type": "string",
+            "label": "PDF test report ",
+            "defaultValue": "",
+            "groupName": "testArtifacts",
+            "required": false,
+            "helpMarkDown": "Path to write test results report in PDF format (requires MATLAB R2020b or later on macOS platforms)."
+        },
+        {
+            "name": "selectByFolder",
+            "type": "string",
+            "label": "By folder",
+            "defaultValue": "",
+            "groupName": "filterTests",
+            "required": false,
+            "helpMarkDown": "Locations of the folders used to select test suite elements, relative to the project root folder. To create a test suite, the task uses only the tests in the specified folders and their subfolders. You can specify multiple folders using a colon-separated or a semicolon-separated list."
+        },
+        {
+            "name": "selectByTag",
+            "type": "string",
+            "label": "By tag",
+            "defaultValue": "",
+            "groupName": "filterTests",
+            "required": false,
+            "helpMarkDown": "Test tag used to select test suite elements. To create a test suite, the task uses only the test elements with the specified tag."
+        },
+        {
+            "name": "sourceFolder",
+            "type": "string",
+            "label": "Source folder",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "Location of the folder containing source code, relative to the project root folder. The specified folder and its subfolders are added to the top of the MATLAB search path. To generate a code coverage report, MATLAB uses only the source code in the specified folder and its subfolders. You can specify multiple folders using a colon-separated or a semicolon-separated list."
+        },
+        {
+            "name": "testResultsJUnit",
+            "type": "string",
+            "label": "JUnit-style test results",
+            "defaultValue": "",
+            "groupName": "testArtifacts",
+            "required": false,
+            "helpMarkDown": "Path to write test results report in JUnit XML format."
+        },
+        {
+            "name": "strict",
+            "type": "boolean",
+            "label": "Strict",
+            "defaultValue": false,
+            "required": false,
+            "groupName": "customizeTestRun",
+            "helpMarkDown": "Whether to apply strict checks when running the tests. For example, the task generates a qualification failure if a test issues a warning."
+        },
+        {
+            "name": "useParallel",
+            "type": "boolean",
+            "label": "Use Parallel",
+            "defaultValue": false,
+            "required": false,
+            "groupName": "customizeTestRun",
+            "helpMarkDown": "Whether to run tests in parallel on a self-hosted agent (requires Parallel Computing Toolbox). This feature might not be compatible with certain arguments, in which case, tests run in serial regardless of the specified value."
+        },
+        {
+            "name": "outputDetail",
+            "type": "string",
+            "label": "Output Detail",
+            "defaultValue": "",
+            "required": false,
+            "groupName": "customizeTestRun",
+            "helpMarkDown": "Display level for event details produced by the test run."
+        },
+        {
+            "name": "loggingLevel",
+            "type": "string",
+            "label": "Logging Level",
+            "defaultValue": "",
+            "required": false,
+            "groupName": "customizeTestRun",
+            "helpMarkDown": "Maximum verbosity level for logged diagnostics included for the test run."
+        },
+        {
+            "name": "startupOptions",
+            "type": "string",
+            "label": "Startup Options",
+            "required": false,
+            "defaultValue": "",
+            "helpMarkDown": "Startup options to pass to MATLAB."
+        }
+    ],
+    "instanceNameFormat": "Run MATLAB Tests",
+    "execution": {
+        "Node10": {
+            "target": "main.js"
+        }
+    },
+    "messages": {
+        "FailedToRunTests": "Failed to run tests successfully."
+    }
+}
