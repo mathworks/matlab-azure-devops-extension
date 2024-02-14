@@ -105,7 +105,6 @@ export default function suite() {
                 "--products",
                 "MATLAB",
                 "Compiler",
-                "Parallel_Computing_Toolbox",
             ];
             assert.doesNotReject(async () => { mpm.install(mpmPath, releaseInfo, products, destination); });
             mpm.install(mpmPath, releaseInfo, destination, products).then(() => {

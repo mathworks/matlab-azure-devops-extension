@@ -2,7 +2,6 @@
 
 import * as taskLib from "azure-pipelines-task-lib/task";
 import * as toolLib from "azure-pipelines-tool-lib/tool";
-import * as path from "path";
 import * as matlab from "./matlab";
 
 export async function setup(platform: string, architecture: string): Promise<string> {
@@ -47,8 +46,8 @@ export async function install(
     products: string,
 ): Promise<void> {
     let parsedProducts = products.split(" ");
-    // Add MATLAB and PCT by default
-    parsedProducts.push("MATLAB", "Parallel_Computing_Toolbox");
+    // Add MATLAB by default
+    parsedProducts.push("MATLAB");
     // Remove duplicates
     parsedProducts = [...new Set(parsedProducts)];
     let mpmArguments: string[] = [

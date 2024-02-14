@@ -26,10 +26,7 @@ export async function install(platform: string, architecture: string, release: s
     const mpmPath: string = await mpm.setup(platform, architecture);
 
     // install MATLAB using mpm
-    let [toolpath, alreadyExists] = await matlab.makeToolcacheDir(parsedRelease);
-    if (platform === "darwin") {
-        toolpath = toolpath + "/MATLAB.app";
-    }
+    const [toolpath, alreadyExists] = await matlab.makeToolcacheDir(parsedRelease, platform);
     if (!alreadyExists) {
         await mpm.install(mpmPath, parsedRelease, toolpath, products);
     }
@@ -42,5 +39,5 @@ export async function install(platform: string, architecture: string, release: s
     }
 
     // install matlab-batch
-    await matlab.setupBatch(platform);
+    await matlab.setupBatch(platform, architecture);
 }

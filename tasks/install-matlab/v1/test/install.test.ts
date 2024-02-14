@@ -65,18 +65,6 @@ export default function suite() {
             assert(stubDownloadAndRunScript.notCalled);
         });
 
-        it("installs MATLAB to folder MATLAB.app on mac", async () => {
-            const mpmPath = "/path/to/mpm";
-            stubMpmSetup.callsFake((rel) => {
-                return mpmPath;
-            });
-
-            assert.doesNotReject(async () => { await install.install("darwin", architecture, release, products); });
-            await install.install("darwin", architecture, release, products).then(() => {
-                assert(stubMpmInstall.calledWithMatch(mpmPath, releaseInfo, toolcacheDir + "/MATLAB.app", products));
-            });
-        });
-
         it("fails for unsupported release", async () => {
             stubGetReleaseInfo.callsFake((rel) => {
                 return {name: "r2020a", version: "2020.1.999", update: "latest"};
