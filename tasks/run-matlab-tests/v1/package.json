@@ -1,0 +1,16 @@
+{
+    "name": "run-matlab-tests",
+    "version": "1.0.0-rc",
+    "private": true,
+    "scripts": {
+        "postinstall": "npm run getBinDep && npm run getScriptgenDep",
+        "getBinDep": "../../../scripts/setupdeps.sh",
+        "getScriptgenDep": "wget -q https://ssd.mathworks.com/supportfiles/ci/matlab-script-generator/v0/matlab-script-generator.zip -O scriptgen.zip; unzip -qod scriptgen scriptgen.zip; rm scriptgen.zip"
+    },
+    "dependencies": {
+        "@types/node": "^15.0.2",
+        "@types/q": "^1.5.4",
+        "azure-pipelines-task-lib": "^4.7.0",
+        "azure-pipelines-tool-lib": "^2.0.7"
+    }
+}

@@ -3,13 +3,13 @@
     "id": "c61c6fcc-00f1-4aa0-8513-31aad3340512",
     "name": "RunMATLABBuild",
     "friendlyName": "Run MATLAB Build",
-    "description": "Run a build using the MATLAB build tool. Use this task to run the MATLAB build tasks specified in a file named buildfile.m in the root of your repository. To use the run-build task, you need MATLAB R2022b or a later release.",
+    "description": "[PREVIEW] Run a build using the MATLAB build tool. Use this task to run the MATLAB build tasks specified in a file named buildfile.m in the root of your repository. To use the run-build task, you need MATLAB R2022b or a later release.",
     "helpMarkDown": "",
     "category": "Build",
     "author": "The MathWorks, Inc.",
     "version": {
-        "Major": 0,
-        "Minor": 1,
+        "Major": 1,
+        "Minor": 0,
         "Patch": 0
     },
     "inputs": [

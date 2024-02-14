@@ -1,0 +1,37 @@
+// Copyright 2020 The MathWorks, Inc.
+
+import * as path from "path";
+
+export function runCmdArg(
+                    junit: string,
+                    cobertura: string,
+                    source: string,
+                    selectByFolder: string,
+                    selectByTag: string,
+                    modelCoverageCobertura: string,
+                    testResultsSimulinkTest: string,
+                    testResultsPDF: string,
+                    strict: boolean,
+                    useParallel: boolean,
+                    outputDetail: string,
+                    loggingLevel: string,
+                ) {
+    return "addpath('" + path.join(path.dirname(__dirname), "scriptgen") + "');" +
+        "testScript = genscript('Test'," +
+            "'JUnitTestResults','" + junit + "'," +
+            "'CoberturaCodeCoverage','" + cobertura + "'," +
+            "'SourceFolder','" + source + "'," +
+            "'SelectByFolder','" + selectByFolder + "'," +
+            "'SelectByTag','" + selectByTag + "'," +
+            "'CoberturaModelCoverage','" + modelCoverageCobertura + "'," +
+            "'SimulinkTestResults','" + testResultsSimulinkTest + "'," +
+            "'PDFTestReport','" + testResultsPDF + "'," +
+            "'Strict'," + strict + "," +
+            "'UseParallel'," + useParallel + "," +
+            "'OutputDetail','" + outputDetail + "'," +
+            "'LoggingLevel','" + loggingLevel + "');" +
+        `disp('Running MATLAB script with contents:');` +
+        `disp(testScript.Contents);` +
+        `fprintf('__________\\n\\n');` +
+        `run(testScript);`;
+}
