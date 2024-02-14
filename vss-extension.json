@@ -57,6 +57,9 @@
         },
         {
             "path": "tasks"
+        },
+        {
+            "path": "bin"
         }
     ],
     "contributions": [
