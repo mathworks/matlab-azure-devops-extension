@@ -60,8 +60,8 @@ fsClone.writeFileSync = (filePath: any, contents: any, options: any) => {
 tr.registerMock("fs", fsClone);
 
 // mock uuidv4
-tr.registerMock("uuid/v4", () => {
-    return "1-2-3";
+tr.registerMock("uuid", {
+    v4: () => "1-2-3",
 });
 
 tr.run();
