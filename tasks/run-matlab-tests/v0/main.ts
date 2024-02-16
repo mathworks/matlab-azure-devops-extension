@@ -51,7 +51,7 @@ async function runTests(options: IRunTestsOptions, args?: string) {
         default:
             throw new Error(`This task is not supported on ${platform()} runners using the ${architecture()} architecture.`);
     }
-    const runToolPath = path.join(__dirname, "bin", "v1", platformDir, `run-matlab-command${ext}`);
+    const runToolPath = path.join(__dirname, "bin", platformDir, `run-matlab-command${ext}`);
     chmodSync(runToolPath, "777");
     const runTool = taskLib.tool(runToolPath);
     runTool.arg(`addpath('${path.join(__dirname, "scriptgen")}');` +
