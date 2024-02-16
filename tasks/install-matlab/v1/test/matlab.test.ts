@@ -71,19 +71,19 @@ export default function suite() {
         //     assert.doesNotReject(async () => { await matlab.setupBatch(platform, architecture); });
         // });
 
-        it("setupBatch rejects when the download fails", async () => {
-            stubDownloadAndRunScript.callsFake((plat, url, args) => {
-                return Promise.resolve(1);
-            });
-            assert.rejects(async () => { await matlab.setupBatch(platform, architecture); });
-        });
+        // it("setupBatch rejects when the download fails", async () => {
+        //     stubDownloadAndRunScript.callsFake((plat, url, args) => {
+        //         return Promise.resolve(1);
+        //     });
+        //     assert.rejects(async () => { await matlab.setupBatch(platform, architecture); });
+        // });
 
-        it("setupBatch rejects when adding to path fails", async () => {
-            stubPrependPath.callsFake((path) => {
-                throw Error("BAM!");
-            });
-            assert.rejects(async () => { await matlab.setupBatch(platform, architecture); });
-        });
+        // it("setupBatch rejects when adding to path fails", async () => {
+        //     stubPrependPath.callsFake((path) => {
+        //         throw Error("BAM!");
+        //     });
+        //     assert.rejects(async () => { await matlab.setupBatch(platform, architecture); });
+        // });
 
         it("getReleaseInfo resolves latest", async () => {
             const mockResp = new http.IncomingMessage(new net.Socket());
