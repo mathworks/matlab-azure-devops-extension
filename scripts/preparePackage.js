@@ -30,4 +30,3 @@ for (let task of project.taskList) {
 
     sh.cp("-R", path.join(task.buildPath, "node_modules"), path.join(task.packagePath, "node_modules"));
 }
-sh.exec("scripts/setupdeps.sh");
