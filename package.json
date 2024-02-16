@@ -9,7 +9,7 @@
         "copyResources": "node ./scripts/copyResources.js",
         "build": "npm run lint && npm run compile && npm run copyResources",
         "test": "node ./scripts/test.js",
-        "preparePackage": "node ./scripts/preparePackage.js"
+        "preparePackage": "node ./scripts/preparePackage.js && node ./scripts/compressBinaries"
     },
     "devDependencies": {
         "@types/mocha": "^8.2.2",
