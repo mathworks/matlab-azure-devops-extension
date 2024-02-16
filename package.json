@@ -16,6 +16,7 @@
         "@types/node": "^15.0.2",
         "@types/shelljs": "^0.8.8",
         "@types/sinon": "^10.0.13",
+        "@types/uuid": "^9.0.8",
         "mocha": "^10.0.0",
         "nyc": "^15.1.0",
         "shelljs": "^0.8.5",

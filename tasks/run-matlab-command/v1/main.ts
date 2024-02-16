@@ -4,7 +4,7 @@ import * as taskLib from "azure-pipelines-task-lib/task";
 import { chmodSync } from "fs";
 import * as fs from "fs";
 import * as path from "path";
-import * as uuidV4 from "uuid/v4";
+import { v4 as uuidV4 } from "uuid";
 import { architecture, platform } from "./utils";
 
 async function run() {
