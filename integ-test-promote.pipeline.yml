@@ -95,11 +95,10 @@ stages:
                 mex -h
               fi
             displayName: Check matlab and mex
-          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@1
             displayName: Check MATLAB version
             inputs:
               command: assert(~isempty(ver('matlab')))
-
 
       - job: test_install_release_and_products_v1
         strategy:
@@ -132,12 +131,12 @@ stages:
                 mex -h
               fi
             displayName: Check matlab and mex
-          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@1
             displayName: Check MATLAB version
             inputs:
               command: assert(strcmp(version('-release'),'2022a') && ~isempty(ver('simulink')))
 
-      - job: test_run_command
+      - job: test_run_command_v0
         strategy:
           matrix:
             microsoft_hosted_linux:
@@ -174,7 +173,7 @@ stages:
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run MATLAB statement with quotes 1
             inputs:
-              command: "eval(\"a = 1+2\"); assert(a == 3); eval('b = 3+4'); assert(b == 7);"
+              command: 'eval("a = 1+2"); assert(a == 3); eval(''b = 3+4''); assert(b == 7);'
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run MATLAB statement with quotes 2
             inputs:
@@ -220,7 +219,90 @@ stages:
                 assert(strcmp(folder, 'subdir'));
               startupOptions: -sd subdir
 
-      - job: test_run_tests
+      - job: test_run_command_v1
+        strategy:
+          matrix:
+            microsoft_hosted_linux:
+              poolName: Azure Pipelines
+              vmImage: ubuntu-22.04
+            microsoft_hosted_macos:
+              poolName: Azure Pipelines
+              vmImage: macOS-latest
+            microsoft_hosted_windows:
+              poolName: Azure Pipelines
+              vmImage: windows-latest
+            self_hosted_windows:
+              poolName: vmssagentpool
+              vmImage: # blank for self-hosted
+        pool:
+          name: $(poolName)
+          vmImage: $(vmImage)
+        steps:
+          - checkout: none
+          - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@1
+            displayName: Install MATLAB on Microsoft-hosted agents
+            # Use 23a due to licensing bug in 23b
+            inputs:
+              release: R2023a
+            condition: not(startsWith(variables['Agent.Name'], 'vmss'))
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@1
+            displayName: Run MATLAB statement
+            inputs:
+              command: f = fopen('myscript.m', 'w'); fwrite(f, 'assert(true)'); fclose(f);
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@1
+            displayName: Run MATLAB script
+            inputs:
+              command: myscript
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@1
+            displayName: Run MATLAB statement with quotes 1
+            inputs:
+              command: 'eval("a = 1+2"); assert(a == 3); eval(''b = 3+4''); assert(b == 7);'
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@1
+            displayName: Run MATLAB statement with quotes 2
+            inputs:
+              command: 'eval("a = 1+2"); assert(a == 3); eval(''b = 3+4''); assert(b == 7);'
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@1
+            displayName: Run MATLAB statement with quotes 3
+            inputs:
+              command: a = """hello world"""; b = '"hello world"'; assert(strcmp(a,b));
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@1
+            displayName: Run MATLAB statement with symbols
+            inputs:
+              command: a = " !""#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~"; b = char([32:126]); assert(strcmp(a, b), a+b);
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@1
+            displayName: Run MATLAB statement in working directory
+            inputs:
+              command: exp = getenv('SYSTEM_DEFAULTWORKINGDIRECTORY'); act = pwd; assert(strcmp(act, exp), strjoin({act exp}, '\n'));
+          - bash: |
+              echo 'myvar = 123' > startup.m
+            displayName: Create startup.m
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@1
+            displayName: MATLAB runs startup.m automatically
+            inputs:
+              command: assert(myvar==123, 'myvar was not set as expected by startup.m')
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@1
+            displayName: Run MATLAB statement with startup options
+            inputs:
+              command: disp("Hello world!")
+              startupOptions: -logfile mylog.log
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@1
+            displayName: Run MATLAB statement with startup options
+            inputs:
+              command: assert(isfile("mylog.log"), 'mylog.log was not created as expected')
+          - bash: |
+              mkdir subdir
+              echo 'onetyone = 11' > subdir/startup.m
+            displayName: Create subdir/startup.m
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@1
+            displayName: Run MATLAB statement with subdir/startup
+            inputs:
+              command: >
+                assert(onetyone==11, 'onetyone was not set as expected by subdir/startup.m');
+                [~, folder] = fileparts(pwd());
+                assert(strcmp(folder, 'subdir'));
+              startupOptions: -sd subdir
+
+      - job: test_run_tests_v0
         strategy:
           matrix:
             microsoft_hosted_linux:
@@ -316,7 +398,8 @@ stages:
               set -e
               grep -q "runner.addPlugin(FailOnWarningsPlugin())" console.log
               rm console.log
-            displayName: Verify tests ran with strict checks
+            displayName:
+              Verify tests ran with strict checks
               # Running test in parallel is not working currently
               #          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
               #            displayName: Run MATLAB tests in parallel
@@ -427,8 +510,217 @@ stages:
               test -f test-results/matlab/results.pdf
             displayName: Verify PDF report was created
             condition: eq(variables['Agent.OS'], 'Linux')
-            
-      - job: test_run_build
+
+      - job: test_run_tests_v1
+        strategy:
+          matrix:
+            microsoft_hosted_linux:
+              poolName: Azure Pipelines
+              vmImage: ubuntu-22.04
+            self_hosted_windows:
+              poolName: vmssagentpool
+              vmImage: # blank for self-hosted
+        pool:
+          name: $(poolName)
+          vmImage: $(vmImage)
+        workspace:
+          clean: all
+        steps:
+          - checkout: none
+          - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@1
+            displayName: Install MATLAB on Microsoft-hosted agents
+            # Use 23a due to licensing bug in 23b
+            inputs:
+              release: R2023a
+            condition: not(startsWith(variables['Agent.Name'], 'vmss'))
+          - bash: |
+              echo 'myvar = 123' > startup.m
+              mkdir src
+              echo 'function c=add(a,b);c=a+b;' > src/add.m
+              mkdir tests
+              echo "%% StartupTest" > tests/mytest.m
+              echo "evalin('base','assert(myvar==123)')" >> tests/mytest.m
+              echo "%% FirstTest" >> tests/mytest.m
+              echo "assert(add(1,2)==3)" >> tests/mytest.m
+              mkdir tests/filteredTest
+              echo "%% simpleTest" >> tests/filteredTest/filtertest.m
+              echo "assert(2==2)" >> tests/filteredTest/filtertest.m
+              echo "%% FilterByTag" >> tests/filteredTest/TaggedTest.m
+              cat << EOF > tests/filteredTest/TaggedTest.m
+              classdef (TestTags = {'FILTERED'}) TaggedTest < matlab.unittest.TestCase
+                  methods(Test)
+                      function testTag(testCase)
+                          assert(2==2);
+                      end
+                  end
+              end
+              EOF
+            displayName: Make MATLAB tests
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@1
+            displayName: Run MATLAB tests with defaults
+            inputs:
+              sourceFolder: src
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@1
+            displayName: Run MATLAB tests producing artifacts
+            inputs:
+              testResultsJUnit: test-results/matlab/results.xml
+              codeCoverageCobertura: code-coverage/coverage.xml
+              sourceFolder: src
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@1
+            displayName: Run MATLAB tests filter by folder
+            inputs:
+              testResultsJUnit: test-results/matlab/selectbyfolder.xml
+              selectByFolder: tests/filteredTest
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@1
+            displayName: Run MATLAB tests filter by folder
+            inputs:
+              testResultsJUnit: test-results/matlab/selectbytag.xml
+              selectByTag: FILTERED
+          - bash: |
+              set -e
+              grep -q FirstTest test-results/matlab/results.xml
+            displayName: Verify test results file was created
+          - bash: |
+              set -e
+              grep -q add code-coverage/coverage.xml
+            displayName: Verify code coverage file was created
+          - bash: |
+              set -e
+              grep -q simpleTest test-results/matlab/selectbyfolder.xml
+              grep -v FirstTest test-results/matlab/selectbyfolder.xml
+            displayName: Verify test filtered by folder
+          - bash: |
+              set -e
+              grep -q TaggedTest test-results/matlab/selectbytag.xml
+              grep -v FirstTest test-results/matlab/selectbytag.xml
+              grep -v simpleTest test-results/matlab/selectbytag.xml
+            displayName: Verify test filtered by tag name
+          - bash: |
+              echo 'diary console.log' >> startup.m
+            displayName: Set up diary for logging
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@1
+            displayName: Run MATLAB tests with strict checks
+            inputs:
+              strict: true
+              sourceFolder: src
+          - bash: |
+              set -e
+              grep -q "runner.addPlugin(FailOnWarningsPlugin())" console.log
+              rm console.log
+            displayName:
+              Verify tests ran with strict checks
+              # Running test in parallel is not working currently
+              #          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@1
+              #            displayName: Run MATLAB tests in parallel
+              #            inputs:
+              #              useParallel: true
+              #              sourceFolder: src
+              #          - bash: |
+              #              set -e
+              #              grep -q "Starting parallel pool (parpool)" console.log
+              #              rm console.log
+              #            displayName: Verify tests ran in parallel
+              #            condition: startsWith(variables['Agent.Name'], 'vmss')
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@1
+            displayName: Run MATLAB tests with detailed display level for event details
+            inputs:
+              outputDetail: Detailed
+              sourceFolder: src
+          - bash: |
+              set -e
+              grep -q "TestRunner.withTextOutput('OutputDetail', 3)" console.log
+              rm console.log
+            displayName: Verify tests ran with detailed display level for event details
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@1
+            displayName: Run MATLAB tests with detailed verbosity level for logged diagnostics
+            inputs:
+              loggingLevel: Detailed
+              sourceFolder: src
+          - bash: |
+              set -e
+              grep -q "TestRunner.withTextOutput('LoggingLevel', 3)" console.log
+              rm console.log
+            displayName: Verify tests ran with detailed verbosity level for logged diagnostics
+          - bash: |
+              mkdir simtests
+              cat << EOF > simtests/createModel.m
+              % Create model
+              model = 'new_temp_model';
+              new_system(model);
+              load_system(model);
+
+              % add blocks
+              add_block('built-in/Inport', [model, '/InputPort'], ...
+                  'Position', [50 50 100 100]);
+              add_block('built-in/Gain', [model, '/Gain'], 'Gain', '1', ...
+                  'Position', [150 50 200 100]);
+              add_block('built-in/Outport', [model, '/OutputPort'], ...
+                  'Position', [250 50 300 100]);
+
+              % add lines
+              add_line(model, 'InputPort/1', 'Gain/1');
+              add_line(model, 'Gain/1', 'OutputPort/1');
+
+              % save system
+              save_system(model);
+              close_system(model);
+
+              % Create Simulink Test File
+              sltest.testmanager.clear;
+              sltest.testmanager.clearResults;
+              tf = sltest.testmanager.TestFile('test.mldatx');
+
+              % Set coverage related options.
+              cs = tf.getCoverageSettings;
+              cs.RecordCoverage = true;
+              cs.MdlRefCoverage = true;
+              cs.MetricSettings = 'd';
+
+              % Set model and collect baseline.
+              ts = tf.getTestSuites;
+              tc = ts.getTestCases;
+              tc.setProperty('model', model);
+              captureBaselineCriteria(tc,'baseline_API.mat',true);
+
+              % Save test file and close.
+              tf.saveToFile;
+              tf.close;
+              sltest.testmanager.close;
+              disp('Created Model and Simulink Test file to simulate the model.');
+              evalin('base', 'clear all');
+              EOF
+            displayName: Create model file and Simulink test.
+            condition: eq(variables['Agent.OS'], 'Linux')
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@1
+            displayName: Run model creator and test Simulink test generator
+            inputs:
+              command: "cd simtests;createModel"
+            condition: eq(variables['Agent.OS'], 'Linux')
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@1
+            displayName: Run MATLAB tests and generate Simulink test artifacts
+            inputs:
+              selectByFolder: "simtests"
+              modelCoverageCobertura: test-results/matlab/modelcoverage.xml
+              testResultsSimulinkTest: test-results/matlab/stmResult.mldatx
+              testResultsPDF: test-results/matlab/results.pdf
+            condition: eq(variables['Agent.OS'], 'Linux')
+          - bash: |
+              set -e
+              grep -q new_temp_model test-results/matlab/modelcoverage.xml
+            displayName: Verify Model coverage was created
+            condition: eq(variables['Agent.OS'], 'Linux')
+          - bash: |
+              set -e
+              test -f test-results/matlab/stmResult.mldatx
+            displayName: Verify STM report was created
+            condition: eq(variables['Agent.OS'], 'Linux')
+          - bash: |
+              set -e
+              test -f test-results/matlab/results.pdf
+            displayName: Verify PDF report was created
+            condition: eq(variables['Agent.OS'], 'Linux')
+
+      - job: test_run_build_v0
         strategy:
           matrix:
             microsoft_hosted_linux:
@@ -498,6 +790,85 @@ stages:
               rm buildlog.txt
             displayName: Verify that correct tasks appear in buildlog.txt
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABBuild.RunMATLABBuild@0
+            displayName: Run build with multiple specified tasks
+            inputs:
+              tasks: deploy check
+          - bash: |
+              set -e
+              grep "building" buildlog.txt
+              grep "testing" buildlog.txt
+              grep "deploying" buildlog.txt
+              grep "checking" buildlog.txt
+              rm buildlog.txt
+            displayName: Verify that correct tasks appear in buildlog.txt
+
+      - job: test_run_build_v1
+        strategy:
+          matrix:
+            microsoft_hosted_linux:
+              poolName: Azure Pipelines
+              vmImage: ubuntu-22.04
+              setupTask: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@1
+            microsoft_hosted_macos:
+              poolName: Azure Pipelines
+              vmImage: macOS-latest
+              setupTask: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@1
+            microsoft_hosted_windows:
+              poolName: Azure Pipelines
+              vmImage: windows-latest
+              setupTask: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@1
+        pool:
+          name: $(poolName)
+          vmImage: $(vmImage)
+        steps:
+          - checkout: none
+          - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@1
+            displayName: Install MATLAB on Microsoft-hosted agents
+            condition: not(startsWith(variables['Agent.Name'], 'vmss'))
+          - bash: |
+              cat << EOF > buildfile.m
+              function plan = buildfile
+              plan = buildplan(localfunctions);
+              plan("test").Dependencies = "build";
+              plan("deploy").Dependencies = "test";
+              plan.DefaultTasks = "test";
+
+              function buildTask(~)
+              f = fopen('buildlog.txt', 'a+'); fprintf(f, 'building\n'); fclose(f);
+              function testTask(~)
+
+              f = fopen('buildlog.txt', 'a+'); fprintf(f, 'testing\n'); fclose(f);
+              function deployTask(~)
+
+              f = fopen('buildlog.txt', 'a+'); fprintf(f, 'deploying\n'); fclose(f);
+              function checkTask(~)
+
+              f = fopen('buildlog.txt', 'a+'); fprintf(f, 'checking\n'); fclose(f);
+              EOF
+            displayName: Create buildfile.m in project root
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABBuild.RunMATLABBuild@1
+            displayName: Run build with default tasks
+          - bash: |
+              set -e
+              grep "building" buildlog.txt
+              grep "testing" buildlog.txt
+              ! grep "deploying" buildlog.txt
+              ! grep "checking" buildlog.txt
+              rm buildlog.txt
+            displayName: Verify that correct tasks appear in buildlog.txt
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABBuild.RunMATLABBuild@1
+            displayName: Run build with specified task
+            inputs:
+              tasks: deploy
+          - bash: |
+              set -e
+              grep "building" buildlog.txt
+              grep "testing" buildlog.txt
+              grep "deploying" buildlog.txt
+              ! grep "checking" buildlog.txt
+              rm buildlog.txt
+            displayName: Verify that correct tasks appear in buildlog.txt
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABBuild.RunMATLABBuild@1
             displayName: Run build with multiple specified tasks
             inputs:
               tasks: deploy check
