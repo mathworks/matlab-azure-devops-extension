@@ -19,9 +19,7 @@ export async function makeToolcacheDir(release: Release, platform: string): Prom
         alreadyExists = true;
     } else {
         if (platform === "win32") {
-            toolpath = await windowsHostedToolpath(release, platform).catch(async () => {
-                return await defaultToolpath(release, platform);
-            });
+            toolpath = await windowsHostedToolpath(release, platform);
         } else {
             toolpath = await defaultToolpath(release, platform);
         }
@@ -57,7 +55,7 @@ async function windowsHostedToolpath(release: Release, platform: string): Promis
     // create install directory and link it to the toolcache directory
     fs.symlinkSync(actualToolCacheDir, defaultToolCacheDir, "junction");
     fs.writeFileSync(`${actualToolCacheDir}.complete`, "");
-    return actualToolCacheDir.replace("C:", "D:").replace("c:", "d:");
+    return actualToolCacheDir;
 }
 
 export async function getReleaseInfo(release: string): Promise<Release> {
