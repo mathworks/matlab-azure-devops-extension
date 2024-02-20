@@ -59,6 +59,8 @@ async function windowsHostedToolpath(release: Release): Promise<string> {
     console.log(`Creating toolcache directory ${actualToolCacheDir}`);
     fs.mkdirSync(actualToolCacheDir, { recursive: true });
     console.log(`Made directory ${actualToolCacheDir}`);
+    fs.mkdirSync(path.dirname(defaultToolCacheDir), {recursive: true});
+    console.log(`Made directory ${path.dirname(defaultToolCacheDir)}`);
     fs.symlinkSync(actualToolCacheDir, defaultToolCacheDir, "junction");
     console.log("Made symlink");
     fs.writeFileSync(`${defaultToolCacheDir}.complete`, "");
