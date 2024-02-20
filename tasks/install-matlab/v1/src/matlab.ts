@@ -53,6 +53,7 @@ async function windowsHostedToolpath(release: Release, platform: string): Promis
     const actualToolCacheDir = defaultToolCacheDir.replace("C:", "D:").replace("c:", "d:");
 
     // create install directory and link it to the toolcache directory
+    fs.mkdirSync(actualToolCacheDir);
     fs.symlinkSync(actualToolCacheDir, defaultToolCacheDir, "junction");
     fs.writeFileSync(`${actualToolCacheDir}.complete`, "");
     return actualToolCacheDir;
