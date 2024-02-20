@@ -19,7 +19,9 @@ export async function makeToolcacheDir(release: Release, platform: string): Prom
         alreadyExists = true;
     } else {
         if (platform === "win32") {
-            toolpath = await windowsHostedToolpath(release, platform);
+            toolpath = await windowsHostedToolpath(release).catch(async () => {
+                return await defaultToolpath(release, platform);
+            });
         } else {
             toolpath = await defaultToolpath(release, platform);
         }
@@ -36,7 +38,7 @@ export async function defaultToolpath(release: Release, platform: string): Promi
     return toolpath;
 }
 
-async function windowsHostedToolpath(release: Release, platform: string): Promise<string> {
+async function windowsHostedToolpath(release: Release): Promise<string> {
     const defaultToolCacheRoot = taskLib.getVariable("Agent.ToolsDirectory");
 
     // only apply optimization for microsoft hosted runners with a defined tool cache directory
@@ -49,13 +51,17 @@ async function windowsHostedToolpath(release: Release, platform: string): Promis
         return Promise.reject();
     }
 
-    const defaultToolCacheDir =  path.join(defaultToolCacheRoot, "MATLAB", release.version, platform);
+    const defaultToolCacheDir =  path.join(defaultToolCacheRoot, "MATLAB", release.version, "x64");
     const actualToolCacheDir = defaultToolCacheDir.replace("C:", "D:").replace("c:", "d:");
 
     // create install directory and link it to the toolcache directory
+    console.log("Creating toolcache directory");
     fs.mkdirSync(actualToolCacheDir);
+    console.log(`Made directory ${actualToolCacheDir}`);
     fs.symlinkSync(actualToolCacheDir, defaultToolCacheDir, "junction");
-    fs.writeFileSync(`${actualToolCacheDir}.complete`, "");
+    console.log("Made symlink");
+    fs.writeFileSync(`${defaultToolCacheDir}.complete`, "");
+    console.log("Created .complete file");
     return actualToolCacheDir;
 }
 
@@ -138,7 +144,7 @@ export async function setupBatch(platform: string, architecture: string) {
     }
     const exitCode = await taskLib.exec("chmod", ["+x", path.join(cachedPath, "matlab-batch" + matlabBatchExt)]);
     if (exitCode !== 0) {
-        return Promise.reject(Error("Unable to set up matlab."));
+        return Promise.reject(Error("Unable to set up matlab-batch."));
     }
     return;
 }
