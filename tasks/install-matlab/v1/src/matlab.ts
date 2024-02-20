@@ -18,7 +18,13 @@ export async function makeToolcacheDir(release: Release, platform: string): Prom
     if (toolpath) {
         alreadyExists = true;
     } else {
-        toolpath = await windowsToolpath(release, platform) || await defaultToolpath(release, platform);
+        if (platform === "win32") {
+            toolpath = await windowsHostedToolpath(release, platform).catch(async () => {
+                return await defaultToolpath(release, platform);
+            });
+        } else {
+            toolpath = await defaultToolpath(release, platform);
+        }
     }
     return [toolpath, alreadyExists];
 }
@@ -32,43 +38,25 @@ export async function defaultToolpath(release: Release, platform: string): Promi
     return toolpath;
 }
 
-async function windowsToolpath(release: Release, platform: string): Promise<string | false> {
-    if (platform !== "win32" ) {
-        return false;
-    }
-
-    // only apply optimization for microsoft hosted runners
-    if (taskLib.getAgentMode() !== taskLib.AgentHostedMode.MsHosted) {
-        return false;
-    }
-
+async function windowsHostedToolpath(release: Release, platform: string): Promise<string> {
     const defaultToolCacheRoot = taskLib.getVariable("Agent.ToolsDirectory");
-    if (!defaultToolCacheRoot) {
-        return false;
+
+    // only apply optimization for microsoft hosted runners with a defined tool cache directory
+    if (taskLib.getAgentMode() !== taskLib.AgentHostedMode.MsHosted || !defaultToolCacheRoot) {
+        return Promise.reject();
     }
 
     // make sure runner has expected directory structure
     if (!fs.existsSync("d:\\") || !fs.existsSync("c:\\")) {
-        return false;
+        return Promise.reject();
     }
 
-    // const actualToolCacheRoot = defaultToolCacheRoot.replace("C:", "D:").replace("c:", "d:");
-    // taskLib.setVariable("Agent.ToolsDirectory", actualToolCacheRoot);
+    const defaultToolCacheDir =  path.join(defaultToolCacheRoot, "MATLAB", release.version, platform);
+    const actualToolCacheDir = defaultToolCacheDir.replace("C:", "D:").replace("c:", "d:");
 
     // create install directory and link it to the toolcache directory
-    fs.writeFileSync(".keep", "");
-    const actualToolCacheDir = await toolLib.cacheFile(".keep", ".keep", "MATLAB", release.version);
-    // const defaultToolCacheDir = actualToolCacheDir.replace(actualToolCacheRoot, defaultToolCacheRoot);
-    // fs.mkdirSync(path.dirname(defaultToolCacheDir), {recursive: true});
-    // fs.symlinkSync(actualToolCacheDir, defaultToolCacheDir, "junction");
-
-    // required for github actions to make the cacheDir persistent
-    // const actualToolCacheCompleteFile = `${actualToolCacheDir}.complete`;
-    // const defaultToolCacheCompleteFile = `${defaultToolCacheDir}.complete`;
-    // fs.symlinkSync(actualToolCacheCompleteFile, defaultToolCacheCompleteFile, "file");
-
-    // taskLib.setVariable("Agent.ToolsDirectory", defaultToolCacheDir);
-    // return actualToolCacheDir;
+    fs.symlinkSync(actualToolCacheDir, defaultToolCacheDir, "junction");
+    fs.writeFileSync(`${actualToolCacheDir}.complete`, "");
     return actualToolCacheDir.replace("C:", "D:").replace("c:", "d:");
 }
 

@@ -1,6 +1,7 @@
 // Copyright 2023 The MathWorks, Inc.
 
 import * as assert from "assert";
+import * as taskLib from "azure-pipelines-task-lib/task";
 import * as toolLib from "azure-pipelines-tool-lib/tool";
 import * as http from "http";
 import * as https from "https";
@@ -11,20 +12,36 @@ import * as script from "./../src/script";
 
 export default function suite() {
     describe("matlab.ts test suite", () => {
+        let stubGetVariable: sinon.SinonStub;
         let stubFindLocalTool: sinon.SinonStub;
         let stubCacheFile: sinon.SinonStub;
+        let stubDownloadTool: sinon.SinonStub;
         let stubDownloadAndRunScript: sinon.SinonStub;
         let stubDefaultInstallRoot: sinon.SinonStub;
         let stubPrependPath: sinon.SinonStub;
+        let stubExec: sinon.SinonStub;
         let stubHttpsGet: sinon.SinonStub;
-
         const cachedMatlab = "/path/to/cached/matlab";
+        const matlabBatchPath = "/path/to/downloaded/matlab-batch";
         const releaseInfo = {name: "r2022b", version: "2022.2.999", update: "Latest"};
         const platform = "linux";
         const architecture = "x64";
 
         beforeEach(() => {
             // setup stubs
+            stubGetVariable = sinon.stub(taskLib, "getVariable");
+            stubGetVariable.callsFake((v) => {
+                if (v === "Agent.ToolsDirectory") {
+                    return "C:\\Program Files\\hostedtoolcache\\MATLAB\\r2022b";
+                } else if (v === "Agent.TempDirectory") {
+                    return "/home/agent/_tmp";
+                }
+                return "";
+            });
+            stubExec = sinon.stub(taskLib, "exec");
+            stubExec.callsFake((tool, args) => {
+                return Promise.resolve(0);
+            });
             stubFindLocalTool = sinon.stub(toolLib, "findLocalTool");
             stubFindLocalTool.callsFake((tool, ver) => {
                 return cachedMatlab;
@@ -32,6 +49,10 @@ export default function suite() {
             stubCacheFile = sinon.stub(toolLib, "cacheFile");
             stubCacheFile.callsFake((srcFile, desFile, tool, ver) => {
                 return Promise.resolve(cachedMatlab);
+            });
+            stubDownloadTool = sinon.stub(toolLib, "downloadTool");
+            stubDownloadTool.callsFake((url, name) => {
+                return Promise.resolve(matlabBatchPath);
             });
             stubDownloadAndRunScript = sinon.stub(script, "downloadAndRunScript");
             stubDownloadAndRunScript.callsFake((plat, url, args) => {
@@ -44,8 +65,11 @@ export default function suite() {
 
         afterEach(() => {
             // restore stubs
+            stubGetVariable.restore();
+            stubExec.restore();
             stubFindLocalTool.restore();
             stubCacheFile.restore();
+            stubDownloadTool.restore();
             stubDownloadAndRunScript.restore();
             stubDefaultInstallRoot.restore();
             stubPrependPath.restore();
@@ -67,23 +91,23 @@ export default function suite() {
             assert(!alreadyExists);
         });
 
-        // it("setupBatch ideally works", async () => {
-        //     assert.doesNotReject(async () => { await matlab.setupBatch(platform, architecture); });
-        // });
+        it("setupBatch ideally works", async () => {
+            assert.doesNotReject(async () => { await matlab.setupBatch(platform, architecture); });
+        });
 
-        // it("setupBatch rejects when the download fails", async () => {
-        //     stubDownloadAndRunScript.callsFake((plat, url, args) => {
-        //         return Promise.resolve(1);
-        //     });
-        //     assert.rejects(async () => { await matlab.setupBatch(platform, architecture); });
-        // });
+        it("setupBatch rejects when the download fails", async () => {
+            stubDownloadTool.callsFake((url, name) => {
+                return Promise.reject();
+            });
+            assert.rejects(async () => { await matlab.setupBatch(platform, architecture); });
+        });
 
-        // it("setupBatch rejects when adding to path fails", async () => {
-        //     stubPrependPath.callsFake((path) => {
-        //         throw Error("BAM!");
-        //     });
-        //     assert.rejects(async () => { await matlab.setupBatch(platform, architecture); });
-        // });
+        it("setupBatch rejects when adding to path fails", async () => {
+            stubPrependPath.callsFake((path) => {
+                throw Error("BAM!");
+            });
+            assert.rejects(async () => { await matlab.setupBatch(platform, architecture); });
+        });
 
         it("getReleaseInfo resolves latest", async () => {
             const mockResp = new http.IncomingMessage(new net.Socket());
