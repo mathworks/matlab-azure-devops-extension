@@ -19,7 +19,8 @@ export async function makeToolcacheDir(release: Release, platform: string): Prom
         alreadyExists = true;
     } else {
         if (platform === "win32") {
-            toolpath = await windowsHostedToolpath(release).catch(async () => {
+            toolpath = await windowsHostedToolpath(release).catch(async (err) => {
+                console.log(err);
                 return await defaultToolpath(release, platform);
             });
         } else {
