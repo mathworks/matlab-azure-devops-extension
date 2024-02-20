@@ -20,7 +20,6 @@ export async function makeToolcacheDir(release: Release, platform: string): Prom
     } else {
         if (platform === "win32") {
             toolpath = await windowsHostedToolpath(release).catch(async (err) => {
-                console.log(err);
                 return await defaultToolpath(release, platform);
             });
         } else {
@@ -56,15 +55,10 @@ async function windowsHostedToolpath(release: Release): Promise<string> {
     const actualToolCacheDir = defaultToolCacheDir.replace("C:", "D:").replace("c:", "d:");
 
     // create install directory and link it to the toolcache directory
-    console.log(`Creating toolcache directory ${actualToolCacheDir}`);
     fs.mkdirSync(actualToolCacheDir, { recursive: true });
-    console.log(`Made directory ${actualToolCacheDir}`);
     fs.mkdirSync(path.dirname(defaultToolCacheDir), {recursive: true});
-    console.log(`Made directory ${path.dirname(defaultToolCacheDir)}`);
     fs.symlinkSync(actualToolCacheDir, defaultToolCacheDir, "junction");
-    console.log("Made symlink");
     fs.writeFileSync(`${defaultToolCacheDir}.complete`, "");
-    console.log("Created .complete file");
     return actualToolCacheDir;
 }
 
