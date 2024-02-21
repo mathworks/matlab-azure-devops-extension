@@ -99,6 +99,8 @@ stages:
             displayName: Check MATLAB version
             inputs:
               command: assert(~isempty(ver('matlab')))
+          - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@1
+            displayName: Install MATLAB
 
       - job: test_install_release_and_products_v1
         strategy:
