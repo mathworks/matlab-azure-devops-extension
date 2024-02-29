@@ -25,6 +25,7 @@ for (let task of project.taskList) {
         }
 
         let binPath = path.join(task.packagePath, "bin", platformDir, `run-matlab-command${binext}`);
+        sh.exec(`chmod +x ${binPath}`);
         sh.exec(`upx ${binPath}`);
     }
 }
