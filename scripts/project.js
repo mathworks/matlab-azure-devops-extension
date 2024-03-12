@@ -11,7 +11,7 @@ const packagePath = path.join(rootPath, "_package");
 
 const tasksDir = "tasks";
 const taskList = [];
-for (let task of ["install-matlab", "run-matlab-command", "run-matlab-build", "run-matlab-tests"]) {
+for (let task of sh.ls(path.join(rootPath, tasksDir))) {
     for (let ver of sh.ls(path.join(rootPath, tasksDir, task))) {
         taskList.push({
             name: task,

@@ -1,4 +1,4 @@
-// Copyright 2020-2023 The MathWorks, Inc.
+// Copyright 2024 The MathWorks, Inc.
 
 import * as taskLib from "azure-pipelines-task-lib/task";
 import * as path from "path";

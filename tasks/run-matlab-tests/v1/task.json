@@ -154,6 +154,8 @@
         }
     },
     "messages": {
+        "GeneratingScript": "Generating MATLAB script with content:\n%s",
+        "FailedToRunCommand": "Failed to run command successfully.",
         "FailedToRunTests": "Failed to run tests successfully."
     }
 }
