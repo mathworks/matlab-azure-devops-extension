@@ -27,7 +27,7 @@ async function runCommand(command: string, args?: string) {
     taskLib.checkPath(tempDirectory, `${tempDirectory} (agent.tempDirectory)`);
     const scriptName = "command_" + uuidV4().replace(/-/g, "_");
     const scriptPath = path.join(tempDirectory, scriptName + ".m");
-    await fs.writeFileSync(
+    fs.writeFileSync(
         scriptPath,
         "cd(getenv('MW_ORIG_WORKING_FOLDER'));\n" + command,
         { encoding: "utf8" });

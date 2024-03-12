@@ -19,7 +19,7 @@ export async function makeToolcacheDir(release: Release, platform: string): Prom
         alreadyExists = true;
     } else {
         if (platform === "win32") {
-            toolpath = await windowsHostedToolpath(release).catch(async (err) => {
+            toolpath = await windowsHostedToolpath(release).catch(async () => {
                 return await defaultToolpath(release, platform);
             });
         } else {
@@ -133,7 +133,7 @@ export async function setupBatch(platform: string, architecture: string) {
     }
 
     const matlabBatch = await toolLib.downloadTool(matlabBatchUrl, `matlab-batch${matlabBatchExt}`);
-    const cachedPath = await toolLib.cacheFile(matlabBatch, `matlab-batch${matlabBatchExt}`, "matlab-batch", "1.0.0");
+    const cachedPath = await toolLib.cacheFile(matlabBatch, `matlab-batch${matlabBatchExt}`, "matlab-batch", "v1");
     try {
         toolLib.prependPath(cachedPath);
     } catch (err: any) {
