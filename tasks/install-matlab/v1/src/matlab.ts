@@ -5,6 +5,7 @@ import * as toolLib from "azure-pipelines-tool-lib/tool";
 import * as fs from "fs";
 import * as https from "https";
 import * as path from "path";
+import { downloadToolIfNecessary } from "./utils";
 
 export interface Release {
     name: string;
@@ -132,14 +133,14 @@ export async function setupBatch(platform: string, architecture: string) {
             return Promise.reject(Error(`This action is not supported on ${platform} runners.`));
     }
 
-    const matlabBatch = await toolLib.downloadTool(matlabBatchUrl, `matlab-batch${matlabBatchExt}`);
-    const cachedPath = await toolLib.cacheFile(matlabBatch, `matlab-batch${matlabBatchExt}`, "matlab-batch", "v1");
+    const tempPath = await downloadToolIfNecessary(matlabBatchUrl, `matlab-batch${matlabBatchExt}`);
+    const matlabBatchPath = await toolLib.cacheFile(tempPath, `matlab-batch${matlabBatchExt}`, "matlab-batch", "1.0.0");
     try {
-        toolLib.prependPath(cachedPath);
+        toolLib.prependPath(matlabBatchPath);
     } catch (err: any) {
         throw new Error("Failed to add MATLAB to system path.");
     }
-    const exitCode = await taskLib.exec("chmod", ["+x", path.join(cachedPath, "matlab-batch" + matlabBatchExt)]);
+    const exitCode = await taskLib.exec("chmod", ["+x", path.join(matlabBatchPath, "matlab-batch" + matlabBatchExt)]);
     if (exitCode !== 0) {
         return Promise.reject(Error("Unable to set up matlab-batch."));
     }

@@ -5,18 +5,19 @@ import * as taskLib from "azure-pipelines-task-lib/task";
 import * as toolLib from "azure-pipelines-tool-lib/tool";
 import * as sinon from "sinon";
 import * as mpm from "../src/mpm";
+import * as utils from "../src/utils";
 
 export default function suite() {
     const arch = "x64";
-    let stubDownloadTool: sinon.SinonStub;
+    let stubDownloadToolIfNecessary: sinon.SinonStub;
     let stubExec: sinon.SinonStub;
 
     describe("mpm.ts test suite", () => {
         beforeEach(() => {
             // setup stubs
-            stubDownloadTool = sinon.stub(toolLib, "downloadTool");
-            stubDownloadTool.callsFake((url, fileName?, handlers?) => {
-                return Promise.resolve(`/path/to/${fileName}`);
+            stubDownloadToolIfNecessary = sinon.stub(utils, "downloadToolIfNecessary");
+            stubDownloadToolIfNecessary.callsFake((url, fileName) => {
+                return Promise.resolve("/path/to/mpm");
             });
             stubExec = sinon.stub(taskLib, "exec");
             stubExec.callsFake((bin, args) => {
@@ -26,7 +27,7 @@ export default function suite() {
 
         afterEach(() => {
             // restore stubs
-            stubDownloadTool.restore();
+            stubDownloadToolIfNecessary.restore();
             stubExec.restore();
         });
 
@@ -35,7 +36,7 @@ export default function suite() {
 
             const mpmPath = await mpm.setup(platform, arch);
             assert(mpmPath === "/path/to/mpm");
-            assert(stubDownloadTool.calledOnce);
+            assert(stubDownloadToolIfNecessary.calledOnce);
             assert(stubExec.calledOnce);
         });
 
@@ -43,8 +44,8 @@ export default function suite() {
             const platform = "win32";
 
             const mpmPath = await mpm.setup(platform, arch);
-            assert(mpmPath === "/path/to/mpm.exe");
-            assert(stubDownloadTool.calledOnce);
+            assert(mpmPath === "/path/to/mpm");
+            assert(stubDownloadToolIfNecessary.calledOnce);
             assert(stubExec.notCalled);
         });
 
@@ -53,7 +54,7 @@ export default function suite() {
 
             const mpmPath = await mpm.setup(platform, arch);
             assert(mpmPath === "/path/to/mpm");
-            assert(stubDownloadTool.calledOnce);
+            assert(stubDownloadToolIfNecessary.calledOnce);
             assert(stubExec.calledOnce);
         });
 
@@ -69,7 +70,7 @@ export default function suite() {
 
         it("setup rejects when the download fails", async () => {
             const platform = "linux";
-            stubDownloadTool.callsFake((url, fileName?, handlers?) => {
+            stubDownloadToolIfNecessary.callsFake((url, fileName?, handlers?) => {
                 return Promise.reject(Error("BAM!"));
             });
             assert.rejects(async () => { await mpm.setup(platform, arch); });
