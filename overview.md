@@ -35,7 +35,7 @@ For example, author a pipeline to run the tests in your [MATLAB project](https:/
 ```YAML
 pool: myPool
 steps:
-  - task: RunMATLABTests@0
+  - task: RunMATLABTests@1
     inputs:
       testResultsPDF: test-results/results.pdf
       testResultsJUnit: test-results/results.xml
@@ -68,7 +68,7 @@ For example, author a pipeline to run the commands in a file named `myscript.m`.
 ```YAML
 pool: myPool
 steps:
-  - task: RunMATLABCommand@0
+  - task: RunMATLABCommand@1
     inputs:
       command: myscript
 ``` 
@@ -83,7 +83,7 @@ pool: myPool
 steps:
   - powershell: Write-Host '##vso[task.prependpath]C:\Program Files\MATLAB\R2023a\bin'  # Windows agent
 # - bash: echo '##vso[task.prependpath]/usr/local/MATLAB/R2023a/bin'  # Linux agent
-  - task: RunMATLABCommand@0
+  - task: RunMATLABCommand@1
     inputs:
       command: myscript
 ```
@@ -91,16 +91,16 @@ steps:
 ### Use MATLAB on Microsoft-Hosted Agent
 Before you run MATLAB code or Simulink models on a Microsoft-hosted agent, first use the [Install MATLAB](#install-matlab) task. The task installs your specified MATLAB release (R2020a or later) on a Linux&reg; virtual machine. If you do not specify a release, the task installs the latest release of MATLAB.
 
-For example, install MATLAB R2023a on a Microsoft-hosted agent, and then use the **Run MATLAB Command** task to run the commands in your script.
+For example, install MATLAB R2023b on a Microsoft-hosted agent, and then use the **Run MATLAB Command** task to run the commands in your script.
 
 ```YAML
 pool:
   vmImage: ubuntu-latest
 steps:
-  - task: InstallMATLAB@0
+  - task: InstallMATLAB@1
     inputs:
-      release: R2023a
-  - task: RunMATLABCommand@0
+      release: R2023b
+  - task: RunMATLABCommand@1
     inputs:
       command: myscript
 ```
