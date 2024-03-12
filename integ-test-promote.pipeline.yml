@@ -64,7 +64,7 @@ stages:
               release: R2023a
           - bash: |
               set -e
-              matlab -batch "assert(strcmp(version('-release'),'2021a'))"
+              matlab -batch "assert(strcmp(version('-release'),'2023a'))"
             displayName: Check matlab release
 
       - job: test_install_v1
@@ -134,7 +134,7 @@ stages:
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@1
             displayName: Check MATLAB version
             inputs:
-              command: assert(strcmp(version('-release'),'2022a') && ~isempty(ver('simulink')))
+              command: assert(strcmp(version('-release'),'2023b') && ~isempty(ver('simulink')))
 
       - job: test_run_command_v0
         strategy:
