@@ -1,4 +1,4 @@
-// Copyright 2023 The MathWorks, Inc.
+// Copyright 2023-2024 The MathWorks, Inc.
 
 import * as taskLib from "azure-pipelines-task-lib/task";
 import * as path from "path";
@@ -8,7 +8,7 @@ async function run() {
     try {
         taskLib.setResourcePath(path.join( __dirname, "..", "task.json"));
         const release = taskLib.getInput("release") || "latest";
-        const products = taskLib.getInput("products") || "MATLAB Parallel_Computing_Toolbox";
+        const products = taskLib.getInput("products") || "MATLAB";
         await install.install(process.platform, process.arch, release, products);
     } catch (err) {
         taskLib.setResult(taskLib.TaskResult.Failed, (err as Error).message);
