@@ -10,7 +10,6 @@ import * as net from "net";
 import * as path from "path";
 import * as sinon from "sinon";
 import * as matlab from "./../src/matlab";
-import * as utils from "./../src/utils";
 
 export default function suite() {
   describe("matlab.ts test suite", () => {
@@ -150,7 +149,7 @@ export default function suite() {
     describe("setupBatch", () => {
       let stubGetVariable: sinon.SinonStub;
       let stubCacheFile: sinon.SinonStub;
-      let stubDownloadToolIfNecessary: sinon.SinonStub;
+      let stubDownloadTool: sinon.SinonStub;
       let stubPrependPath: sinon.SinonStub;
       let stubExec: sinon.SinonStub;
       let platform: string;
@@ -175,8 +174,8 @@ export default function suite() {
         stubCacheFile.callsFake((srcFile, desFile, tool, ver) => {
           return Promise.resolve(matlabBatchPath);
         });
-        stubDownloadToolIfNecessary = sinon.stub(utils, "downloadToolIfNecessary");
-        stubDownloadToolIfNecessary.callsFake((url, name) => {
+        stubDownloadTool = sinon.stub(toolLib, "downloadTool");
+        stubDownloadTool.callsFake((url, name) => {
           return Promise.resolve(matlabBatchPath);
         });
         stubPrependPath = sinon.stub(toolLib, "prependPath");
@@ -188,7 +187,7 @@ export default function suite() {
         stubGetVariable.restore();
         stubExec.restore();
         stubCacheFile.restore();
-        stubDownloadToolIfNecessary.restore();
+        stubDownloadTool.restore();
         stubPrependPath.restore();
       });
 
@@ -239,7 +238,7 @@ export default function suite() {
       });
 
       it("setupBatch rejects when the download fails", async () => {
-        stubDownloadToolIfNecessary.callsFake((url, name) => {
+        stubDownloadTool.callsFake((url, name) => {
           return Promise.reject();
         });
         assert.rejects(async () => {

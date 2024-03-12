@@ -18,7 +18,7 @@ export async function downloadToolIfNecessary(url: string, fileName: string): Pr
     }
 
     if (!fs.existsSync(destPath)) {
-        toolLib.downloadTool(url, destPath);
+        await toolLib.downloadTool(url, destPath);
     }
     return destPath;
 }
