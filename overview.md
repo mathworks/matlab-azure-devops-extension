@@ -89,7 +89,7 @@ steps:
 ```
 
 ### Use MATLAB on Microsoft-Hosted Agent
-Before you run MATLAB code or Simulink models on a Microsoft-hosted agent, first use the [Install MATLAB](#install-matlab) task. The task installs your specified MATLAB release (R2020a or later) on a Linux&reg; virtual machine. If you do not specify a release, the task installs the latest release of MATLAB.
+Before you run MATLAB code or Simulink models on a Microsoft-hosted agent, first use the [Install MATLAB](#install-matlab) task. The task installs your specified MATLAB release (R2021a or later) on a Linux&reg; virtual machine. If you do not specify a release, the task installs the latest release of MATLAB.
 
 For example, install MATLAB R2023b on a Microsoft-hosted agent, and then use the **Run MATLAB Command** task to run the commands in your script.
 
@@ -138,7 +138,7 @@ Argument                  | Description
 `useParallel`             | (Optional) Whether to run tests in parallel on a self-hosted agent, specified as `false` or `true`. By default, the value is `false` and tests run in serial. If the test runner configuration is suited for parallelization, you can specify a value of `true` to run tests in parallel. This argument requires a Parallel Computing Toolbox™ license and is supported only on self-hosted agents.
 `outputDetail`            | (Optional) Amount of event detail displayed for the test run, specified as `none`, `terse`, `concise`, `detailed`, or `verbose`. By default, the task displays failing and logged events at the `detailed` level and test run progress at the `concise` level.
 `loggingLevel`            | (Optional) Maximum verbosity level for logged diagnostics included for the test run, specified as `none`, `terse`, `concise`, `detailed`, or `verbose`. By default, the task includes diagnostics logged at the `terse` level. 
-`testResultsPDF`          | (Optional) Path to write the test results report in PDF format. On macOS platforms, this argument is supported in MATLAB R2020b and later.<br/>**Example:** `testResultsPDF: test-results/results.pdf`         
+`testResultsPDF`          | (Optional) Path to write the test results report in PDF format. On macOS platforms, this argument is supported in MATLAB R2021a and later.<br/>**Example:** `testResultsPDF: test-results/results.pdf`         
 `testResultsJUnit`        | (Optional) Path to write the test results report in JUnit XML format.<br/>**Example:** `testResultsJUnit: test-results/results.xml`
 `testResultsSimulinkTest` | (Optional) Path to export Simulink Test Manager results in MLDATX format. This argument requires a Simulink Test license and is supported in MATLAB R2019a and later.<br/>**Example:** `testResultsSimulinkTest: test-results/results.mldatx`
 `codeCoverageCobertura`   | (Optional) Path to write the code coverage report in Cobertura XML format.<br/>**Example:** `codeCoverageCobertura: code-coverage/coverage.xml`
@@ -164,7 +164,7 @@ Install the specified MATLAB release on a Linux agent in the cloud. Specify the 
 
 Argument                  | Description    
 ------------------------- | --------------- 
-`release`                 | (Optional) MATLAB release to install. You can specify R2020a or a later release. If you do not specify `release`, the task installs the latest release of MATLAB.<br/>**Example:** `release: R2023a`
+`release`                 | (Optional) MATLAB release to install. You can specify R2021a or a later release. If you do not specify `release`, the task installs the latest release of MATLAB.<br/>**Example:** `release: R2023a`
 
 Currently, this task is available only for public projects. It does not install transformation products, such as MATLAB Coder and MATLAB Compiler.
 

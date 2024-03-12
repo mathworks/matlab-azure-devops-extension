@@ -61,7 +61,7 @@ stages:
           - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
             displayName: Install MATLAB
             inputs:
-              release: R2021a
+              release: R2023a
           - bash: |
               set -e
               matlab -batch "assert(strcmp(version('-release'),'2021a'))"
@@ -99,8 +99,6 @@ stages:
             displayName: Check MATLAB version
             inputs:
               command: assert(~isempty(ver('matlab')))
-          - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@1
-            displayName: Install MATLAB
 
       - job: test_install_release_and_products_v1
         strategy:
@@ -122,7 +120,7 @@ stages:
           - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@1
             displayName: Install MATLAB
             inputs:
-              release: R2022a
+              release: R2023bU1
               products: MATLAB Simulink
           - bash: |
               set -e
