@@ -1,6 +1,6 @@
 jobs:
   - ${{ each version in parameters.TASK_VERSION }}:
-    - job: test_install
+    - job: test_install_${{ version }}
       strategy:
         matrix:
           microsoft_hosted_linux:
@@ -30,7 +30,7 @@ jobs:
             fi
           displayName: Check matlab and mex
 
-    - job: test_install_release
+    - job: test_install_release_${{ version }}
       strategy:
         matrix:
           microsoft_hosted_linux:
@@ -47,7 +47,7 @@ jobs:
         vmImage: $(vmImage)
       steps:
         - checkout: none
-        - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
+        - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@${{ version }}
           displayName: Install MATLAB
           inputs:
             release: R2023a
@@ -56,7 +56,7 @@ jobs:
             matlab -batch "assert(strcmp(version('-release'),'2023a'))"
           displayName: Check matlab release
 
-    - job: test_run_command
+    - job: test_run_command_${{ version }}
       strategy:
         matrix:
           microsoft_hosted_linux:
@@ -76,50 +76,50 @@ jobs:
         vmImage: $(vmImage)
       steps:
         - checkout: none
-        - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
+        - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@${{ version }}
           displayName: Install MATLAB on Microsoft-hosted agents
           condition: not(startsWith(variables['Agent.Name'], 'vmss'))
-        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
+        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@${{ version }}
           displayName: Run MATLAB statement
           inputs:
             command: f = fopen('myscript.m', 'w'); fwrite(f, 'assert(true)'); fclose(f);
-        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
+        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@${{ version }}
           displayName: Run MATLAB script
           inputs:
             command: myscript
-        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
+        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@${{ version }}
           displayName: Run MATLAB statement with quotes 1
           inputs:
             command: 'eval("a = 1+2"); assert(a == 3); eval(''b = 3+4''); assert(b == 7);'
-        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
+        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@${{ version }}
           displayName: Run MATLAB statement with quotes 2
           inputs:
             command: "eval(\"a = 1+2\"); assert(a == 3); eval('b = 3+4'); assert(b == 7);"
-        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
+        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@${{ version }}
           displayName: Run MATLAB statement with quotes 3
           inputs:
             command: a = """hello world"""; b = '"hello world"'; assert(strcmp(a,b));
-        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
+        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@${{ version }}
           displayName: Run MATLAB statement with symbols
           inputs:
             command: a = " !""#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~"; b = char([32:126]); assert(strcmp(a, b), a+b);
-        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
+        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@${{ version }}
           displayName: Run MATLAB statement in working directory
           inputs:
             command: exp = getenv('SYSTEM_DEFAULTWORKINGDIRECTORY'); act = pwd; assert(strcmp(act, exp), strjoin({act exp}, '\n'));
         - bash: |
             echo 'myvar = 123' > startup.m
           displayName: Create startup.m
-        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
+        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@${{ version }}
           displayName: MATLAB runs startup.m automatically
           inputs:
             command: assert(myvar==123, 'myvar was not set as expected by startup.m')
-        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
+        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@${{ version }}
           displayName: Run MATLAB statement with startup options
           inputs:
             command: disp("Hello world!")
             startupOptions: -logfile mylog.log
-        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
+        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@${{ version }}
           displayName: Run MATLAB statement with startup options
           inputs:
             command: assert(isfile("mylog.log"), 'mylog.log was not created as expected')
@@ -127,7 +127,7 @@ jobs:
             mkdir subdir
             echo 'onetyone = 11' > subdir/startup.m
           displayName: Create subdir/startup.m
-        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
+        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@${{ version }}
           displayName: Run MATLAB statement with subdir/startup
           inputs:
             command: >
@@ -136,7 +136,7 @@ jobs:
               assert(strcmp(folder, 'subdir'));
             startupOptions: -sd subdir
 
-    - job: test_run_tests
+    - job: test_run_tests_${{ version }}
       strategy:
         matrix:
           microsoft_hosted_linux:
@@ -152,7 +152,7 @@ jobs:
         clean: all
       steps:
         - checkout: none
-        - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
+        - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@${{ version }}
           displayName: Install MATLAB on Microsoft-hosted agents
           condition: not(startsWith(variables['Agent.Name'], 'vmss'))
         - bash: |
@@ -178,22 +178,22 @@ jobs:
             end
             EOF
           displayName: Make MATLAB tests
-        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
+        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@${{ version }}
           displayName: Run MATLAB tests with defaults
           inputs:
             sourceFolder: src
-        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
+        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@${{ version }}
           displayName: Run MATLAB tests producing artifacts
           inputs:
             testResultsJUnit: test-results/matlab/results.xml
             codeCoverageCobertura: code-coverage/coverage.xml
             sourceFolder: src
-        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
+        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@${{ version }}
           displayName: Run MATLAB tests filter by folder
           inputs:
             testResultsJUnit: test-results/matlab/selectbyfolder.xml
             selectByFolder: tests/filteredTest
-        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
+        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@${{ version }}
           displayName: Run MATLAB tests filter by folder
           inputs:
             testResultsJUnit: test-results/matlab/selectbytag.xml
@@ -220,7 +220,7 @@ jobs:
         - bash: |
             echo 'diary console.log' >> startup.m
           displayName: Set up diary for logging
-        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
+        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@${{ version }}
           displayName: Run MATLAB tests with strict checks
           inputs:
             strict: true
@@ -230,7 +230,7 @@ jobs:
             grep -q "runner.addPlugin(FailOnWarningsPlugin())" console.log
             rm console.log
           displayName: Verify tests ran with strict checks
-        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
+        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@${{ version }}
           displayName: Run MATLAB tests in parallel
           inputs:
             useParallel: true
@@ -240,7 +240,7 @@ jobs:
             grep -q "Starting parallel pool (parpool)" console.log
             rm console.log
           displayName: Verify tests ran in parallel
-        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
+        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@${{ version }}
           displayName: Run MATLAB tests with detailed display level for event details
           inputs:
             outputDetail: Detailed
@@ -250,7 +250,7 @@ jobs:
             grep -q "TestRunner.withTextOutput('OutputDetail', 3)" console.log
             rm console.log
           displayName: Verify tests ran with detailed display level for event details
-        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
+        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@${{ version }}
           displayName: Run MATLAB tests with detailed verbosity level for logged diagnostics
           inputs:
             loggingLevel: Detailed
@@ -310,12 +310,12 @@ jobs:
             EOF
           displayName: Create model file and Simulink test.
           condition: eq(variables['Agent.OS'], 'Linux')
-        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
+        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@${{ version }}
           displayName: Run model creator and test Simulink test generator
           inputs:
             command: "cd simtests;createModel"
           condition: eq(variables['Agent.OS'], 'Linux')
-        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
+        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@${{ version }}
           displayName: Run MATLAB tests and generate Simulink test artifacts
           inputs:
             selectByFolder: "simtests"
@@ -339,27 +339,27 @@ jobs:
           displayName: Verify PDF report was created
           condition: eq(variables['Agent.OS'], 'Linux')
 
-    - job: test_run_build
+    - job: test_run_build_${{ version }}
       strategy:
         matrix:
           microsoft_hosted_linux:
             poolName: Azure Pipelines
             vmImage: ubuntu-22.04
-            setupTask: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
+            setupTask: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@${{ version }}
           microsoft_hosted_macos:
             poolName: Azure Pipelines
             vmImage: macOS-latest
-            setupTask: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
+            setupTask: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@${{ version }}
           microsoft_hosted_windows:
             poolName: Azure Pipelines
             vmImage: windows-latest
-            setupTask: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
+            setupTask: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@${{ version }}
       pool:
         name: $(poolName)
         vmImage: $(vmImage)
       steps:
         - checkout: none
-        - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@0
+        - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@${{ version }}
           displayName: Install MATLAB on Microsoft-hosted agents
           condition: not(startsWith(variables['Agent.Name'], 'vmss'))
         - bash: |
@@ -383,7 +383,7 @@ jobs:
             f = fopen('buildlog.txt', 'a+'); fprintf(f, 'checking\n'); fclose(f);
             EOF
           displayName: Create buildfile.m in project root
-        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABBuild.RunMATLABBuild@0
+        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABBuild.RunMATLABBuild@${{ version }}
           displayName: Run build with default tasks
         - bash: |
             set -e
@@ -393,7 +393,7 @@ jobs:
             ! grep "checking" buildlog.txt
             rm buildlog.txt
           displayName: Verify that correct tasks appear in buildlog.txt
-        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABBuild.RunMATLABBuild@0
+        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABBuild.RunMATLABBuild@${{ version }}
           displayName: Run build with specified task
           inputs:
             tasks: deploy
@@ -405,7 +405,7 @@ jobs:
             ! grep "checking" buildlog.txt
             rm buildlog.txt
           displayName: Verify that correct tasks appear in buildlog.txt
-        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABBuild.RunMATLABBuild@0
+        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABBuild.RunMATLABBuild@${{ version }}
           displayName: Run build with multiple specified tasks
           inputs:
             tasks: deploy check
