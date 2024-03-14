@@ -21,7 +21,6 @@ jobs:
           displayName: Install MATLAB
         - bash: |
             set -e
-            matlab -batch version
             os=$(uname)
             if [[ $os = CYGWIN* || $os = MINGW* || $os = MSYS* ]]; then
               mex.bat -h
@@ -29,6 +28,11 @@ jobs:
               mex -h
             fi
           displayName: Check matlab and mex
+        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@${{ version }}
+          displayName: Check matlab installation
+          inputs:
+            command: version
+
 
     - job: test_install_release_${{ version }}
       strategy:
@@ -51,10 +55,10 @@ jobs:
           displayName: Install MATLAB
           inputs:
             release: R2023a
-        - bash: |
-            set -e
-            matlab -batch "assert(strcmp(version('-release'),'2023a'))"
+        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@${{ version }}
           displayName: Check matlab release
+          inputs:
+            command: assert(strcmp(version('-release'),'2023a'))
 
     - job: test_run_command_${{ version }}
       strategy:
@@ -154,7 +158,12 @@ jobs:
         - checkout: none
         - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@${{ version }}
           displayName: Install MATLAB on Microsoft-hosted agents
-          condition: not(startsWith(variables['Agent.Name'], 'vmss'))
+          condition: and(eq(${{ version }}, '0'), not(startsWith(variables['Agent.Name'], 'vmss')))
+        - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@${{ version }}
+          inputs:
+            products: Simulink Simulink_Test Simulink_Coverage Parallel_Computing_Toolbox
+          displayName: Install MATLAB on Microsoft-hosted agents
+          condition: and(eq(${{ version }}, '1'), not(startsWith(variables['Agent.Name'], 'vmss')))
         - bash: |
             echo 'myvar = 123' > startup.m
             mkdir src
