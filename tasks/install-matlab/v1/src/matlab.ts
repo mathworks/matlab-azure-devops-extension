@@ -5,7 +5,7 @@ import * as toolLib from "azure-pipelines-tool-lib/tool";
 import * as fs from "fs";
 import * as https from "https";
 import * as path from "path";
-import { downloadToolIfNecessary } from "./utils";
+import { downloadTool } from "./utils";
 
 export interface Release {
     name: string;
@@ -133,7 +133,7 @@ export async function setupBatch(platform: string, architecture: string) {
             return Promise.reject(Error(`This action is not supported on ${platform} runners.`));
     }
 
-    const tempPath = await downloadToolIfNecessary(matlabBatchUrl, `matlab-batch${matlabBatchExt}`);
+    const tempPath = await downloadTool(matlabBatchUrl, `matlab-batch${matlabBatchExt}`);
     const matlabBatchPath = await toolLib.cacheFile(tempPath, `matlab-batch${matlabBatchExt}`, "matlab-batch", "1.0.0");
     try {
         toolLib.prependPath(matlabBatchPath);

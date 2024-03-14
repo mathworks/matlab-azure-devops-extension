@@ -2,7 +2,7 @@
 
 import * as taskLib from "azure-pipelines-task-lib/task";
 import * as matlab from "./matlab";
-import { downloadToolIfNecessary } from "./utils";
+import { downloadTool } from "./utils";
 
 export async function setup(platform: string, architecture: string): Promise<string> {
     const mpmRootUrl: string = "https://www.mathworks.com/mpm/";
@@ -15,11 +15,11 @@ export async function setup(platform: string, architecture: string): Promise<str
     switch (platform) {
         case "win32":
             mpmUrl = mpmRootUrl + "win64/mpm";
-            mpm = await downloadToolIfNecessary(mpmUrl, "mpm.exe");
+            mpm = await downloadTool(mpmUrl, "mpm.exe");
             break;
         case "linux":
             mpmUrl = mpmRootUrl + "glnxa64/mpm";
-            mpm = await downloadToolIfNecessary(mpmUrl, "mpm");
+            mpm = await downloadTool(mpmUrl, "mpm");
             exitCode = await taskLib.exec("chmod", ["+x", mpm]);
             if (exitCode !== 0) {
                 return Promise.reject(Error("Unable to set up mpm."));
@@ -27,7 +27,7 @@ export async function setup(platform: string, architecture: string): Promise<str
             break;
         case "darwin":
             mpmUrl = mpmRootUrl + "maci64/mpm";
-            mpm = await downloadToolIfNecessary(mpmUrl, "mpm");
+            mpm = await downloadTool(mpmUrl, "mpm");
             exitCode = await taskLib.exec("chmod", ["+x", mpm]);
             if (exitCode !== 0) {
                 return Promise.reject(Error("Unable to set up mpm."));

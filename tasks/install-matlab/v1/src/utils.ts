@@ -2,10 +2,9 @@
 
 import * as taskLib from "azure-pipelines-task-lib/task";
 import * as toolLib from "azure-pipelines-tool-lib/tool";
-import * as fs from "fs";
 import * as path from "path";
 
-export async function downloadToolIfNecessary(url: string, fileName: string): Promise<string> {
+export async function downloadTool(url: string, fileName: string): Promise<string> {
     let destPath: string;
     if (path.isAbsolute(fileName)) {
         destPath = fileName;
@@ -17,8 +16,7 @@ export async function downloadToolIfNecessary(url: string, fileName: string): Pr
         destPath = path.join(tempDirectory, fileName);
     }
 
-    if (!fs.existsSync(destPath)) {
-        await toolLib.downloadTool(url, destPath);
-    }
+    taskLib.rmRF(destPath);
+    await toolLib.downloadTool(url, destPath);
     return destPath;
 }
