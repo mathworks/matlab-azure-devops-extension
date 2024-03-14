@@ -142,7 +142,7 @@ export async function setupBatch(platform: string, architecture: string) {
     }
     const exitCode = await taskLib.exec("chmod", ["+x", path.join(matlabBatchPath, "matlab-batch" + matlabBatchExt)]);
     if (exitCode !== 0) {
-        return Promise.reject(Error("Unable to set up matlab-batch."));
+        return Promise.reject(Error("Unable to add execute permissions to matlab-batch binary."));
     }
     return;
 }
