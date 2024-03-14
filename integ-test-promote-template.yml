@@ -1,6 +1,6 @@
 jobs:
   - ${{ each version in parameters.TASK_VERSION }}:
-    - job: test_install_${{ version }}
+    - job: test_install_v${{ version }}
       strategy:
         matrix:
           microsoft_hosted_linux:
@@ -34,7 +34,7 @@ jobs:
             command: version
 
 
-    - job: test_install_release_${{ version }}
+    - job: test_install_release_v${{ version }}
       strategy:
         matrix:
           microsoft_hosted_linux:
@@ -60,7 +60,7 @@ jobs:
           inputs:
             command: assert(strcmp(version('-release'),'2023a'))
 
-    - job: test_run_command_${{ version }}
+    - job: test_run_command_v${{ version }}
       strategy:
         matrix:
           microsoft_hosted_linux:
@@ -140,7 +140,7 @@ jobs:
               assert(strcmp(folder, 'subdir'));
             startupOptions: -sd subdir
 
-    - job: test_run_tests_${{ version }}
+    - job: test_run_tests_v${{ version }}
       strategy:
         matrix:
           microsoft_hosted_linux:
@@ -348,7 +348,7 @@ jobs:
           displayName: Verify PDF report was created
           condition: eq(variables['Agent.OS'], 'Linux')
 
-    - job: test_run_build_${{ version }}
+    - job: test_run_build_v${{ version }}
       strategy:
         matrix:
           microsoft_hosted_linux:
