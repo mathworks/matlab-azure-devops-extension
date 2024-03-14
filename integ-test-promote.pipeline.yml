@@ -174,7 +174,7 @@ stages:
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run MATLAB statement with quotes 2
             inputs:
-              command: 'eval("a = 1+2"); assert(a == 3); eval(''b = 3+4''); assert(b == 7);'
+              command: "eval(\"a = 1+2\"); assert(a == 3); eval('b = 3+4'); assert(b == 7);"
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@0
             displayName: Run MATLAB statement with quotes 3
             inputs:
@@ -254,7 +254,7 @@ stages:
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@1
             displayName: Run MATLAB statement with quotes 2
             inputs:
-              command: 'eval("a = 1+2"); assert(a == 3); eval(''b = 3+4''); assert(b == 7);'
+              command: "eval(\"a = 1+2\"); assert(a == 3); eval('b = 3+4'); assert(b == 7);"
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@1
             displayName: Run MATLAB statement with quotes 3
             inputs:
@@ -389,20 +389,17 @@ stages:
               set -e
               grep -q "runner.addPlugin(FailOnWarningsPlugin())" console.log
               rm console.log
-            displayName:
-              Verify tests ran with strict checks
-              # Running test in parallel is not working currently
-              #          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
-              #            displayName: Run MATLAB tests in parallel
-              #            inputs:
-              #              useParallel: true
-              #              sourceFolder: src
-              #          - bash: |
-              #              set -e
-              #              grep -q "Starting parallel pool (parpool)" console.log
-              #              rm console.log
-              #            displayName: Verify tests ran in parallel
-              #            condition: startsWith(variables['Agent.Name'], 'vmss')
+            displayName: Verify tests ran with strict checks
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
+            displayName: Run MATLAB tests in parallel
+            inputs:
+              useParallel: true
+              sourceFolder: src
+          - bash: |
+              set -e
+              grep -q "Starting parallel pool (parpool)" console.log
+              rm console.log
+            displayName: Verify tests ran in parallel
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@0
             displayName: Run MATLAB tests with detailed display level for event details
             inputs:
@@ -599,18 +596,16 @@ stages:
               rm console.log
             displayName:
               Verify tests ran with strict checks
-              # Running test in parallel is not working currently
-              #          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@1
-              #            displayName: Run MATLAB tests in parallel
-              #            inputs:
-              #              useParallel: true
-              #              sourceFolder: src
-              #          - bash: |
-              #              set -e
-              #              grep -q "Starting parallel pool (parpool)" console.log
-              #              rm console.log
-              #            displayName: Verify tests ran in parallel
-              #            condition: startsWith(variables['Agent.Name'], 'vmss')
+          - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@1
+            displayName: Run MATLAB tests in parallel
+            inputs:
+              useParallel: true
+              sourceFolder: src
+          - bash: |
+              set -e
+              grep -q "Starting parallel pool (parpool)" console.log
+              rm console.log
+              displayName: Verify tests ran in parallel
           - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@1
             displayName: Run MATLAB tests with detailed display level for event details
             inputs:

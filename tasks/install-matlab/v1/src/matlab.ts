@@ -56,7 +56,7 @@ async function windowsHostedToolpath(release: Release): Promise<string> {
     const actualToolCacheDir = defaultToolCacheDir.replace("C:", "D:").replace("c:", "d:");
 
     // create install directory and link it to the toolcache directory
-    fs.mkdirSync(actualToolCacheDir, { recursive: true });
+    fs.mkdirSync(actualToolCacheDir, {recursive: true});
     fs.mkdirSync(path.dirname(defaultToolCacheDir), {recursive: true});
     fs.symlinkSync(actualToolCacheDir, defaultToolCacheDir, "junction");
     fs.writeFileSync(`${defaultToolCacheDir}.complete`, "");
