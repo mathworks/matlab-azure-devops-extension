@@ -27,7 +27,7 @@ jobs:
             else
               mex -h
             fi
-          displayName: Check matlab and mex
+          displayName: Check mex
         - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@${{ version }}
           displayName: Check matlab installation
           inputs:
