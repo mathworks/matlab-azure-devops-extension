@@ -27,7 +27,7 @@
             "label": "Products",
             "required": false,
             "defaultValue": "MATLAB",
-            "helpMarkDown": "Space-separated list of products to install. If a product name contains white-space characters, replace them with underscores. For the full list of available products and their names, see https://www.mathworks.com/products.html."
+            "helpMarkDown": "Products to set up in addition to MATLAB, specified as a list of product names separated by spaces"
         }
     ],
     "instanceNameFormat": "Install MATLAB",

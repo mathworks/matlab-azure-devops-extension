@@ -112,7 +112,7 @@ async function resolveLatest(): Promise<string> {
 
 export async function setupBatch(platform: string, architecture: string) {
     if (architecture !== "x64") {
-        return Promise.reject(Error(`This action is not supported on ${platform} runners using the ${architecture} architecture.`));
+        return Promise.reject(Error(`This task is not supported on ${platform} runners using the ${architecture} architecture.`));
     }
 
     const matlabBatchRootUrl: string = "https://ssd.mathworks.com/supportfiles/ci/matlab-batch/v1/";
@@ -130,7 +130,7 @@ export async function setupBatch(platform: string, architecture: string) {
             matlabBatchUrl = matlabBatchRootUrl + "maci64/matlab-batch";
             break;
         default:
-            return Promise.reject(Error(`This action is not supported on ${platform} runners.`));
+            return Promise.reject(Error(`This task is not supported on ${platform} runners.`));
     }
 
     const tempPath = await downloadTool(matlabBatchUrl, `matlab-batch${matlabBatchExt}`);

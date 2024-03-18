@@ -3,7 +3,7 @@
     "id": "28fdff80-51b4-4b6e-83e1-cfcf3f3b25a6",
     "name": "RunMATLABCommand",
     "friendlyName": "Run MATLAB Command",
-    "description": "Execute a MATLAB script, function, or statement. MATLAB exits with exit code 0 if the specified script, function, or statement executes successfully without error. Otherwise, MATLAB terminates with a nonzero exit code, which causes the build to fail. You can use the assert or error functions in the command to ensure that builds fail when necessary. When you use this task, all of the required files must be on the MATLAB search path.",
+    "description": "Execute a MATLAB script, function, or statement. MATLAB exits with exit code 0 if the specified script, function, or statement executes successfully without error. Otherwise, MATLAB terminates with a nonzero exit code, which causes the task to fail. You can use the assert or error function in the command to ensure that tasks fail when necessary. When you use this task, all of the required files must be on the MATLAB search path.",
     "helpMarkDown": "",
     "category": "Build",
     "author": "The MathWorks, Inc.",
