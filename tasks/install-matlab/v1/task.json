@@ -27,7 +27,7 @@
             "label": "Products",
             "required": false,
             "defaultValue": "MATLAB",
-            "helpMarkDown": "Products to set up in addition to MATLAB, specified as a list of product names separated by spaces"
+            "helpMarkDown": "Products to install in addition to MATLAB, specified as a list of product names separated by spaces."
         }
     ],
     "instanceNameFormat": "Install MATLAB",
