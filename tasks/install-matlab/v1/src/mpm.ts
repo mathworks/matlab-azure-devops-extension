@@ -1,9 +1,8 @@
-// Copyright 2023 The MathWorks, Inc.
+// Copyright 2023-2024 The MathWorks, Inc.
 
 import * as taskLib from "azure-pipelines-task-lib/task";
-import * as toolLib from "azure-pipelines-tool-lib/tool";
-import * as path from "path";
 import * as matlab from "./matlab";
+import { downloadTool } from "./utils";
 
 export async function setup(platform: string, architecture: string): Promise<string> {
     const mpmRootUrl: string = "https://www.mathworks.com/mpm/";
@@ -16,11 +15,11 @@ export async function setup(platform: string, architecture: string): Promise<str
     switch (platform) {
         case "win32":
             mpmUrl = mpmRootUrl + "win64/mpm";
-            mpm = await toolLib.downloadTool(mpmUrl, "mpm.exe");
+            mpm = await downloadTool(mpmUrl, "mpm.exe");
             break;
         case "linux":
             mpmUrl = mpmRootUrl + "glnxa64/mpm";
-            mpm = await toolLib.downloadTool(mpmUrl, "mpm");
+            mpm = await downloadTool(mpmUrl, "mpm");
             exitCode = await taskLib.exec("chmod", ["+x", mpm]);
             if (exitCode !== 0) {
                 return Promise.reject(Error("Unable to set up mpm."));
@@ -28,7 +27,7 @@ export async function setup(platform: string, architecture: string): Promise<str
             break;
         case "darwin":
             mpmUrl = mpmRootUrl + "maci64/mpm";
-            mpm = await toolLib.downloadTool(mpmUrl, "mpm");
+            mpm = await downloadTool(mpmUrl, "mpm");
             exitCode = await taskLib.exec("chmod", ["+x", mpm]);
             if (exitCode !== 0) {
                 return Promise.reject(Error("Unable to set up mpm."));
@@ -47,8 +46,8 @@ export async function install(
     products: string,
 ): Promise<void> {
     let parsedProducts = products.split(" ");
-    // Add MATLAB and PCT by default
-    parsedProducts.push("MATLAB", "Parallel_Computing_Toolbox");
+    // Add MATLAB by default
+    parsedProducts.push("MATLAB");
     // Remove duplicates
     parsedProducts = [...new Set(parsedProducts)];
     let mpmArguments: string[] = [

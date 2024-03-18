@@ -1,4 +1,4 @@
-// Copyright 2020 The MathWorks, Inc.
+// Copyright 2020-2024 The MathWorks, Inc.
 
 import ma = require("azure-pipelines-task-lib/mock-answer");
 import mr = require("azure-pipelines-task-lib/mock-run");
@@ -58,8 +58,8 @@ fsClone.writeFileSync = (filePath: any, contents: any, options: any) => {
 tr.registerMock("fs", fsClone);
 
 // mock uuidv4
-tr.registerMock("uuid/v4", () => {
-    return "1-2-3";
+tr.registerMock("uuid", {
+    v4: () => "1-2-3",
 });
 
 tr.run();

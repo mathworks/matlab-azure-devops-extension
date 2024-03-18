@@ -1,5 +1,5 @@
 {
-    "": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
+    "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
     "id": "c61c6fcc-00f1-4aa0-8513-31aad3340512",
     "name": "RunMATLABBuild",
     "friendlyName": "Run MATLAB Build",

@@ -3,11 +3,10 @@
     "id": "553fa7ff-af12-4821-8ace-6bf3dc410e62",
     "name": "InstallMATLAB",
     "friendlyName": "Install MATLAB",
-    "description": "[PREVIEW] Install MATLAB on a Microsoft-hosted agent. Public licensing is not available for transformation products, such as MATLAB Coder and MATLAB Compiler.",
+    "description": "Install MATLAB on a Microsoft-hosted agent. Public licensing is not available for transformation products, such as MATLAB Coder and MATLAB Compiler.",
     "helpMarkDown": "",
     "category": "Tool",
     "author": "The MathWorks, Inc.",
-    "preview": true,
     "version": {
         "Major": 1,
         "Minor": 0,
@@ -27,8 +26,8 @@
             "type": "string",
             "label": "Products",
             "required": false,
-            "defaultValue": "MATLAB Parallel_Computing_Toolbox",
-            "helpMarkDown": "Space-separated list of products to install. If a product name contains white-space characters, replace them with underscores. For the full list of available products and their names, see https://www.mathworks.com/products.html."
+            "defaultValue": "MATLAB",
+            "helpMarkDown": "Products to install in addition to MATLAB, specified as a list of product names separated by spaces."
         }
     ],
     "instanceNameFormat": "Install MATLAB",

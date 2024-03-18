@@ -1,10 +1,10 @@
-// Copyright 2020-2023 The MathWorks, Inc.
+// Copyright 2020-2024 The MathWorks, Inc.
 
 import * as taskLib from "azure-pipelines-task-lib/task";
 import { chmodSync } from "fs";
 import * as fs from "fs";
 import * as path from "path";
-import * as uuidV4 from "uuid/v4";
+import { v4 as uuidV4 } from "uuid";
 import { architecture, platform } from "./utils";
 
 async function run() {
@@ -27,7 +27,7 @@ async function runCommand(command: string, args?: string) {
     taskLib.checkPath(tempDirectory, `${tempDirectory} (agent.tempDirectory)`);
     const scriptName = "command_" + uuidV4().replace(/-/g, "_");
     const scriptPath = path.join(tempDirectory, scriptName + ".m");
-    await fs.writeFileSync(
+    fs.writeFileSync(
         scriptPath,
         "cd(getenv('MW_ORIG_WORKING_FOLDER'));\n" + command,
         { encoding: "utf8" });

@@ -10,17 +10,28 @@ export default function suite() {
     const arch = "x64";
     let stubDownloadTool: sinon.SinonStub;
     let stubExec: sinon.SinonStub;
+    let stubGetVariable: sinon.SinonStub;
+    const agentTemp: string = "/home/agent/_tmp";
 
     describe("mpm.ts test suite", () => {
         beforeEach(() => {
             // setup stubs
             stubDownloadTool = sinon.stub(toolLib, "downloadTool");
-            stubDownloadTool.callsFake((url, fileName?, handlers?) => {
-                return Promise.resolve(`/path/to/${fileName}`);
+            stubDownloadTool.callsFake((url, fileName) => {
+                return Promise.resolve(`${agentTemp}/fileName`);
             });
             stubExec = sinon.stub(taskLib, "exec");
             stubExec.callsFake((bin, args) => {
                 return Promise.resolve(0);
+            });
+            stubGetVariable = sinon.stub(taskLib, "getVariable");
+            stubGetVariable.callsFake((v) => {
+              if (v === "Agent.ToolsDirectory") {
+                return "C:\\Program Files\\hostedtoolcache\\MATLAB\\r2022b";
+              } else if (v === "Agent.TempDirectory") {
+                return agentTemp;
+              }
+              return "";
             });
         });
 
@@ -28,13 +39,14 @@ export default function suite() {
             // restore stubs
             stubDownloadTool.restore();
             stubExec.restore();
+            stubGetVariable.restore();
         });
 
         it(`setup works on linux`, async () => {
             const platform = "linux";
 
             const mpmPath = await mpm.setup(platform, arch);
-            assert(mpmPath === "/path/to/mpm");
+            assert(mpmPath === "/home/agent/_tmp/mpm");
             assert(stubDownloadTool.calledOnce);
             assert(stubExec.calledOnce);
         });
@@ -43,7 +55,7 @@ export default function suite() {
             const platform = "win32";
 
             const mpmPath = await mpm.setup(platform, arch);
-            assert(mpmPath === "/path/to/mpm.exe");
+            assert(mpmPath === "/home/agent/_tmp/mpm.exe");
             assert(stubDownloadTool.calledOnce);
             assert(stubExec.notCalled);
         });
@@ -52,7 +64,7 @@ export default function suite() {
             const platform = "darwin";
 
             const mpmPath = await mpm.setup(platform, arch);
-            assert(mpmPath === "/path/to/mpm");
+            assert(mpmPath === "/home/agent/_tmp/mpm");
             assert(stubDownloadTool.calledOnce);
             assert(stubExec.calledOnce);
         });
@@ -105,7 +117,6 @@ export default function suite() {
                 "--products",
                 "MATLAB",
                 "Compiler",
-                "Parallel_Computing_Toolbox",
             ];
             assert.doesNotReject(async () => { mpm.install(mpmPath, releaseInfo, products, destination); });
             mpm.install(mpmPath, releaseInfo, destination, products).then(() => {

@@ -1,0 +1,14 @@
+{
+    "name": "run-matlab-build",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "postinstall": "npm run getBinDep",
+        "getBinDep": "../../../scripts/setupdeps.sh v2"
+    },
+    "dependencies": {
+        "@types/node": "^15.0.2",
+        "@types/q": "^1.5.4",
+        "azure-pipelines-task-lib": "5.0.1-preview.0"
+    }
+}
