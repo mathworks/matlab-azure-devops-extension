@@ -109,10 +109,10 @@ You can access the extension tasks and add them to your pipeline when you edit y
 ### Install MATLAB
 Install a specific version of MATLAB. Specify the task in your pipeline YAML using the `InstallMATLAB` key.
 
-Argument                  | Description    
-------------------------- | --------------- 
-`release`                 | (Optional) MATLAB release to install. You can specify R2021a or a later release. By default, the value of `release` is `latest`. If you do not specify `release`, the task installs the latest release of MATLAB.<br/>**Example:** `release: R2023b`<br/>**Example:** `release: latest`
-`products`                | (Optional) Products to install in addition to MATLAB, specified as a list of product names separated by spaces. You can specify `products` to install most MathWorks&reg; products and support packages. For example, `products: Deep_Learning_Toolbox` sets up Deep Learning Toolbox&trade; in addition to MATLAB. The task uses [MATLAB Package Manager](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/MPM.md) (`mpm`) to install products. For a list of supported products and their correctly formatted names, see [Product Installation Options](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/MPM.md#product-installation-options).<br/>**Example:** `products: Simulink`<br/>`products: Simulink Deep_Learning_Toolbox`
+| Argument  | Description |
+|-----------|-------------|
+| `release` | <p>(Optional) MATLAB release to install. You can specify R2021a or a later release. By default, the value of `release` is `latest`. If you do not specify `release`, the task installs the latest release of MATLAB.<p/><p>**Example**: `release: R2023b`<br/>**Example**: `release: latest`</p>
+| `products` | <p>(Optional) Products to install in addition to MATLAB, specified as a list of product names separated by spaces. You can specify `products` to install most MathWorks&reg; products and support packages. For example, `products: Deep_Learning_Toolbox` installs Deep Learning Toolbox&trade; in addition to MATLAB.</p><p>The task uses [MATLAB Package Manager](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/MPM.md) (`mpm`) to install products. For a list of supported products and their correctly formatted names, see [Product Installation Options](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/MPM.md#product-installation-options).</p><p>**Example**: `products: Simulink`</br>**Example:** `products: Simulink Deep_Learning_Toolbox`</p>
 
 ### Run MATLAB Build
 Run a build using the MATLAB build tool. Starting in R2022b, you can use this task to run the MATLAB build tasks specified in a file named `buildfile.m` in the root of your repository. Specify the task in your pipeline YAML using the `RunMATLABBuild` key.
