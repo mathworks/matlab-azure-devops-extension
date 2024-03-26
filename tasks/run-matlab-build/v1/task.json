@@ -27,7 +27,7 @@
             "label": "Startup Options",
             "required": false,
             "defaultValue": "",
-            "helpMarkDown": "Startup options to pass to MATLAB."
+            "helpMarkDown": "Startup options for MATLAB."
         }
     ],
     "instanceNameFormat": "Run MATLAB Build",
@@ -39,6 +39,6 @@
     "messages": {
         "BuildFailed": "Build failed with nonzero exit code.",
         "GeneratingScript": "Generating MATLAB script with content:\n%s",
-        "FailedToRunCommand": "Failed to run command successfully."
+        "FailedToRunCommand": "Failed to run MATLAB command."
     }
 }

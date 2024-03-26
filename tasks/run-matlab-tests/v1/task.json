@@ -3,7 +3,7 @@
     "id": "d9f28863-c9b0-4133-9cb8-a6d4744f30ef",
     "name": "RunMATLABTests",
     "friendlyName": "Run MATLAB Tests",
-    "description": "Run all tests in a MATLAB project and generate test artifacts. MATLAB includes any files in your project that have a Test label. If your pipeline does not leverage a MATLAB project, then MATLAB includes all tests in the the root of your repository including its subfolders.",
+    "description": "Run MATLAB and Simulink test and generate artifacts.",
     "helpMarkDown": "",
     "category": "Test",
     "author": "The MathWorks, Inc.",
@@ -32,40 +32,12 @@
     ],
     "inputs": [
         {
-            "name": "codeCoverageCobertura",
+            "name": "sourceFolder",
             "type": "string",
-            "label": "Cobertura code coverage",
+            "label": "Source folder",
             "defaultValue": "",
             "required": false,
-            "groupName": "coverageArtifacts",
-            "helpMarkDown": "Path to write code coverage report in Cobertura XML format."
-        },
-        {
-            "name": "modelCoverageCobertura",
-            "type": "string",
-            "label": "Cobertura model coverage",
-            "defaultValue": "",
-            "groupName": "coverageArtifacts",
-            "required": false,
-            "helpMarkDown": "Path to write model coverage report in Cobertura XML format (requires Simulink Coverage™ license and is supported in MATLAB R2018b or later)."
-        },
-        {
-            "name": "testResultsSimulinkTest",
-            "type": "string",
-            "label": "Simulink test results",
-            "defaultValue": "",
-            "groupName": "testArtifacts",
-            "required": false,
-            "helpMarkDown": "Path to export Simulink Test Manager results in MLDATX format (requires Simulink Test license and is supported in MATLAB R2019a or later)."
-        },
-        {
-            "name": "testResultsPDF",
-            "type": "string",
-            "label": "PDF test report ",
-            "defaultValue": "",
-            "groupName": "testArtifacts",
-            "required": false,
-            "helpMarkDown": "Path to write test results report in PDF format (requires MATLAB R2020b or later on macOS platforms)."
+            "helpMarkDown": "Location of the folder containing source code, relative to the project root folder. The specified folder and its subfolders are added to the top of the MATLAB search path. To generate a code coverage report, MATLAB uses only the source code in the specified folder and its subfolders. You can specify multiple folders using a colon-separated or a semicolon-separated list."
         },
         {
             "name": "selectByFolder",
@@ -84,23 +56,6 @@
             "groupName": "filterTests",
             "required": false,
             "helpMarkDown": "Test tag used to select test suite elements. To create a test suite, the task uses only the test elements with the specified tag."
-        },
-        {
-            "name": "sourceFolder",
-            "type": "string",
-            "label": "Source folder",
-            "defaultValue": "",
-            "required": false,
-            "helpMarkDown": "Location of the folder containing source code, relative to the project root folder. The specified folder and its subfolders are added to the top of the MATLAB search path. To generate a code coverage report, MATLAB uses only the source code in the specified folder and its subfolders. You can specify multiple folders using a colon-separated or a semicolon-separated list."
-        },
-        {
-            "name": "testResultsJUnit",
-            "type": "string",
-            "label": "JUnit-style test results",
-            "defaultValue": "",
-            "groupName": "testArtifacts",
-            "required": false,
-            "helpMarkDown": "Path to write test results report in JUnit XML format."
         },
         {
             "name": "strict",
@@ -139,12 +94,57 @@
             "helpMarkDown": "Maximum verbosity level for logged diagnostics included for the test run."
         },
         {
+            "name": "testResultsPDF",
+            "type": "string",
+            "label": "PDF test report ",
+            "defaultValue": "",
+            "groupName": "testArtifacts",
+            "required": false,
+            "helpMarkDown": "Path to write test results report in PDF format (requires MATLAB R2020b or later on macOS platforms)."
+        },
+        {
+            "name": "testResultsJUnit",
+            "type": "string",
+            "label": "JUnit-style test results",
+            "defaultValue": "",
+            "groupName": "testArtifacts",
+            "required": false,
+            "helpMarkDown": "Path to write test results report in JUnit XML format."
+        },
+        {
+            "name": "testResultsSimulinkTest",
+            "type": "string",
+            "label": "Simulink test results",
+            "defaultValue": "",
+            "groupName": "testArtifacts",
+            "required": false,
+            "helpMarkDown": "Path to export Simulink Test Manager results in MLDATX format (requires Simulink Test license and is supported in MATLAB R2019a or later)."
+        },
+        {
+            "name": "codeCoverageCobertura",
+            "type": "string",
+            "label": "Cobertura code coverage",
+            "defaultValue": "",
+            "required": false,
+            "groupName": "coverageArtifacts",
+            "helpMarkDown": "Path to write code coverage report in Cobertura XML format."
+        },
+        {
+            "name": "modelCoverageCobertura",
+            "type": "string",
+            "label": "Cobertura model coverage",
+            "defaultValue": "",
+            "groupName": "coverageArtifacts",
+            "required": false,
+            "helpMarkDown": "Path to write model coverage report in Cobertura XML format (requires Simulink Coverage™ license and is supported in MATLAB R2018b or later)."
+        },
+        {
             "name": "startupOptions",
             "type": "string",
             "label": "Startup Options",
             "required": false,
             "defaultValue": "",
-            "helpMarkDown": "Startup options to pass to MATLAB."
+            "helpMarkDown": "Startup options for MATLAB."
         }
     ],
     "instanceNameFormat": "Run MATLAB Tests",
@@ -155,7 +155,7 @@
     },
     "messages": {
         "GeneratingScript": "Generating MATLAB script with content:\n%s",
-        "FailedToRunCommand": "Failed to run command successfully.",
-        "FailedToRunTests": "Failed to run tests successfully."
+        "FailedToRunCommand": "Failed to run MATLAB command.",
+        "FailedToRunTests": "Tests failed with nonzero exit code."
     }
 }
