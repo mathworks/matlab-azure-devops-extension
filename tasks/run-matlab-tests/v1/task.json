@@ -14,20 +14,20 @@
     },
     "groups": [
         {
-            "name": "testArtifacts",
-            "displayName": "Generate Test Artifacts"
-        },
-        {
-            "name": "coverageArtifacts",
-            "displayName": "Generate Coverage Artifacts"
-        },
-        {
           "name": "filterTests",
           "displayName": "Filter Tests"
         },
         {
           "name": "customizeTestRun",
           "displayName": "Customize Test Run"
+        },
+        {
+            "name": "testArtifacts",
+            "displayName": "Generate Test Artifacts"
+        },
+        {
+            "name": "coverageArtifacts",
+            "displayName": "Generate Coverage Artifacts"
         }
     ],
     "inputs": [
@@ -46,7 +46,7 @@
             "defaultValue": "",
             "groupName": "filterTests",
             "required": false,
-            "helpMarkDown": "Locations of the folders used to select test suite elements, relative to the project root folder. To create a test suite, the task uses only the tests in the specified folders and their subfolders. You can specify multiple folders using a colon-separated or a semicolon-separated list."
+            "helpMarkDown": "Location of the folders used to select test suite elements, relative to the project root folder. To create a test suite, MATLAB uses only the tests in the specified folder and its subfolders. You can specify multiple folders using a colon-separated or a semicolon-separated list."
         },
         {
             "name": "selectByTag",
@@ -64,7 +64,7 @@
             "defaultValue": false,
             "required": false,
             "groupName": "customizeTestRun",
-            "helpMarkDown": "Whether to apply strict checks when running the tests. For example, the task generates a qualification failure if a test issues a warning."
+            "helpMarkDown": "Whether to apply strict checks when running the tests."
         },
         {
             "name": "useParallel",
@@ -73,7 +73,7 @@
             "defaultValue": false,
             "required": false,
             "groupName": "customizeTestRun",
-            "helpMarkDown": "Whether to run tests in parallel on a self-hosted agent (requires Parallel Computing Toolbox). This feature might not be compatible with certain arguments, in which case, tests run in serial regardless of the specified value."
+            "helpMarkDown": "Whether to run tests in parallel (requires Parallel Computing Toolbox)."
         },
         {
             "name": "outputDetail",
@@ -118,7 +118,7 @@
             "defaultValue": "",
             "groupName": "testArtifacts",
             "required": false,
-            "helpMarkDown": "Path to export Simulink Test Manager results in MLDATX format (requires Simulink Test license and is supported in MATLAB R2019a or later)."
+            "helpMarkDown": "Path to export Simulink Test Manager results in MLDATX format (requires Simulink Test and is supported in MATLAB R2019a or later)."
         },
         {
             "name": "codeCoverageCobertura",
@@ -136,7 +136,7 @@
             "defaultValue": "",
             "groupName": "coverageArtifacts",
             "required": false,
-            "helpMarkDown": "Path to write model coverage report in Cobertura XML format (requires Simulink Coverage™ license and is supported in MATLAB R2018b or later)."
+            "helpMarkDown": "Path to write model coverage report in Cobertura XML format (requires Simulink Coverage and is supported in MATLAB R2018b or later)."
         },
         {
             "name": "startupOptions",

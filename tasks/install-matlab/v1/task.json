@@ -19,7 +19,7 @@
             "label": "Release",
             "required": false,
             "defaultValue": "latest",
-            "helpMarkDown": "MATLAB release to install (R2021a or later)."
+            "helpMarkDown": "MATLAB release to install (R2021a or later). If you do not specify `release`, the task installs the latest release of MATLAB."
         },
         {
             "name": "products",
