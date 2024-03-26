@@ -165,7 +165,7 @@ When you use this task, all of the required files must be on the MATLAB search p
 `command: addpath("myfolder"), myscript`
 
 ## Notes
-* By default, when you use the **Run MATLAB Build**, **Run MATLAB Tests**, or **Run MATLAB Command** task, the root of your repository serves as the MATLAB startup folder. To run your MATLAB code using a different folder, specify the `-sd` startup option or include the `cd` command when using the **Run MATLAB Command** action.
+* By default, when you use the **Run MATLAB Build**, **Run MATLAB Tests**, or **Run MATLAB Command** task, the root of your repository serves as the MATLAB startup folder. To run your MATLAB code using a different folder, specify the `-sd` startup option or include the `cd` command when using the **Run MATLAB Command** task.
 * The **Run MATLAB Build** task uses the `-batch` option to invoke the [`buildtool`](https://www.mathworks.com/help/matlab/ref/buildtool.html) command. In addition, in MATLAB R2019a and later, the **Run MATLAB Tests** and **Run MATLAB Command** tasks use  the `-batch` option to start MATLAB noninteractively. Preferences do not persist across different MATLAB sessions launched with the `-batch` option. To run code that requires the same preferences, use a single task.
 
 ## See Also
