@@ -12,27 +12,26 @@ To run MATLAB in your pipeline, use these tasks when you define your pipeline in
 
 ## Examples
 
-### Run a MATLAB Build
-Use the [Run MATLAB Build](#run-matlab-build) task to run a build using the [MATLAB build tool](https://www.mathworks.com/help/matlab/matlab_prog/overview-of-matlab-build-tool.html). You can use this task to run the MATLAB build tasks specified in a file named `buildfile.m` in the root of your repository. To use the **Run MATLAB Build** task, you need MATLAB R2022b or a later release.
-
-For example, author a pipeline to run a task named `mytask` as well as all the tasks on which it depends.
+### Run MATLAB Build on Self-Hosted Agent
+Starting in R2022b, the **Run MATLAB Build** task lets you run a build using the [MATLAB build tool](https://www.mathworks.com/help/matlab/matlab_prog/overview-of-matlab-build-tool.html). You can use this task to run the MATLAB build tasks specified in a file named `buildfile.m` in the root of your repository. For example, use the latest release of MATLAB on a self-hosted agent to run a task named `mytask` as well as all the tasks on which it depends. To use the latest release of MATLAB on the agent, specify the **Install MATLAB** task in your pipeline. (You do not need to specify this task if the agent already has the latest release of MATLAB installed and added to the path.) To run the MATLAB build, specify the **Run MATLAB Build** task.
 
 ```YAML
 pool: myPool
 steps:
+  - task: InstallMATLAB@1
   - task: RunMATLABBuild@1
     inputs:
       tasks: mytask
 ``` 
 
-### Run Tests in MATLAB Project
-Use the [Run MATLAB Tests](#run-matlab-tests) task to run tests authored using the MATLAB unit testing framework or Simulink Test&trade;. You can use this task to generate various test and coverage artifacts. You can then publish the artifacts to Azure Pipelines. 
-
-For example, author a pipeline to run the tests in your [MATLAB project](https://www.mathworks.com/help/matlab/projects.html) automatically, and then generate a PDF test results report, a JUnit test results report, and a Cobertura code coverage report at specified locations on the build agent. Use tasks to publish the generated artifacts to Azure Pipelines once the test run is complete.
+### Run MATLAB Tests on Microsoft-Hosted Agent
+Use the latest release of MATLAB on a Microsoft-hosted agent to run the tests in your [MATLAB project](https://www.mathworks.com/help/matlab/projects.html) and generate test results in PDF and JUnit-style XML formats and code coverage results in Cobertura XML format. Use tasks to publish the generated artifacts to Azure Pipelines once the test run is complete. To install the latest release of MATLAB on the agent, specify the **Install MATLAB** task in your pipeline. To run the tests and generate the artifacts, specify the **Run MATLAB Tests** task.
 
 ```YAML
-pool: myPool
+pool:
+  vmImage: ubuntu-latest
 steps:
+  - task: InstallMATLAB@1
   - task: RunMATLABTests@1
     inputs:
       testResultsPDF: test-results/results.pdf
@@ -58,15 +57,8 @@ steps:
 - To view the Cobertura code coverage report, open the **Code Coverage** tab.
 
 
-### Run MATLAB Script
-Use the [Run MATLAB Command](#run-matlab-command) task to run MATLAB scripts, functions, and statements. You can use this task to flexibly customize your test run or add a step in MATLAB to your pipeline. 
-
-For example, author a pipeline to run the commands in a file named `myscript.m`.
-
-Before you run MATLAB code or Simulink models on a Microsoft-hosted agent, first use the [Install MATLAB](#install-matlab) task. The task installs your specified MATLAB release (R2021a or later) on a Linux&reg; virtual machine. If you do not specify a release, the task installs the latest release of MATLAB.
-
-For example, install MATLAB R2023b on a Microsoft-hosted agent, and then use the **Run MATLAB Command** task to run the commands in your script.
-
+### Run MATLAB Script on Microsoft-Hosted Agent
+Use MATLAB R2023b on a Microsoft-hosted agent to run the commands in a file named `myscript.m` in the root of your repository. To install the specified release of MATLAB on the agent, specify the **Install MATLAB** task in your pipeline. To run the script, specify the **Run MATLAB Command** task.
 
 ```YAML
 pool:
@@ -95,7 +87,7 @@ steps:
       command: myscript
 ```
 
-### Use Transformation Product in Pipeline
+### Install Transformation Product on Microsoft-Hosted Agent
 Before you run MATLAB code or Simulink models on a Microsoft-hosted agent, first use the [Install MATLAB](#install-matlab) task. The task installs your specified MATLAB release (R2021a or later) on a Linux&reg; virtual machine. If you do not specify a release, the task installs the latest release of MATLAB.
 
 For example, install MATLAB R2023b on a Microsoft-hosted agent, and then use the **Run MATLAB Command** task to run the commands in your script.
@@ -103,13 +95,19 @@ For example, install MATLAB R2023b on a Microsoft-hosted agent, and then use the
 ```YAML
 pool:
   vmImage: ubuntu-latest
+
+variables:
+- group: MLM_LICENSE_TOKEN
+
 steps:
-  - task: InstallMATLAB@1
-    inputs:
-      release: R2023b
-  - task: RunMATLABCommand@1
-    inputs:
-      command: myscript
+- task: InstallMATLAB@1
+  inputs:
+    products: MATLAB_Compiler
+- task: RunMATLABCommand@1
+  inputs:
+    command: compiler.build.standaloneApplication("myfun.m")
+  env:
+    MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
 ```
 
 ## Tasks
@@ -118,7 +116,10 @@ You can access the extension tasks and add them to your pipeline when you edit y
 ![tasks](https://user-images.githubusercontent.com/48831250/193909715-1c90eb94-d89d-458d-80bc-2fee4c20c760.png)
 
 ### Install MATLAB
-Use the **Install MATLAB** task to run MATLAB code and Simulink models with a specific version of MATLAB. When you specify this task as part of your pipeline, the task installs your preferred MATLAB release (R2021a or later) on a Linux&reg;, Windows&reg;, or macOS agent and prepends it to the `PATH` system environment variable. If you do not specify a release, the task installs the latest release of MATLAB.
+Use the **Install MATLAB** task to run MATLAB code and Simulink models with a specific version of MATLAB. When you specify this task as part of your pipeline, the task installs your preferred MATLAB release (R2021a or later) on a Linux&reg;, Windows&reg;, or macOS agent and prepends it to the `PATH` system environment variable. If you do not specify a release, the task installs the latest release of MATLAB. The task supports self-hosted and Microsoft-hosted agents:
+
+- Self-hosted agent — If the agent does not have MATLAB installed, the task installs it and preprends it to the path. f the agent has MATLAB installed, the  task only prepends MATLAB to the path.
+- Microsoft-hosted agent — The task installs MATLAB and prepends it to the path.
 
 Specify the task in your pipeline YAML using the `InstallMATLAB` key. The task accepts optional arguments.
 
