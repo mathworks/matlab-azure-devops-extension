@@ -2,7 +2,7 @@ This extension enables you to build and test your MATLAB&reg; project as part of
 
 To run your pipeline using this extension, install the extension to your Azure&reg; DevOps organization. To [install the extension](https://docs.microsoft.com/en-us/azure/devops/marketplace/install-extension?view=azure-devops&tabs=browser), click the **Get it free** button at the top of this page. You can use the extension with self-hosted or Microsoft&reg;-hosted [agents](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/agents?view=azure-devops&tabs=browser).
 
-## Usage Examples
+## Examples
 To run MATLAB in your pipeline, use these tasks when you define your pipeline in a file named `azure-pipelines.yml` in the root of your repository:
 
 * To set up your pipeline with a specific version of MATLAB, use the [Install MATLAB](#install-matlab) task.
@@ -113,6 +113,9 @@ Install a specific version of MATLAB. Specify the task in your pipeline YAML usi
 |-----------|-------------|
 | `release` | <p>(Optional) MATLAB release to install. You can specify R2021a or a later release. By default, the value of `release` is `latest`, which corresponds to the latest release of MATLAB.<p/><p>**Example**: `release: R2023b`<br/>**Example**: `release: latest`</p>
 | `products` | <p>(Optional) Products to install in addition to MATLAB, specified as a list of product names separated by spaces. You can specify `products` to install most MathWorks&reg; products and support packages. For example, `products: Deep_Learning_Toolbox` installs Deep Learning Toolbox&trade; in addition to MATLAB.</p><p>The task uses [MATLAB Package Manager](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/MPM.md) (`mpm`) to install products. For a list of supported products and their correctly formatted names, see [Product Installation Options](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/MPM.md#product-installation-options).</p><p>**Example**: `products: Simulink`</br>**Example:** `products: Simulink Deep_Learning_Toolbox`</p>
+
+#### Product Licensing
+
 
 ### Run MATLAB Build
 Run a build using the MATLAB build tool. Starting in R2022b, you can use this task to run the MATLAB build tasks specified in a file named `buildfile.m` in the root of your repository. Specify the task in your pipeline YAML using the `RunMATLABBuild` key.
