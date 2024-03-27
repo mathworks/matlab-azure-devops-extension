@@ -1,14 +1,16 @@
 This extension enables you to build and test your MATLAB&reg; project as part of your pipeline. For example, you can automatically identify any code issues in your project, run tests and generate test and coverage artifacts, and package your files into a toolbox.
 
-To run your pipeline using this extension, install the extension to your Azure&reg; DevOps organization. To [install the extension](https://docs.microsoft.com/en-us/azure/devops/marketplace/install-extension?view=azure-devops&tabs=browser), click the **Get it free** button at the top of this page. You can use the extension with self-hosted or Microsoft&reg;-hosted [agents](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/agents?view=azure-devops&tabs=browser).
+To run your pipeline using this extension, install the extension to your Azure&reg; DevOps organization. To [install the extension](https://docs.microsoft.com/en-us/azure/devops/marketplace/install-extension?view=azure-devops&tabs=browser), click the **Get it free** button at the top of this page. You can use the extension with self-hosted and Microsoft&reg;-hosted [agents](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/agents?view=azure-devops&tabs=browser).
 
-## Examples
+## Overview of Tasks
 To run MATLAB in your pipeline, use these tasks when you define your pipeline in a file named `azure-pipelines.yml` in the root of your repository:
 
 * To set up your pipeline with a specific version of MATLAB, use the [Install MATLAB](#install-matlab) task.
 * To run a MATLAB build using the MATLAB build tool, use the [Run MATLAB Build](#run-matlab-build) task.
 * To run MATLAB and Simulink&reg; tests and generate artifacts, use the [Run MATLAB Tests](#run-matlab-tests) task.
 * To run MATLAB scripts, functions, and statements, use the [Run MATLAB Command](#run-matlab-command) task.
+
+## Examples
 
 ### Run a MATLAB Build
 Use the [Run MATLAB Build](#run-matlab-build) task to run a build using the [MATLAB build tool](https://www.mathworks.com/help/matlab/matlab_prog/overview-of-matlab-build-tool.html). You can use this task to run the MATLAB build tasks specified in a file named `buildfile.m` in the root of your repository. To use the **Run MATLAB Build** task, you need MATLAB R2022b or a later release.
@@ -61,30 +63,39 @@ Use the [Run MATLAB Command](#run-matlab-command) task to run MATLAB scripts, fu
 
 For example, author a pipeline to run the commands in a file named `myscript.m`.
 
+Before you run MATLAB code or Simulink models on a Microsoft-hosted agent, first use the [Install MATLAB](#install-matlab) task. The task installs your specified MATLAB release (R2021a or later) on a Linux&reg; virtual machine. If you do not specify a release, the task installs the latest release of MATLAB.
+
+For example, install MATLAB R2023b on a Microsoft-hosted agent, and then use the **Run MATLAB Command** task to run the commands in your script.
+
+
 ```YAML
-pool: myPool
+pool:
+  vmImage: ubuntu-latest
 steps:
-  - task: RunMATLABCommand@1
+  - task: InstallMATLAB@1
     inputs:
-      command: myscript
-``` 
-
-### Specify MATLAB in Pipeline
-When you use the **Run MATLAB Build**, **Run MATLAB Tests**, or **Run MATLAB Command** task in your pipeline, the self-hosted agent uses the topmost MATLAB version on the system path. The pipeline fails if the agent cannot find any version of MATLAB on the path.
-
-You can prepend your preferred version of MATLAB to the `PATH` environment variable of the agent. For example, prepend MATLAB R2023b to the path and use it to run your script.
-
-```YAML
-pool: myPool
-steps:
-  - powershell: Write-Host '##vso[task.prependpath]C:\Program Files\MATLAB\R2023b\bin'  # Windows agent
-# - bash: echo '##vso[task.prependpath]/usr/local/MATLAB/R2023b/bin'  # Linux agent
+      release: R2023b
   - task: RunMATLABCommand@1
     inputs:
       command: myscript
 ```
 
-### Use MATLAB on Microsoft-Hosted Agent
+### Specify MATLAB Version on Self-Hosted Agent
+When you use the **Run MATLAB Build**, **Run MATLAB Tests**, or **Run MATLAB Command** task in your pipeline, the agent uses the topmost MATLAB version on the system path. The task fails if the agent cannot find any version of MATLAB on the path.
+
+In R2021a and later, you can use the **Install MATLAB** task to prepend your preferred version of MATLAB to the `PATH` system environment variable of the agent. However, you can also add your preferred version the path without using the **Install MATLAB** task. For example, prepend MATLAB R2020b, which the **Install MATLAB** task does not support, to the path and use it to run your script. The step depends on your operating system and MATLAB root folder.
+
+```YAML
+pool: myPool
+steps:
+  - powershell: Write-Host '##vso[task.prependpath]C:\Program Files\MATLAB\R2020b\bin'  # Windows agent
+# - bash: echo '##vso[task.prependpath]/usr/local/MATLAB/R2020b/bin'  # Linux agent
+  - task: RunMATLABCommand@1
+    inputs:
+      command: myscript
+```
+
+### Use Transformation Product in Pipeline
 Before you run MATLAB code or Simulink models on a Microsoft-hosted agent, first use the [Install MATLAB](#install-matlab) task. The task installs your specified MATLAB release (R2021a or later) on a Linux&reg; virtual machine. If you do not specify a release, the task installs the latest release of MATLAB.
 
 For example, install MATLAB R2023b on a Microsoft-hosted agent, and then use the **Run MATLAB Command** task to run the commands in your script.
