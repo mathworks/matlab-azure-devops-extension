@@ -13,7 +13,7 @@ To run MATLAB in your pipeline, use these tasks when you define your pipeline in
 ## Examples
 
 ### Run MATLAB Build on Self-Hosted Agent
-Starting in R2022b, the **Run MATLAB Build** task lets you run a build using the [MATLAB build tool](https://www.mathworks.com/help/matlab/matlab_prog/overview-of-matlab-build-tool.html). You can use this task to run the MATLAB build tasks specified in a file named `buildfile.m` in the root of your repository. For example, use the latest release of MATLAB on a self-hosted agent to run a task named `mytask` as well as all the tasks on which it depends. To use the latest release of MATLAB on the agent, specify the **Install MATLAB** task in your pipeline. (You do not need to specify this task if the agent already has the latest release of MATLAB installed and added to the path.) To run the MATLAB build, specify the **Run MATLAB Build** task.
+Ue the latest release of MATLAB on a self-hosted agent to run a MATLAB build task named `mytask`, specified in a file named `buildfile.m` in the root of your repository, as well as all the tasks on which it depends. To use the latest release of MATLAB on the agent, specify the **Install MATLAB** task in your pipeline. (You do not need to specify this task if the agent already has the latest release of MATLAB installed and added to the path.) To run the MATLAB build, specify the **Run MATLAB Build** task.
 
 ```YAML
 pool: myPool
@@ -142,7 +142,7 @@ Argument                  | Description
 `buildOptions`           | <p>(Optional) MATLAB build options, specified as a list of options separated by spaces. The task supports the same [options](https://www.mathworks.com/help/matlab/ref/buildtool.html#mw_50c0f35e-93df-4579-963d-f59f2fba1dba) that you can pass to the `buildtool` command.<p/><p>**Example:** `buildOptions: -continueOnFailure`<br/>**Example:** `buildOptions: -continueOnFailure -skip test`</p>
 `startupOptions`         | <p>(Optional) MATLAB startup options, specified as a list of options separated by spaces. For more information about startup options, see [Commonly Used Startup Options](https://www.mathworks.com/help/matlab/matlab_env/commonly-used-startup-options.html).<p/><p>Using this argument to specify the `-batch` or `-r` option is not supported.<p/><p>**Example:** `startupOptions: -nojvm`<br/>**Example:** `startupOptions: -nojvm -logfile output.log`</p>
 
-When you use this task, a file named `buildfile.m` must be in the project root directory. For more information about the build tool, see [Create and Run Tasks Using Build Tool](https://www.mathworks.com/help/matlab/matlab_prog/create-and-run-tasks-using-build-tool.html).
+When you use this task, a file named `buildfile.m` must be in the project root directory. For more information about the build tool, see [Overview of MATLAB Build Tool](https://www.mathworks.com/help/matlab/matlab_prog/overview-of-matlab-build-tool.html).
 
 
 ### Run MATLAB Tests
