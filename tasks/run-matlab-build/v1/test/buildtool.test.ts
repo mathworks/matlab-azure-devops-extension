@@ -29,17 +29,17 @@ export default function suite() {
                 Tasks: "",
                 BuildOptions: "-continueOnFailure -skip check",
             };
-    
+
             const actual = buildtool.generateCommand(options);
             assert(actual === "buildtool -continueOnFailure -skip check");
         });
-    
+
         it("buildtool invocation with specified tasks and build options", () => {
             const options: buildtool.IRunBuildOptions = {
                 Tasks: "compile test",
                 BuildOptions: "-continueOnFailure -skip check",
             };
-    
+
             const actual = buildtool.generateCommand(options);
             assert(actual === "buildtool compile test -continueOnFailure -skip check");
         });
