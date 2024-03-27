@@ -83,7 +83,7 @@ steps:
 ### Specify MATLAB Version on Self-Hosted Agent
 When you use the **Run MATLAB Build**, **Run MATLAB Tests**, or **Run MATLAB Command** task in your pipeline, the agent uses the topmost MATLAB version on the system path. The task fails if the agent cannot find any version of MATLAB on the path.
 
-In R2021a and later, you can use the **Install MATLAB** task to prepend your preferred version of MATLAB to the `PATH` system environment variable of the agent. However, you can also add your preferred version the path without using the **Install MATLAB** task. For example, prepend MATLAB R2020b, which the **Install MATLAB** task does not support, to the path and use it to run your script. The step depends on your operating system and MATLAB root folder.
+In R2021a and later, you can use the **Install MATLAB** task to prepend your preferred version of MATLAB to the `PATH` system environment variable of the agent. You can also add your preferred version to the path without using the **Install MATLAB** task. For example, prepend MATLAB R2020b, which the **Install MATLAB** task does not support, to the path and use it to run your script. The step depends on your operating system and MATLAB root folder.
 
 ```YAML
 pool: myPool
