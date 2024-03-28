@@ -434,7 +434,8 @@ jobs:
           displayName: Run build with task skipping
           inputs:
             tasks: deploy
-            build-options: -skip test
+            buildOptions: -skip test
+          condition: not(eq(${{ version }}, '0'))
         - bash: |
             set -e
             grep "building" buildlog.txt
@@ -442,12 +443,14 @@ jobs:
             grep "deploying" buildlog.txt
             rm buildlog.txt
           displayName: Verify that correct tasks appear in buildlog.txt
+          condition: not(eq(${{ version }}, '0'))
         - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABBuild.RunMATLABBuild@${{ version }}
           displayName: Run build with continue on failure
           continueOnError: true
           inputs:
             tasks: error deploy
-            build-options: -continueOnFailure
+            buildOptions: -continueOnFailure
+          condition: not(eq(${{ version }}, '0'))
         - bash: |
             set -e
             grep "erroring" buildlog.txt
@@ -456,3 +459,4 @@ jobs:
             grep "deploying" buildlog.txt
             rm buildlog.txt
           displayName: Verify that correct tasks appear in buildlog.txt
+          condition: not(eq(${{ version }}, '0'))
