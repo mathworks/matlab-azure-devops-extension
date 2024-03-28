@@ -3,7 +3,7 @@
     "id": "553fa7ff-af12-4821-8ace-6bf3dc410e62",
     "name": "InstallMATLAB",
     "friendlyName": "Install MATLAB",
-    "description": "Install a specific release of MATLAB.",
+    "description": "Set up your pipeline with a specific release of MATLAB.",
     "helpMarkDown": "",
     "category": "Tool",
     "author": "The MathWorks, Inc.",

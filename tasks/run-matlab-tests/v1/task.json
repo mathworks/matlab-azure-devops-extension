@@ -3,7 +3,7 @@
     "id": "d9f28863-c9b0-4133-9cb8-a6d4744f30ef",
     "name": "RunMATLABTests",
     "friendlyName": "Run MATLAB Tests",
-    "description": "Run MATLAB and Simulink test and generate artifacts.",
+    "description": "Run MATLAB and Simulink tests and generate artifacts.",
     "helpMarkDown": "",
     "category": "Test",
     "author": "The MathWorks, Inc.",
