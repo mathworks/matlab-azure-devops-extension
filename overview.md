@@ -9,7 +9,7 @@ To run your pipeline using this extension, install the extension to your Azure&r
 
 ## Examples
 
-### Run a MATLAB Build
+### Run MATLAB Build
 Ue the latest release of MATLAB on a self-hosted agent to run a MATLAB build task named `mytask`, specified in a file named `buildfile.m` in the root of your repository, as well as all the tasks on which it depends. To use the latest release of MATLAB on the agent, specify the **Install MATLAB** task in your pipeline. (You do not need to specify this task if the agent already has the latest release of MATLAB installed and added to the path.) To run the MATLAB build, specify the **Run MATLAB Build** task.
 
 ```YAML
