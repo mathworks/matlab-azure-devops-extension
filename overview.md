@@ -145,7 +145,12 @@ Specify the **Install MATLAB** task in your pipeline YAML as `InstallMATLAB@1`. 
 | `products` | <p>(Optional) Products to install in addition to MATLAB, specified as a list of product names separated by spaces. You can specify `products` to install most MathWorks&reg; products and support packages. For example, `products: Deep_Learning_Toolbox` installs Deep Learning Toolbox&trade; in addition to MATLAB.</p><p>The task uses [MATLAB Package Manager](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/MPM.md) (`mpm`) to install products. For a list of supported products and their correctly formatted names, see [Product Installation Options](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/MPM.md#product-installation-options).</p><p>**Example**: `products: Simulink`</br>**Example:** `products: Simulink Deep_Learning_Toolbox`</p>
 
 #### Product Licensing
+The licensing scheme to use for your pipeline depends on your project type as well as the type of products you install:
 
+- Public project — If your pipeline does not use transformation products, such as MATLAB Coder&trade; and MATLAB Compiler&trade;, then the task automatically licenses any products that you install. If your pipeline includes transformation products, then you can request a MATLAB batch licensing [token](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/alternates/non-interactive/MATLAB-BATCH.md#matlab-batch-licensing-token) by contacting MathWorks&reg; at [batch-tokens@mathworks.com](mailto:batch-tokens@mathworks.com).
+- Private project — The task installs your preferred MATLAB release and prepends it to the path.
+
+For an example of how to use a MATLAB batch licensing token in your pipeline, see [Install Transformation Product on Microsoft-Hosted Agent](#install-transformation-product-on-microsoft-hosted-agent) . 
 
 ### Run MATLAB Build
 Use the **Run MATLAB Build** task to run a build using the MATLAB build tool. Starting in R2022b, you can use this task to run the MATLAB build tasks specified in a file named `buildfile.m` in the root of your repository. 
@@ -210,4 +215,4 @@ When you use this task, all of the required files must be on the MATLAB search p
 - [Continuous Integration with MATLAB on CI Platforms](https://www.mathworks.com/help/matlab/matlab_prog/continuous-integration-with-matlab-on-ci-platforms.html)
 
 ## Contact Us
-If you have any questions or suggestions, please contact MathWorks&reg; at [continuous-integration@mathworks.com](mailto:continuous-integration@mathworks.com).
+If you have any questions or suggestions, please contact MathWorks at [continuous-integration@mathworks.com](mailto:continuous-integration@mathworks.com).
