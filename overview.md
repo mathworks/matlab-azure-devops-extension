@@ -129,7 +129,7 @@ steps:
 ## Tasks
 You can access the extension tasks and add them to your pipeline when you edit your pipeline in Azure DevOps. 
 
-![tasks](https://user-images.githubusercontent.com/48831250/193909715-1c90eb94-d89d-458d-80bc-2fee4c20c760.png)
+![tasks](https://github.com/mathworks/matlab-azure-devops-extension/assets/48831250/3fd7b108-bfb0-4d14-8a80-efdba3e947c6)
 
 ### Install MATLAB
 Use the **Install MATLAB** task to run MATLAB code and Simulink models with a specific release of MATLAB. When you specify this task as part of your pipeline, the task installs your preferred MATLAB release (R2021a or later) on a Linux&reg;, Windows&reg;, or macOS agent and prepends it to the `PATH` system environment variable. If you do not specify a release, the task installs the latest release of MATLAB. You can use this task on your Microsoft-hosted or self-hosted agent:
