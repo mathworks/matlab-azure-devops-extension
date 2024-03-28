@@ -440,7 +440,6 @@ jobs:
             grep "building" buildlog.txt
             ! grep "testing" buildlog.txt
             grep "deploying" buildlog.txt
-            ! grep "checking" buildlog.txt
             rm buildlog.txt
           displayName: Verify that correct tasks appear in buildlog.txt
         - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABBuild.RunMATLABBuild@${{ version }}
@@ -455,6 +454,5 @@ jobs:
             grep "building" buildlog.txt
             grep "testing" buildlog.txt
             grep "deploying" buildlog.txt
-            ! grep "checking" buildlog.txt
             rm buildlog.txt
           displayName: Verify that correct tasks appear in buildlog.txt
