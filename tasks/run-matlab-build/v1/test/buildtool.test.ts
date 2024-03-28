@@ -8,6 +8,7 @@ export default function suite() {
         it("buildtool invocation with unspecified tasks and build options", () => {
             const options: buildtool.IRunBuildOptions = {
                 Tasks: "",
+                BuildOptions: "",
             };
 
             const actual = buildtool.generateCommand(options);
@@ -21,6 +22,26 @@ export default function suite() {
 
             const actual = buildtool.generateCommand(options);
             assert(actual === "buildtool compile test");
+        });
+
+        it("buildtool invocation with only build options", () => {
+            const options: buildtool.IRunBuildOptions = {
+                Tasks: "",
+                BuildOptions: "-continueOnFailure -skip check",
+            };
+
+            const actual = buildtool.generateCommand(options);
+            assert(actual === "buildtool -continueOnFailure -skip check");
+        });
+
+        it("buildtool invocation with specified tasks and build options", () => {
+            const options: buildtool.IRunBuildOptions = {
+                Tasks: "compile test",
+                BuildOptions: "-continueOnFailure -skip check",
+            };
+
+            const actual = buildtool.generateCommand(options);
+            assert(actual === "buildtool compile test -continueOnFailure -skip check");
         });
     });
 }
