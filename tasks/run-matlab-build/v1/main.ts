@@ -10,6 +10,7 @@ async function run() {
         taskLib.setResourcePath(path.join( __dirname, "task.json"));
         const options: buildtool.IRunBuildOptions = {
             Tasks: taskLib.getInput("tasks"),
+            BuildOptions: taskLib.getInput("buildOptions"),
         };
         const platform = process.platform;
         const architecture = process.arch;

@@ -381,15 +381,19 @@ jobs:
 
             function buildTask(~)
             f = fopen('buildlog.txt', 'a+'); fprintf(f, 'building\n'); fclose(f);
+            
             function testTask(~)
-
             f = fopen('buildlog.txt', 'a+'); fprintf(f, 'testing\n'); fclose(f);
+            
             function deployTask(~)
-
             f = fopen('buildlog.txt', 'a+'); fprintf(f, 'deploying\n'); fclose(f);
+            
             function checkTask(~)
-
             f = fopen('buildlog.txt', 'a+'); fprintf(f, 'checking\n'); fclose(f);
+
+            function errorTask(~)
+            f = fopen('buildlog.txt', 'a+'); fprintf(f, 'erroring\n'); fclose(f);
+            error('Error occured in errorTask');
             EOF
           displayName: Create buildfile.m in project root
         - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABBuild.RunMATLABBuild@${{ version }}
@@ -426,3 +430,33 @@ jobs:
             grep "checking" buildlog.txt
             rm buildlog.txt
           displayName: Verify that correct tasks appear in buildlog.txt
+        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABBuild.RunMATLABBuild@${{ version }}
+          displayName: Run build with task skipping
+          inputs:
+            tasks: deploy
+            buildOptions: -skip test
+          condition: not(eq(${{ version }}, '0'))
+        - bash: |
+            set -e
+            grep "building" buildlog.txt
+            ! grep "testing" buildlog.txt
+            grep "deploying" buildlog.txt
+            rm buildlog.txt
+          displayName: Verify that correct tasks appear in buildlog.txt
+          condition: not(eq(${{ version }}, '0'))
+        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABBuild.RunMATLABBuild@${{ version }}
+          displayName: Run build with continue on failure
+          continueOnError: true
+          inputs:
+            tasks: error deploy
+            buildOptions: -continueOnFailure
+          condition: not(eq(${{ version }}, '0'))
+        - bash: |
+            set -e
+            grep "erroring" buildlog.txt
+            grep "building" buildlog.txt
+            grep "testing" buildlog.txt
+            grep "deploying" buildlog.txt
+            rm buildlog.txt
+          displayName: Verify that correct tasks appear in buildlog.txt
+          condition: not(eq(${{ version }}, '0'))
