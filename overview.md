@@ -24,7 +24,7 @@ steps:
 ### Run Tests in MATLAB Project
 Use the latest release of MATLAB on a Microsoft-hosted agent to run the tests in your [MATLAB project](https://www.mathworks.com/help/matlab/projects.html) and generate test results in PDF and JUnit-style XML formats and code coverage results in Cobertura XML format. Use tasks to publish the generated artifacts to Azure Pipelines once the test run is complete. To install the latest release of MATLAB on the agent, specify the **Install MATLAB** task in your pipeline. To run the tests and generate the artifacts, specify the **Run MATLAB Tests** task.
 
-```YAML
+```
 pool:
   vmImage: ubuntu-latest
 steps:
@@ -57,7 +57,7 @@ steps:
 ### Run MATLAB Script
 Use MATLAB R2023b on a Microsoft-hosted agent to run the commands in a file named `myscript.m` in the root of your repository. To install the specified release of MATLAB on the agent, specify the **Install MATLAB** task in your pipeline. To run the script, specify the **Run MATLAB Command** task.
 
-```YAML
+```
 pool:
   vmImage: ubuntu-latest
 steps:
@@ -74,7 +74,7 @@ When you use the **Run MATLAB Build**, **Run MATLAB Tests**, or **Run MATLAB Com
 
 In R2021a and later, you can use the **Install MATLAB** task to prepend your preferred release of MATLAB to the `PATH` system environment variable of the agent. You can also add your preferred release to the path without using the **Install MATLAB** task. For example, prepend MATLAB R2020b, which the **Install MATLAB** task does not support, to the path and use it to run your script. The step depends on your operating system and MATLAB root folder.
 
-```YAML
+```
 pool: myPool
 steps:
   - powershell: Write-Host '##vso[task.prependpath]C:\Program Files\MATLAB\R2020b\bin'  # Windows agent
@@ -89,7 +89,7 @@ Before you run MATLAB code or Simulink models on a Microsoft-hosted agent, first
 
 For example, install MATLAB R2023b on a Microsoft-hosted agent, and then use the **Run MATLAB Command** task to run the commands in your script.
 
-```YAML
+```
 pool:
   vmImage: ubuntu-latest
 variables:
@@ -108,7 +108,7 @@ steps:
 ### Build Across Multiple Platforms
 The **Install MATLAB** task supports the Linux, Windows, and macOS platforms. Use a `matrix` job strategy to run a build using the MATLAB build tool on all the supported platforms. This pipeline runs three jobs.
 
-```YAML
+```
 strategy:
   matrix:
     linux:
@@ -137,25 +137,25 @@ Use the **Install MATLAB** task to run MATLAB code and Simulink models with a sp
 - Microsoft-hosted agent — The task installs your preferred MATLAB release and prepends it to the path.
 - Self-hosted agent — If the agent does not have your preferred MATLAB release installed, the task installs the release and preprends it to the path. f the agent has the preferred release installed, the task only prepends it to the path.
 
-Specify the **Install MATLAB** task in your pipeline YAML as `InstallMATLAB@1`. The task accepts optional arguments.
+Specify the **Install MATLAB** task in your YAML pipeline as `InstallMATLAB@1`. The task accepts optional arguments.
 
 | Argument  | Description |
 |-----------|-------------|
 | `release` | <p>(Optional) MATLAB release to install. You can specify R2021a or a later release. By default, the value of `release` is `latest`, which corresponds to the latest release of MATLAB.<p/><p>**Example**: `release: R2023b`<br/>**Example**: `release: latest`</p>
 | `products` | <p>(Optional) Products to install in addition to MATLAB, specified as a list of product names separated by spaces. You can specify `products` to install most MathWorks&reg; products and support packages. For example, `products: Deep_Learning_Toolbox` installs Deep Learning Toolbox&trade; in addition to MATLAB.</p><p>The task uses [MATLAB Package Manager](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/MPM.md) (`mpm`) to install products. For a list of supported products and their correctly formatted names, see [Product Installation Options](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/MPM.md#product-installation-options).</p><p>**Example**: `products: Simulink`</br>**Example:** `products: Simulink Deep_Learning_Toolbox`</p>
 
-#### Product Licensing
-The licensing scheme to use for your pipeline depends on your project type as well as the type of products you install:
+#### Licensing
+Product licensing for your pipeline depends on your project type as well as the type of products you install:
 
-- Public project — If your pipeline does not use transformation products, such as MATLAB Coder&trade; and MATLAB Compiler&trade;, then the task automatically licenses any products that you install. If your pipeline includes transformation products, then you can request a MATLAB batch licensing [token](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/alternates/non-interactive/MATLAB-BATCH.md#matlab-batch-licensing-token) by contacting MathWorks&reg; at [batch-tokens@mathworks.com](mailto:batch-tokens@mathworks.com).
-- Private project — The task installs your preferred MATLAB release and prepends it to the path.
-
-For an example of how to use a MATLAB batch licensing token in your pipeline, see [Install Transformation Product on Microsoft-Hosted Agent](#install-transformation-product-on-microsoft-hosted-agent) . 
+- Public project — If your pipeline does not include transformation products, such as MATLAB Coder&trade; and MATLAB Compiler&trade;, then the task automatically licenses any products that you install. If your pipeline includes transformation products, then you can request a MATLAB batch licensing [token](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/alternates/non-interactive/MATLAB-BATCH.md#matlab-batch-licensing-token) by contacting MathWorks&reg; at [batch-tokens@mathworks.com](mailto:batch-tokens@mathworks.com).
+- Private project — The task does not automatically license any products for you. You can either use your own licensing scheme or request a batch licensing token by contacting MathWorks.
+  
+To use a MATLAB batch licensing token, first set it as a [secret variable](https://learn.microsoft.com/en-us/azure/devops/pipelines/process/set-secret-variables?view=azure-devops&tabs=yaml%2Cbash). Then, map the secret variable as an environment variable named `MLM_LICENSE_TOKEN` to reference it in your YAML pipeline. For an example, see [Install Transformation Product on Microsoft-Hosted Agent](#install-transformation-product-on-microsoft-hosted-agent) . 
 
 ### Run MATLAB Build
 Use the **Run MATLAB Build** task to run a build using the MATLAB build tool. Starting in R2022b, you can use this task to run the MATLAB build tasks specified in a file named `buildfile.m` in the root of your repository. 
 
-Specify the task in your pipeline YAML as `RunMATLABBuild@1`. The task accepts optional arguments.
+Specify the task in your YAML pipeline as `RunMATLABBuild@1`. The task accepts optional arguments.
 
 Argument                  | Description
 ------------------------- | ---------------
@@ -171,7 +171,7 @@ Use the **Run MATLAB Tests** task to run tests authored using the MATLAB unit te
 
 By default, the task includes any files in your project that have a `Test` label. If your pipeline does not use a MATLAB project, or if it uses a MATLAB release before R2019a, then the task includes all tests in the root of your repository and in any of its subfolders. The task fails if any of the included tests fail.
 
-Specify the **Run MATLAB Tests** task in your pipeline YAML as `RunMATLABTests@1`. The task lets you customize your test run using optional arguments. For example, you can add folders to the MATLAB search path, control which tests to run, and generate various artifacts.
+Specify the **Run MATLAB Tests** task in your YAML pipeline as `RunMATLABTests@1`. The task lets you customize your test run using optional arguments. For example, you can add folders to the MATLAB search path, control which tests to run, and generate various artifacts.
 
 Argument                  | Description
 ------------------------- | ---------------
@@ -189,13 +189,12 @@ Argument                  | Description
 `modelCoverageCobertura`  | <p>(Optional) Path to write the model coverage results in Cobertura XML format. This argument requires a Simulink Coverage&trade; license and is supported in MATLAB R2018b and later.</p><p>**Example:** `modelCoverageCobertura: model-coverage/coverage.xml`</p>
 `startupOptions`         | <p>(Optional) MATLAB startup options, specified as a list of options separated by spaces. For more information about startup options, see [Commonly Used Startup Options](https://www.mathworks.com/help/matlab/matlab_env/commonly-used-startup-options.html).<p/><p>Using this argument to specify the `-batch` or `-r` option is not supported.<p/><p>**Example:** `startupOptions: -nojvm`<br/>**Example:** `startupOptions: -nojvm -logfile output.log`</p>
 
-
 >**Note:** To customize the pretest state of the system, you can specify startup code that automatically executes before your tests run. For information on how to specify startup or shutdown files in a MATLAB project, see [Automate Startup and Shutdown Tasks](https://www.mathworks.com/help/matlab/matlab_prog/automate-startup-and-shutdown-tasks.html). If your pipeline does not use a MATLAB project, specify the commands you want executed at startup in a `startup.m` file instead, and save the file to the root of your repository. See [`startup`](https://www.mathworks.com/help/matlab/ref/startup.html) for more information.
 
 ### Run MATLAB Command
 Use the **Run MATLAB Command** task to run MATLAB scripts, functions, and statements. You can use this task to flexibly customize your test run or add a step in MATLAB to your pipeline. 
 
-Specify the task in your pipeline YAML as `RunMATLABCommand@1`. The task requires an argument and also accepts an optional argument.
+Specify the task in your YAML pipeline as `RunMATLABCommand@1`. The task requires an argument and also accepts an optional argument.
 
 Argument                  | Description
 ------------------------- | ---------------
