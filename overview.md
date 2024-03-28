@@ -2,7 +2,7 @@ This extension enables you to build and test your MATLAB&reg; project on Microso
 
 To run your pipeline using this extension, install the extension to your Azure&reg; DevOps organization. To [install the extension](https://docs.microsoft.com/en-us/azure/devops/marketplace/install-extension?view=azure-devops&tabs=browser), click the **Get it free** button at the top of this page. Then, use these tasks when you define your pipeline in a file named `azure-pipelines.yml` in the root of your repository:
 
-* To set up your pipeline with a specific version of MATLAB, use the [Install MATLAB](#install-matlab) task.
+* To set up your pipeline with a specific release of MATLAB, use the [Install MATLAB](#install-matlab) task.
 * To run a MATLAB build using the MATLAB build tool, use the [Run MATLAB Build](#run-matlab-build) task.
 * To run MATLAB and Simulink&reg; tests and generate artifacts, use the [Run MATLAB Tests](#run-matlab-tests) task.
 * To run MATLAB scripts, functions, and statements, use the [Run MATLAB Command](#run-matlab-command) task.
@@ -69,10 +69,10 @@ steps:
       command: myscript
 ```
 
-### Specify MATLAB Version on Self-Hosted Agent
-When you use the **Run MATLAB Build**, **Run MATLAB Tests**, or **Run MATLAB Command** task in your pipeline, the agent uses the topmost MATLAB version on the system path. The task fails if the agent cannot find any version of MATLAB on the path.
+### Specify MATLAB Release on Self-Hosted Agent
+When you use the **Run MATLAB Build**, **Run MATLAB Tests**, or **Run MATLAB Command** task in your pipeline, the agent uses the topmost MATLAB release on the system path. The task fails if the agent cannot find any release of MATLAB on the path.
 
-In R2021a and later, you can use the **Install MATLAB** task to prepend your preferred version of MATLAB to the `PATH` system environment variable of the agent. You can also add your preferred version to the path without using the **Install MATLAB** task. For example, prepend MATLAB R2020b, which the **Install MATLAB** task does not support, to the path and use it to run your script. The step depends on your operating system and MATLAB root folder.
+In R2021a and later, you can use the **Install MATLAB** task to prepend your preferred release of MATLAB to the `PATH` system environment variable of the agent. You can also add your preferred release to the path without using the **Install MATLAB** task. For example, prepend MATLAB R2020b, which the **Install MATLAB** task does not support, to the path and use it to run your script. The step depends on your operating system and MATLAB root folder.
 
 ```YAML
 pool: myPool
@@ -132,7 +132,7 @@ You can access the extension tasks and add them to your pipeline when you edit y
 ![tasks](https://user-images.githubusercontent.com/48831250/193909715-1c90eb94-d89d-458d-80bc-2fee4c20c760.png)
 
 ### Install MATLAB
-Use the **Install MATLAB** task to run MATLAB code and Simulink models with a specific version of MATLAB. When you specify this task as part of your pipeline, the task installs your preferred MATLAB release (R2021a or later) on a Linux&reg;, Windows&reg;, or macOS agent and prepends it to the `PATH` system environment variable. If you do not specify a release, the task installs the latest release of MATLAB. You can use this task on your Microsoft-hosted or self-hosted agent:
+Use the **Install MATLAB** task to run MATLAB code and Simulink models with a specific release of MATLAB. When you specify this task as part of your pipeline, the task installs your preferred MATLAB release (R2021a or later) on a Linux&reg;, Windows&reg;, or macOS agent and prepends it to the `PATH` system environment variable. If you do not specify a release, the task installs the latest release of MATLAB. You can use this task on your Microsoft-hosted or self-hosted agent:
 
 - Microsoft-hosted agent — The task installs your preferred MATLAB release and prepends it to the path.
 - Self-hosted agent — If the agent does not have your preferred MATLAB release installed, the task installs the release and preprends it to the path. f the agent has the preferred release installed, the task only prepends it to the path.
