@@ -434,7 +434,7 @@ jobs:
           displayName: Run build with task skipping
           inputs:
             tasks: deploy
-            build-options: -skip test
+            buildOptions: -skip test
         - bash: |
             set -e
             grep "building" buildlog.txt
@@ -447,7 +447,7 @@ jobs:
           continueOnError: true
           inputs:
             tasks: error deploy
-            build-options: -continueOnFailure
+            buildOptions: -continueOnFailure
         - bash: |
             set -e
             grep "erroring" buildlog.txt
