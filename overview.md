@@ -41,7 +41,7 @@ steps:
     condition: succeededOrFailed()
     inputs:
       testResultsFiles: test-results/results.xml
-  - task: PublishCodeCoverageResults@1
+  - task: PublishCodeCoverageResults@2
     inputs:
       codeCoverageTool: Cobertura
       summaryFileLocation: code-coverage/coverage.xml
