@@ -9,7 +9,7 @@ To run your pipeline using this extension, install the extension to your Azure&r
 
 ## Examples
 
-### Run MATLAB Build on Self-Hosted Agent
+### Run a MATLAB Build
 Ue the latest release of MATLAB on a self-hosted agent to run a MATLAB build task named `mytask`, specified in a file named `buildfile.m` in the root of your repository, as well as all the tasks on which it depends. To use the latest release of MATLAB on the agent, specify the **Install MATLAB** task in your pipeline. (You do not need to specify this task if the agent already has the latest release of MATLAB installed and added to the path.) To run the MATLAB build, specify the **Run MATLAB Build** task.
 
 ```YAML
@@ -21,7 +21,7 @@ steps:
       tasks: mytask
 ``` 
 
-### Run MATLAB Tests on Microsoft-Hosted Agent
+### Run Tests in MATLAB Project
 Use the latest release of MATLAB on a Microsoft-hosted agent to run the tests in your [MATLAB project](https://www.mathworks.com/help/matlab/projects.html) and generate test results in PDF and JUnit-style XML formats and code coverage results in Cobertura XML format. Use tasks to publish the generated artifacts to Azure Pipelines once the test run is complete. To install the latest release of MATLAB on the agent, specify the **Install MATLAB** task in your pipeline. To run the tests and generate the artifacts, specify the **Run MATLAB Tests** task.
 
 ```YAML
@@ -49,12 +49,12 @@ steps:
 
  You can access the artifacts in the pipeline summary window:
 
-- To download the PDF test results report, follow the **published** link. 
-- To view the JUnit test results report, open the **Tests** tab.
-- To view the Cobertura code coverage report, open the **Code Coverage** tab.
+- To download the PDF test report, follow the **1 published** link. 
+- To view the test results in JUnit-style XML format, open the **Tests** tab.
+- To view the code coverage results in Cobertura XML format, open the **Code Coverage** tab.
 
 
-### Run MATLAB Script on Microsoft-Hosted Agent
+### Run MATLAB Script
 Use MATLAB R2023b on a Microsoft-hosted agent to run the commands in a file named `myscript.m` in the root of your repository. To install the specified release of MATLAB on the agent, specify the **Install MATLAB** task in your pipeline. To run the script, specify the **Run MATLAB Command** task.
 
 ```YAML
