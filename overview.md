@@ -108,19 +108,19 @@ steps:
 ```
 
 ### Build Across Multiple Platforms
-The **Install MATLAB** task supports the Linux, Windows, and macOS platforms. Define a matrix of job configurations to run a build using the MATLAB build tool on all the supported platforms. This workflow runs three jobs, one for each value in the variable `os`.
+The **Install MATLAB** task supports the Linux, Windows, and macOS platforms. Use a `matrix` job strategy to run a build using the MATLAB build tool on all the supported platforms. This pipeline runs three jobs.
 
 ```YAML
 strategy:
   matrix:
     linux:
-      vmImage: ubuntu-latest
-    macos:
-      vmImage: windows-latest
+      imageName: ubuntu-latest
+    mac:
+      imageName: windows-latest
     windows:
-      vmImage: macOS-latest
+      imageName: macOS-latest
 pool:
-  vmImage: $(vmImage)
+  vmImage: $(imageName)
 steps:
 - task: InstallMATLAB@1
 - task: RunMATLABBuild@1
