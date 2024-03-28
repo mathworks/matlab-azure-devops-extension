@@ -113,12 +113,12 @@ You can access the extension tasks and add them to your pipeline when you edit y
 ![tasks](https://user-images.githubusercontent.com/48831250/193909715-1c90eb94-d89d-458d-80bc-2fee4c20c760.png)
 
 ### Install MATLAB
-Use the **Install MATLAB** task to run MATLAB code and Simulink models with a specific version of MATLAB. When you specify this task as part of your pipeline, the task installs your preferred MATLAB release (R2021a or later) on a Linux&reg;, Windows&reg;, or macOS agent and prepends it to the `PATH` system environment variable. If you do not specify a release, the task installs the latest release of MATLAB. The task supports self-hosted and Microsoft-hosted agents:
+Use the **Install MATLAB** task to run MATLAB code and Simulink models with a specific version of MATLAB. When you specify this task as part of your pipeline, the task installs your preferred MATLAB release (R2021a or later) on a Linux&reg;, Windows&reg;, or macOS agent and prepends it to the `PATH` system environment variable. If you do not specify a release, the task installs the latest release of MATLAB. You can use this task on your Microsoft-hosted or self-hosted agent:
 
-- Self-hosted agent — If the agent does not have MATLAB installed, the task installs it and preprends it to the path. f the agent has MATLAB installed, the  task only prepends MATLAB to the path.
-- Microsoft-hosted agent — The task installs MATLAB and prepends it to the path.
+- Microsoft-hosted agent — The task installs your preferred MATLAB release and prepends it to the path.
+- Self-hosted agent — If the agent does not have your preferred MATLAB release installed, the task installs the release and preprends it to the path. f the agent has the preferred release installed, the task only prepends it to the path.
 
-Specify the task in your pipeline YAML using the `InstallMATLAB` key. The task accepts optional arguments.
+Specify the **Install MATLAB** task in your pipeline YAML as `InstallMATLAB@1`. The task accepts optional arguments.
 
 | Argument  | Description |
 |-----------|-------------|
@@ -131,7 +131,7 @@ Specify the task in your pipeline YAML using the `InstallMATLAB` key. The task a
 ### Run MATLAB Build
 Use the **Run MATLAB Build** task to run a build using the MATLAB build tool. Starting in R2022b, you can use this task to run the MATLAB build tasks specified in a file named `buildfile.m` in the root of your repository. 
 
-Specify the task in your pipeline YAML using the `RunMATLABBuild` key. The task accepts optional arguments.
+Specify the task in your pipeline YAML as `RunMATLABBuild@1`. The task accepts optional arguments.
 
 Argument                  | Description
 ------------------------- | ---------------
@@ -147,7 +147,7 @@ Use the **Run MATLAB Tests** task to run tests authored using the MATLAB unit te
 
 By default, the task includes any files in your project that have a `Test` label. If your pipeline does not use a MATLAB project, or if it uses a MATLAB release before R2019a, then the task includes all tests in the root of your repository and in any of its subfolders. The task fails if any of the included tests fail.
 
-Specify the **Run MATLAB Tests** task in your pipeline YAML using the `RunMATLABTests` key. The task lets you customize your test run using optional arguments. For example, you can add folders to the MATLAB search path, control which tests to run, and generate various artifacts.
+Specify the **Run MATLAB Tests** task in your pipeline YAML as `RunMATLABTests@1`. The task lets you customize your test run using optional arguments. For example, you can add folders to the MATLAB search path, control which tests to run, and generate various artifacts.
 
 Argument                  | Description
 ------------------------- | ---------------
@@ -171,7 +171,7 @@ Argument                  | Description
 ### Run MATLAB Command
 Use the **Run MATLAB Command** task to run MATLAB scripts, functions, and statements. You can use this task to flexibly customize your test run or add a step in MATLAB to your pipeline. 
 
-Specify the task in your pipeline YAML using the `RunMATLABCommand` key. The task requires an argument and also accepts an optional argument.
+Specify the task in your pipeline YAML as `RunMATLABCommand@1`. The task requires an argument and also accepts an optional argument.
 
 Argument                  | Description
 ------------------------- | ---------------
