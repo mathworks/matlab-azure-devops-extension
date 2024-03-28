@@ -92,10 +92,8 @@ For example, install MATLAB R2023b on a Microsoft-hosted agent, and then use the
 ```YAML
 pool:
   vmImage: ubuntu-latest
-
 variables:
 - group: MLM_LICENSE_TOKEN
-
 steps:
 - task: InstallMATLAB@1
   inputs:
