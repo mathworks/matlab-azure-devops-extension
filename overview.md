@@ -107,28 +107,25 @@ steps:
     MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
 ```
 
-### Run MATLAB Build on Multiple Platforms
-The **Install MATLAB** task supports the Linux, Windows, and macOS platforms. Define a matrix of job configurations to run a build using the MATLAB build tool on all the supported platforms. This workflow runs three jobs, one for each value in the variable `os`. For more information about matrices, see [Using a matrix for your jobs](https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs). 
+### Build Across Multiple Platforms
+The **Install MATLAB** task supports the Linux, Windows, and macOS platforms. Define a matrix of job configurations to run a build using the MATLAB build tool on all the supported platforms. This workflow runs three jobs, one for each value in the variable `os`.
 
 ```YAML
-name: Run MATLAB Build Across Different Platforms
-on: [push]
-jobs:
-  my-job:
-    name: Run MATLAB Build
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-    runs-on: ${{ matrix.os }}
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-      - name: Set up MATLAB
-        uses: matlab-actions/setup-matlab@v2
-      - name: Run build
-        uses: matlab-actions/run-build@v2
-        with:
-          tasks: test
+strategy:
+  matrix:
+    linux:
+      vmImage: ubuntu-latest
+    macos:
+      vmImage: windows-latest
+    windows:
+      vmImage: macOS-latest
+pool:
+  vmImage: $(vmImage)
+steps:
+- task: InstallMATLAB@1
+- task: RunMATLABBuild@1
+  inputs:
+    tasks: test
 ```
 
 ## Tasks
