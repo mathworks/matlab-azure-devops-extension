@@ -3,7 +3,7 @@
     "id": "553fa7ff-af12-4821-8ace-6bf3dc410e62",
     "name": "InstallMATLAB",
     "friendlyName": "Install MATLAB",
-    "description": "Install MATLAB on a Microsoft-hosted agent. Public licensing is not available for transformation products, such as MATLAB Coder and MATLAB Compiler.",
+    "description": "Set up your pipeline with a specific release of MATLAB.",
     "helpMarkDown": "",
     "category": "Tool",
     "author": "The MathWorks, Inc.",
@@ -19,7 +19,7 @@
             "label": "Release",
             "required": false,
             "defaultValue": "latest",
-            "helpMarkDown": "MATLAB release to install. You can specify R2020b or a later release. If you do not specify `release`, the task installs the latest release of MATLAB."
+            "helpMarkDown": "MATLAB release to install (R2021a or later). If you do not specify `release`, the task installs the latest release of MATLAB."
         },
         {
             "name": "products",
