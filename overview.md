@@ -1,6 +1,6 @@
 This extension enables you to build and test your MATLAB&reg; project on Microsoft&reg;-hosted and self-hosted [agents](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/agents?view=azure-devops&tabs=browser). For example, you can automatically identify any code issues in your project, run tests and generate test and coverage artifacts, and package your files into a toolbox.
 
-To run your pipeline using this extension, install the extension to your Azure&reg; DevOps organization. To [install the extension](https://docs.microsoft.com/en-us/azure/devops/marketplace/install-extension?view=azure-devops&tabs=browser), click the **Get it free** button at the top of this page. Then, use these tasks when you define your pipeline in a file named `azure-pipelines.yml` in the root of your repository:
+To run your pipeline using this extension, install the extension to your Azure&reg; DevOps organization. To [install the extension](https://docs.microsoft.com/en-us/azure/devops/marketplace/install-extension?view=azure-devops&tabs=browser), click the **Get it free** button at the top of this page. Then, use these tasks when you author your YAML pipeline in a file named `azure-pipelines.yml` in the root of your repository:
 
 * To set up your pipeline with a specific release of MATLAB, use the [Install MATLAB](#install-matlab) task.
 * To run a MATLAB build using the MATLAB build tool, use the [Run MATLAB Build](#run-matlab-build) task.
