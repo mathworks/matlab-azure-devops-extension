@@ -85,20 +85,18 @@ steps:
 ```
 
 ### Install Transformation Product on Microsoft-Hosted Agent
-To use a transformation product, such as MATLAB Coder&trade; and MATLAB Compiler&trade;, on a Microsoft-Hosted agent, you need a MATLAB batch licensing [token](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/alternates/non-interactive/MATLAB-BATCH.md#matlab-batch-licensing-token). MATLAB batch licensing tokens are strings that enable MATLAB to start in noninteractive environments. A token is a unique identifier that grants access to your MATLAB products. You can request a token by contacting MathWorks&reg; at [batch-tokens@mathworks.com](mailto:batch-tokens@mathworks.com).
+To use a transformation product, such as MATLAB Coder&trade; and MATLAB Compiler&trade;, on a Microsoft-hosted agent, you need a MATLAB batch licensing [token](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/alternates/non-interactive/MATLAB-BATCH.md#matlab-batch-licensing-token). Batch licensing tokens are strings that enable MATLAB to start in noninteractive environments. You can request a token by contacting MathWorks&reg; at [batch-tokens@mathworks.com](mailto:batch-tokens@mathworks.com).
 
 To use a MATLAB batch licensing token:
 
 1. Set the token as a secret variable. For more information about secret variables, see [Set secret variables](https://learn.microsoft.com/en-us/azure/devops/pipelines/process/set-secret-variables?view=azure-devops&tabs=yaml%2Cbash).
-2. Map the secret variable as an environment variable named `MLM_LICENSE_TOKEN` to reference it in your YAML pipeline.
+2. Map the secret variable into an environment variable named `MLM_LICENSE_TOKEN` in your YAML pipeline.
 
-For example, use the latest release of MATLAB Compiler on a Microsoft-hosted agent to create a standalone application using a file named `myfun.m` in the root of your repository. To install MATLAB and MATLAB Compiler on the agent, specify the **Install MATLAB** task in your pipeline. To run the function required for creating the application, specify the **Run MATLAB Command** task.
+For example, use the latest release of MATLAB Compiler on a Microsoft-hosted agent to create a standalone application using a file named `myfun.m` in the root of your repository. To install MATLAB and MATLAB Compiler on the agent, specify the **Install MATLAB** task in your pipeline. To run the function required for creating the application, specify the **Run MATLAB Command** task. In this example, `myToken` is the name of the secret variable that holds the batch licensing token.
 
 ```
 pool:
   vmImage: ubuntu-latest
-variables:
-- group: MLM_LICENSE_TOKEN
 steps:
 - task: InstallMATLAB@1
   inputs:
@@ -107,7 +105,7 @@ steps:
   inputs:
     command: compiler.build.standaloneApplication("myfun.m")
   env:
-    MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
+    MLM_LICENSE_TOKEN: $(myToken)
 ```
 
 ### Build Across Multiple Platforms
@@ -150,12 +148,12 @@ Specify the **Install MATLAB** task in your YAML pipeline as `InstallMATLAB@1`. 
 | `products` | <p>(Optional) Products to install in addition to MATLAB, specified as a list of product names separated by spaces. You can specify `products` to install most MathWorks products and support packages. For example, `products: Deep_Learning_Toolbox` installs Deep Learning Toolbox&trade; in addition to MATLAB.</p><p>The task uses [MATLAB Package Manager](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/MPM.md) (`mpm`) to install products. For a list of supported products and their correctly formatted names, see [Product Installation Options](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/MPM.md#product-installation-options).</p><p>**Example**: `products: Simulink`</br>**Example:** `products: Simulink Deep_Learning_Toolbox`</p>
 
 #### Licensing
-Product licensing for your pipeline depends on your project type as well as the type of products you install:
+Product licensing for your pipeline depends on your project type as well as the type of products to install:
 
 - Public project — If your pipeline does not include transformation products, such as MATLAB Coder and MATLAB Compiler, then the task automatically licenses any products that you install. If your pipeline includes transformation products, you can request a MATLAB batch licensing [token](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/alternates/non-interactive/MATLAB-BATCH.md#matlab-batch-licensing-token) by contacting MathWorks at [batch-tokens@mathworks.com](mailto:batch-tokens@mathworks.com).
 - Private project — The task does not automatically license any products for you. You can either use your own licensing scheme or request a batch licensing token by contacting MathWorks.
   
-To use a MATLAB batch licensing token, first set it as a [secret variable](https://learn.microsoft.com/en-us/azure/devops/pipelines/process/set-secret-variables?view=azure-devops&tabs=yaml%2Cbash). Then, map the secret variable as an environment variable named `MLM_LICENSE_TOKEN` to reference it in your YAML pipeline. For an example, see [Install Transformation Product on Microsoft-Hosted Agent](#install-transformation-product-on-microsoft-hosted-agent) . 
+To use a MATLAB batch licensing token, first set it as a [secret variable](https://learn.microsoft.com/en-us/azure/devops/pipelines/process/set-secret-variables?view=azure-devops&tabs=yaml%2Cbash). Then, map the secret variable into an environment variable named `MLM_LICENSE_TOKEN` in your YAML pipeline. For an example, see [Install Transformation Product on Microsoft-Hosted Agent](#install-transformation-product-on-microsoft-hosted-agent). 
 
 ### Run MATLAB Build
 Use the **Run MATLAB Build** task to run a build using the MATLAB build tool. Starting in R2022b, you can use this task to run the MATLAB build tasks specified in a file named `buildfile.m` in the root of your repository. 
