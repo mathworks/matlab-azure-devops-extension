@@ -69,6 +69,16 @@ export default function suite() {
         assert(!alreadyExists);
       });
 
+      it("finds existing cache and returns default path for mac", async () => {
+        platform = "darwin";
+        stubFindLocalTool.callsFake((tool, ver) => {
+          return defaultToolcacheLoc;
+        });
+        const [matlabPath, alreadyExists] = await matlab.makeToolcacheDir(releaseInfo, platform);
+        assert(matlabPath === path.join(defaultToolcacheLoc, "MATLAB.app"));
+        assert(alreadyExists);
+      });
+
       describe("windows performance workaround", () => {
         let stubGetVariable: sinon.SinonStub;
         let stubGetAgentMode: sinon.SinonStub;
