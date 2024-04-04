@@ -10,7 +10,7 @@ To run your pipeline using this extension, install the extension to your Azure&r
 ## Examples
 
 ### Run a MATLAB Build
-Ue the latest release of MATLAB on a self-hosted agent to run a MATLAB build task named `mytask`, specified in a file named `buildfile.m` in the root of your repository, as well as all the tasks on which it depends. To use the latest release of MATLAB on the agent, specify the **Install MATLAB** task in your pipeline. (You do not need to specify this task if the agent already has the latest release of MATLAB installed and added to the path.) To run the MATLAB build, specify the **Run MATLAB Build** task.
+Use the latest release of MATLAB on a self-hosted agent to run a MATLAB build task named `mytask`, specified in a file named `buildfile.m` in the root of your repository, as well as all the tasks on which it depends. To use the latest release of MATLAB on the agent, specify the **Install MATLAB** task in your pipeline. (You do not need to specify this task if the agent already has the latest release of MATLAB installed and added to the path.) To run the MATLAB build, specify the **Run MATLAB Build** task.
 
 ```YAML
 pool: myPool
@@ -138,7 +138,7 @@ You can access the extension tasks and add them to your pipeline when you edit y
 Use the **Install MATLAB** task to run MATLAB code and Simulink models with a specific release of MATLAB. When you specify this task as part of your pipeline, the task installs your preferred MATLAB release (R2021a or later) on a Linux&reg;, Windows&reg;, or macOS agent and prepends it to the `PATH` system environment variable. If you do not specify a release, the task installs the latest release of MATLAB. You can use this task on your Microsoft-hosted or self-hosted agent:
 
 - Microsoft-hosted agent — The task installs your preferred MATLAB release and prepends it to the path.
-- Self-hosted agent — If the agent does not have your preferred MATLAB release installed, the task installs the release and preprends it to the path. f the agent has the preferred release installed, the task only prepends it to the path.
+- Self-hosted agent — If the agent does not have your preferred MATLAB release installed, the task installs the release and preprends it to the path. If the agent has the preferred release installed, the task only prepends it to the path.
 
 Specify the **Install MATLAB** task in your YAML pipeline as `InstallMATLAB@1`. The task accepts optional arguments.
 
