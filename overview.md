@@ -57,7 +57,7 @@ steps:
 ### Run MATLAB Script
 Use MATLAB R2023b on a Microsoft-hosted agent to run the commands in a file named `myscript.m` in the root of your repository. To install the specified release of MATLAB on the agent, specify the **Install MATLAB** task in your pipeline. To run the script, specify the **Run MATLAB Command** task.
 
-```
+```YAML
 pool:
   vmImage: ubuntu-latest
 steps:
