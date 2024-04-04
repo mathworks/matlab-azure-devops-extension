@@ -94,7 +94,7 @@ To use a MATLAB batch licensing token:
 
 For example, use the latest release of MATLAB Compiler on a Microsoft-hosted agent to create a standalone application using a file named `myfun.m` in the root of your repository. To install MATLAB and MATLAB Compiler on the agent, specify the **Install MATLAB** task in your pipeline. To run the function required for creating the application, specify the **Run MATLAB Command** task. In this example, `myToken` is the name of the secret variable that holds the batch licensing token.
 
-```
+```YAML
 pool:
   vmImage: ubuntu-latest
 steps:
