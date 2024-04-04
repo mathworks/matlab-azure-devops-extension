@@ -111,7 +111,7 @@ steps:
 ### Build Across Multiple Platforms
 The **Install MATLAB** task supports the Linux, Windows, and macOS platforms. Use a `matrix` job strategy to run a build using the MATLAB build tool on all the supported platforms. This pipeline runs three jobs.
 
-```
+```YAML
 strategy:
   matrix:
     linux:
