@@ -116,9 +116,9 @@ strategy:
   matrix:
     linux:
       imageName: ubuntu-latest
-    mac:
-      imageName: windows-latest
     windows:
+      imageName: windows-latest
+    mac:
       imageName: macOS-latest
 pool:
   vmImage: $(imageName)
