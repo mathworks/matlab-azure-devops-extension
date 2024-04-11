@@ -87,7 +87,7 @@ steps:
 ```
 
 ### Use MATLAB Batch Licensing Token
-On a Microsoft-hosted agent, you need a MATLAB batch licensing [token](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/alternates/non-interactive/MATLAB-BATCH.md#matlab-batch-licensing-token) if your project is private or if your pipeline includes transformation products, such as MATLAB Coder&trade; and MATLAB Compiler&trade;. Batch licensing tokens are strings that enable MATLAB to start in noninteractive environments. You can request a token by contacting MathWorks&reg; at [batch-tokens@mathworks.com](mailto:batch-tokens@mathworks.com). 
+On a Microsoft-hosted agent, you need a [MATLAB batch licensing token](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/alternates/non-interactive/MATLAB-BATCH.md#matlab-batch-licensing-token) if your project is private or if your pipeline includes transformation products, such as MATLAB Coder&trade; and MATLAB Compiler&trade;. Batch licensing tokens are strings that enable MATLAB to start in noninteractive environments. You can request a token by contacting MathWorks&reg; at [batch-tokens@mathworks.com](mailto:batch-tokens@mathworks.com). 
 
 To use a MATLAB batch licensing token:
 
@@ -143,10 +143,10 @@ Specify the **Install MATLAB** task in your YAML pipeline as `InstallMATLAB@1`. 
 | `products` | <p>(Optional) Products to install in addition to MATLAB, specified as a list of product names separated by spaces. You can specify `products` to install most MathWorks products and support packages. For example, `products: Deep_Learning_Toolbox` installs Deep Learning Toolbox&trade; in addition to MATLAB.</p><p>The task uses [MATLAB Package Manager](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/MPM.md) (`mpm`) to install products. For a list of supported products and their correctly formatted names, see [Product Installation Options](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/MPM.md#product-installation-options).</p><p>**Example**: `products: Simulink`</br>**Example:** `products: Simulink Deep_Learning_Toolbox`</p>
 
 #### Licensing
-Product licensing for your pipeline depends on your project type as well as the type of products to install:
+Product licensing for your pipeline depends on your project visibility as well as the type of products to install:
 
-- Public project — If your pipeline does not include transformation products, such as MATLAB Coder and MATLAB Compiler, then the task automatically licenses any products that you install. If your pipeline includes transformation products, you can request a [MATLAB batch licensing token](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/alternates/non-interactive/MATLAB-BATCH.md#matlab-batch-licensing-token) by contacting MathWorks at [batch-tokens@mathworks.com](mailto:batch-tokens@mathworks.com).
-- Private project — The task does not automatically license any products for you. You can request a batch licensing token by contacting MathWorks.
+- Public project — If your pipeline does not include transformation products, such as MATLAB Coder and MATLAB Compiler, then the extension automatically licenses any products that you install. If your pipeline includes transformation products, you can request a [MATLAB batch licensing token](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/alternates/non-interactive/MATLAB-BATCH.md#matlab-batch-licensing-token) by contacting MathWorks at [batch-tokens@mathworks.com](mailto:batch-tokens@mathworks.com).
+- Private project — The extension does not automatically license any products for you. You can request a batch licensing token by contacting MathWorks.
   
 To use a MATLAB batch licensing token, first set it as a [secret variable](https://learn.microsoft.com/en-us/azure/devops/pipelines/process/set-secret-variables?view=azure-devops&tabs=yaml%2Cbash). Then, map the secret variable into an environment variable named `MLM_LICENSE_TOKEN` in your YAML pipeline. For an example, see [Use MATLAB Batch Licensing Token](#use-matlab-batch-licensing-token). 
 
