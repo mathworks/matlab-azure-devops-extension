@@ -23,22 +23,8 @@ steps:
       tasks: mytask
 ``` 
 
-### Run Tests in Parallel
-Use the latest release of MATLAB on a Microsoft-hosted agent to run the tests in your [MATLAB project](https://www.mathworks.com/help/matlab/projects.html) in parallel (requires Parallel Computing Toolbox&trade;). To install the latest release of MATLAB and Parallel Computing Toolbox on the agent, specify the **Install MATLAB** task in your pipeline with its `products` argument specified as `Parallel_Computing_Toolbox`. To run the tests in parallel, specify the **Run MATLAB Tests** task with its `useParallel` argument specified as `true`.
-```YAML
-pool:
-  vmImage: ubuntu-latest
-steps:
-  - task: InstallMATLAB@1
-    inputs:
-      products: Parallel_Computing_Toolbox
-  - task: RunMATLABTests@1
-    inputs:
-      useParallel: true
-``` 
-
 ### Generate Test and Coverage Artifacts
-Use the latest release of MATLAB on a Microsoft-hosted agent to run your tests and generate test results in PDF and JUnit-style XML formats and code coverage results in Cobertura XML format. Use tasks to publish the generated artifacts to Azure Pipelines once the test run is complete. To install the latest release of MATLAB on the agent, specify the **Install MATLAB** task in your pipeline. To run the tests and generate the artifacts, specify the **Run MATLAB Tests** task.
+Use the latest release of MATLAB on a Microsoft-hosted agent to run the tests in your [MATLAB project](https://www.mathworks.com/help/matlab/projects.html) and generate test results in PDF and JUnit-style XML formats and code coverage results in Cobertura XML format. Use tasks to publish the generated artifacts to Azure Pipelines once the test run is complete. To install the latest release of MATLAB on the agent, specify the **Install MATLAB** task in your pipeline. To run the tests and generate the artifacts, specify the **Run MATLAB Tests** task.
 
 ```YAML
 pool:
@@ -69,6 +55,24 @@ steps:
 - To view the test results in JUnit-style XML format, open the **Tests** tab.
 - To view the code coverage results in Cobertura XML format, open the **Code Coverage** tab.
 
+
+### Run Tests in Parallel
+Use the latest release of MATLAB on a Microsoft-hosted agent to run your MATLAB and Simulink tests in parallel (requires Parallel Computing Toolbox&trade;). To install the latest release of MATLAB, Simulink, Simulink Test&trade;, and Parallel Computing Toolbox on the agent, specify the **Install MATLAB** task with its `products` argument in your pipeline. To run the tests in parallel, specify the **Run MATLAB Tests** task with its `useParallel` argument specified as `true`.
+
+```YAML
+pool:
+  vmImage: ubuntu-latest
+steps:
+  - task: InstallMATLAB@1
+    inputs:
+      products: >
+        Simulink
+        Simulink_Test
+        Parallel_Computing_Toolbox
+  - task: RunMATLABTests@1
+    inputs:
+      useParallel: true
+``` 
 
 ### Run MATLAB Script
 Use MATLAB R2023b on a Microsoft-hosted agent to run the commands in a file named `myscript.m` in the root of your repository. To install the specified release of MATLAB on the agent, specify the **Install MATLAB** task in your pipeline. To run the script, specify the **Run MATLAB Command** task.
@@ -179,7 +183,7 @@ When you use this task, a file named `buildfile.m` must be in the project root d
 
 
 ### Run MATLAB Tests
-Use the **Run MATLAB Tests** task to run tests authored using the MATLAB unit testing framework or Simulink Test&trade; and generate test and coverage artifacts.
+Use the **Run MATLAB Tests** task to run tests authored using the MATLAB unit testing framework or Simulink Test and generate test and coverage artifacts.
 
 By default, the task includes any files in your project that have a `Test` label. If your pipeline does not use a MATLAB project, or if it uses a MATLAB release before R2019a, then the task includes all tests in the root of your repository and in any of its subfolders. The task fails if any of the included tests fail.
 
