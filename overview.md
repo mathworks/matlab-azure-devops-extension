@@ -87,7 +87,7 @@ steps:
 ```
 
 ### Use MATLAB Batch Licensing Token
-On a Microsoft-hosted agent, you need a MATLAB batch licensing [token](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/alternates/non-interactive/MATLAB-BATCH.md#matlab-batch-licensing-token) if your project is private. Batch licensing tokens are strings that enable MATLAB to start in noninteractive environments. You can request a token by contacting MathWorks&reg; at [batch-tokens@mathworks.com](mailto:batch-tokens@mathworks.com). 
+On a Microsoft-hosted agent, you need a MATLAB batch licensing [token](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/alternates/non-interactive/MATLAB-BATCH.md#matlab-batch-licensing-token) if your project is private or if your pipeline includes transformation products, such as MATLAB Coder&trade; and MATLAB Compiler&trade;. Batch licensing tokens are strings that enable MATLAB to start in noninteractive environments. You can request a token by contacting MathWorks&reg; at [batch-tokens@mathworks.com](mailto:batch-tokens@mathworks.com). 
 
 To use a MATLAB batch licensing token:
 
