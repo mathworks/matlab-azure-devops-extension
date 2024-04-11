@@ -23,8 +23,22 @@ steps:
       tasks: mytask
 ``` 
 
-### Run Tests in MATLAB Project
-Use the latest release of MATLAB on a Microsoft-hosted agent to run the tests in your [MATLAB project](https://www.mathworks.com/help/matlab/projects.html) and generate test results in PDF and JUnit-style XML formats and code coverage results in Cobertura XML format. Use tasks to publish the generated artifacts to Azure Pipelines once the test run is complete. To install the latest release of MATLAB on the agent, specify the **Install MATLAB** task in your pipeline. To run the tests and generate the artifacts, specify the **Run MATLAB Tests** task.
+### Run Tests in Parallel
+Use the latest release of MATLAB on a Microsoft-hosted agent to run the tests in your [MATLAB project](https://www.mathworks.com/help/matlab/projects.html) in parallel (requires Parallel Computing Toolbox&trade;). To install the latest release of MATLAB and Parallel Computing Toolbox on the agent, specify the **Install MATLAB** task in your pipeline with its `products` input specified as `Parallel_Computing_Toolbox`. To run the tests in parallel, specify the **Run MATLAB Tests** task with its `useParallel` input specified as `true`.
+```YAML
+pool:
+  vmImage: ubuntu-latest
+steps:
+  - task: InstallMATLAB@1
+    inputs:
+      products: Parallel_Computing_Toolbox
+  - task: RunMATLABTests@1
+    inputs:
+      useParallel: true
+``` 
+
+### Generate Test and Coverage Artifacts
+Use the latest release of MATLAB on a Microsoft-hosted agent to run your tests and generate test results in PDF and JUnit-style XML formats and code coverage results in Cobertura XML format. Use tasks to publish the generated artifacts to Azure Pipelines once the test run is complete. To install the latest release of MATLAB on the agent, specify the **Install MATLAB** task in your pipeline. To run the tests and generate the artifacts, specify the **Run MATLAB Tests** task.
 
 ```YAML
 pool:
@@ -140,7 +154,7 @@ Specify the **Install MATLAB** task in your YAML pipeline as `InstallMATLAB@1`. 
 | Argument  | Description |
 |-----------|-------------|
 | `release` | <p>(Optional) MATLAB release to install. You can specify R2021a or a later release. By default, the value of `release` is `latest`, which corresponds to the latest release of MATLAB.<p/><p>**Example**: `release: R2023b`<br/>**Example**: `release: latest`</p>
-| `products` | <p>(Optional) Products to install in addition to MATLAB, specified as a list of product names separated by spaces. You can specify `products` to install most MathWorks products and support packages. For example, `products: Deep_Learning_Toolbox` installs Deep Learning Toolbox&trade; in addition to MATLAB.</p><p>The task uses [MATLAB Package Manager](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/MPM.md) (`mpm`) to install products. For a list of supported products and their correctly formatted names, see [Product Installation Options](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/MPM.md#product-installation-options).</p><p>**Example**: `products: Simulink`</br>**Example:** `products: Simulink Deep_Learning_Toolbox`</p>
+| `products` | <p>(Optional) Products to install in addition to MATLAB, specified as a list of product names separated by spaces. You can specify `products` to install most MathWorks products and support packages. For example, `products: Deep_Learning_Toolbox` installs Deep Learning Toolbox&trade; in addition to MATLAB.</p><p>The task uses [MATLAB Package Manager](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/MPM.md) (`mpm`) to install products. For a list of supported products and their correctly formatted names, see [Product Installation Options](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/MPM.md#product-installation-options).</p><p>For an example of how to use the `products` input, see [Run Tests in Parallel](run-tests-in-parallel).</p><p>**Example**: `products: Simulink`</br>**Example:** `products: Simulink Deep_Learning_Toolbox`</p>
 
 #### Licensing
 Product licensing for your pipeline depends on your project visibility as well as the type of products to install:
@@ -177,7 +191,7 @@ Argument                  | Description
 `selectByFolder`          | <p>(Optional) Location of the folder used to select test suite elements, relative to the project root folder. To create a test suite, the task uses only the tests in the specified folder and its subfolders. You can specify multiple folders using a colon-separated or semicolon-separated list.<p/><p>**Example:** `selectByFolder: test`<br/>**Example:** `selectByFolder: test/folderA; test/folderB`</p>
 `selectByTag`             | <p>(Optional) Test tag used to select test suite elements. To create a test suite, the task uses only the test elements with the specified tag.<p/><p>**Example:** `selectByTag: Unit`</p>
 `strict`                  | <p>(Optional) Option to apply strict checks when running tests, specified as `false` or `true`. By default, the value is `false`. If you specify a value of `true`, the task generates a qualification failure whenever a test issues a warning.<p/><p>**Example:** `strict: true`</p>
-`useParallel`              | <p>(Optional) Option to run tests in parallel, specified as `false` or `true`. By default, the value is `false` and tests run in serial. If the test runner configuration is suited for parallelization, you can specify a value of `true` to run tests in parallel. This argument requires a Parallel Computing Toolbox&trade; license.</p><p>**Example:** `useParallel: true`</p>
+`useParallel`              | <p>(Optional) Option to run tests in parallel, specified as `false` or `true`. By default, the value is `false` and tests run in serial. If the test runner configuration is suited for parallelization, you can specify a value of `true` to run tests in parallel. This argument requires a Parallel Computing Toolbox license.</p><p>**Example:** `useParallel: true`</p>
 `outputDetail`            | <p>(Optional) Amount of event detail displayed for the test run, specified as `none`, `terse`, `concise`, `detailed`, or `verbose`. By default, the task displays failing and logged events at the `detailed` level and test run progress at the `concise` level.<p></p>**Example:** `outputDetail: verbose`</p>
 `loggingLevel`            | <p>(Optional) Maximum verbosity level for logged diagnostics included for the test run, specified as `none`, `terse`, `concise`, `detailed`, or `verbose`. By default, the task includes diagnostics logged at the `terse` level.<p></p>**Example:** `loggingLevel: detailed`</p> 
 `testResultsPDF`          | <p>(Optional) Path to write the test results in PDF format. On macOS platforms, this argument is supported in MATLAB R2020b and later.</p><p>**Example:** `testResultsPDF: test-results/results.pdf`</p>
