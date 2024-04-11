@@ -24,7 +24,7 @@ steps:
 ``` 
 
 ### Run Tests in Parallel
-Use the latest release of MATLAB on a Microsoft-hosted agent to run the tests in your [MATLAB project](https://www.mathworks.com/help/matlab/projects.html) in parallel (requires Parallel Computing Toolbox&trade;). To install the latest release of MATLAB and Parallel Computing Toolbox on the agent, specify the **Install MATLAB** task in your pipeline with its `products` input specified as `Parallel_Computing_Toolbox`. To run the tests in parallel, specify the **Run MATLAB Tests** task with its `useParallel` input specified as `true`.
+Use the latest release of MATLAB on a Microsoft-hosted agent to run the tests in your [MATLAB project](https://www.mathworks.com/help/matlab/projects.html) in parallel (requires Parallel Computing Toolbox&trade;). To install the latest release of MATLAB and Parallel Computing Toolbox on the agent, specify the **Install MATLAB** task in your pipeline with its `products` argument specified as `Parallel_Computing_Toolbox`. To run the tests in parallel, specify the **Run MATLAB Tests** task with its `useParallel` argument specified as `true`.
 ```YAML
 pool:
   vmImage: ubuntu-latest
@@ -154,7 +154,7 @@ Specify the **Install MATLAB** task in your YAML pipeline as `InstallMATLAB@1`. 
 | Argument  | Description |
 |-----------|-------------|
 | `release` | <p>(Optional) MATLAB release to install. You can specify R2021a or a later release. By default, the value of `release` is `latest`, which corresponds to the latest release of MATLAB.<p/><p>**Example**: `release: R2023b`<br/>**Example**: `release: latest`</p>
-| `products` | <p>(Optional) Products to install in addition to MATLAB, specified as a list of product names separated by spaces. You can specify `products` to install most MathWorks products and support packages. For example, `products: Deep_Learning_Toolbox` installs Deep Learning Toolbox&trade; in addition to MATLAB.</p><p>The task uses [MATLAB Package Manager](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/MPM.md) (`mpm`) to install products. For a list of supported products and their correctly formatted names, see [Product Installation Options](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/MPM.md#product-installation-options).</p><p>For an example of how to use the `products` input, see [Run Tests in Parallel](#run-tests-in-parallel).</p><p>**Example**: `products: Simulink`</br>**Example:** `products: Simulink Deep_Learning_Toolbox`</p>
+| `products` | <p>(Optional) Products to install in addition to MATLAB, specified as a list of product names separated by spaces. You can specify `products` to install most MathWorks products and support packages. For example, `products: Deep_Learning_Toolbox` installs Deep Learning Toolbox&trade; in addition to MATLAB.</p><p>The task uses [MATLAB Package Manager](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/MPM.md) (`mpm`) to install products. For a list of supported products and their correctly formatted names, see [Product Installation Options](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/MPM.md#product-installation-options).</p><p>For an example of how to use the `products` argument, see [Run Tests in Parallel](#run-tests-in-parallel).</p><p>**Example**: `products: Simulink`</br>**Example:** `products: Simulink Deep_Learning_Toolbox`</p>
 
 #### Licensing
 Product licensing for your pipeline depends on your project visibility as well as the type of products to install:
