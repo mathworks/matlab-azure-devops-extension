@@ -244,11 +244,13 @@ jobs:
           inputs:
             useParallel: true
             sourceFolder: src
+          condition: not(eq(${{ version }}, '0'))
         - bash: |
             set -e
             grep -q "Starting parallel pool (parpool)" console.log
             rm console.log
           displayName: Verify tests ran in parallel
+          condition: not(eq(${{ version }}, '0'))
         - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@${{ version }}
           displayName: Run MATLAB tests with detailed display level for event details
           inputs:
