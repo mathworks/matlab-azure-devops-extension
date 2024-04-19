@@ -20,6 +20,10 @@ export default function suite() {
             const platform = "linux";
             const architecture = "x64";
 
+            before(() => {
+                taskLib.setResourcePath(path.join( __dirname, "..", "task.json"));
+            });
+
             beforeEach(() => {
                 stubWriteFileSync = sinon.stub(fs, "writeFileSync");
                 stubChmodSync = sinon.stub(fs, "chmodSync");
