@@ -38,6 +38,7 @@ export default function suite() {
                         },
                     };
                 });
+                taskLib.setResourcePath(path.join( __dirname, "..", "task.json"));
             });
 
             afterEach(() => {
