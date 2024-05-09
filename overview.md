@@ -13,7 +13,7 @@ When you author your pipeline in a file named `azure-pipelines.yml` in the root 
 - To run MATLAB scripts, functions, and statements, use the [Run MATLAB Command](#run-matlab-command) task.
 
 ### Run a MATLAB Build
-On a self-hosted agent, run a MATLAB build task named `mytask`, specified in a file named `buildfile.m` in the root of your repository, as well as all the tasks on which it depends. To run the MATLAB build, specify the **Run MATLAB Build** task in your pipeline. (The **Run MATLAB Build** task is supported in MATLAB R2022b and later.)
+On a self-hosted agent, run a MATLAB build task named `mytask`, specified in a build file named `buildfile.m` in the root of your repository, as well as all the tasks on which it depends. To run the MATLAB build, specify the **Run MATLAB Build** task in your pipeline. (The **Run MATLAB Build** task is supported in MATLAB R2022b and later.)
 
 ```YAML
 pool: myPool
