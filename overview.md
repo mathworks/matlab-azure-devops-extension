@@ -106,7 +106,7 @@ steps:
 ```
 
 ### Use MATLAB Batch Licensing Token
-On a Microsoft-hosted agent, you need a [MATLAB batch licensing token](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/alternates/non-interactive/MATLAB-BATCH.md#matlab-batch-licensing-token) if your project is private or if your pipeline includes transformation products, such as MATLAB Coder&trade; and MATLAB Compiler&trade;. Batch licensing tokens are strings that enable MATLAB to start in noninteractive environments. You can request a token by contacting MathWorks&reg; at [batch-tokens@mathworks.com](mailto:batch-tokens@mathworks.com). 
+On a Microsoft-hosted agent, you need a [MATLAB batch licensing token](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/alternates/non-interactive/MATLAB-BATCH.md#matlab-batch-licensing-token) if your project is private or if your pipeline includes transformation products, such as MATLAB Coder&trade; and MATLAB Compiler&trade;. Batch licensing tokens are strings that enable MATLAB to start in noninteractive environments. You can request a token by submitting the [MATLAB Batch Licensing Pilot](https://www.mathworks.com/support/batch-tokens.html) form. 
 
 To use a MATLAB batch licensing token:
 
@@ -152,7 +152,7 @@ You can access the extension tasks using the YAML pipeline editor in Azure DevOp
 ![tasks](https://github.com/mathworks/matlab-azure-devops-extension/assets/48831250/d48ddb8b-a87f-4334-a301-64293b822647)
 
 ### Install MATLAB
-Use the **Install MATLAB** task to install MATLAB and other MathWorks products on a Microsoft-hosted agent. When you specify this task as part of your pipeline, the task installs your preferred MATLAB release (R2021a or later) on a Linux, Windows, or macOS agent and prepends it to the `PATH` system environment variable. If you do not specify a release, the task installs the latest release of MATLAB.
+Use the **Install MATLAB** task to install MATLAB and other MathWorks&reg; products on a Microsoft-hosted agent. When you specify this task as part of your pipeline, the task installs your preferred MATLAB release (R2021a or later) on a Linux, Windows, or macOS agent and prepends it to the `PATH` system environment variable. If you do not specify a release, the task installs the latest release of MATLAB.
 
 Specify the **Install MATLAB** task in your YAML pipeline as `InstallMATLAB@1`. The task accepts optional inputs.
 
@@ -164,8 +164,8 @@ Input       | Description
 #### Licensing
 Product licensing for your pipeline depends on your project visibility as well as the type of products to install:
 
-- Public project — If your pipeline does not include transformation products, such as MATLAB Coder and MATLAB Compiler, then the extension automatically licenses any products that you install. If your pipeline includes transformation products, you can request a [MATLAB batch licensing token](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/alternates/non-interactive/MATLAB-BATCH.md#matlab-batch-licensing-token) by contacting MathWorks at [batch-tokens@mathworks.com](mailto:batch-tokens@mathworks.com).
-- Private project — The extension does not automatically license any products for you. You can request a batch licensing token by contacting MathWorks at [batch-tokens@mathworks.com](mailto:batch-tokens@mathworks.com).
+- Public project — If your pipeline does not include transformation products, such as MATLAB Coder and MATLAB Compiler, then the extension automatically licenses any products that you install. If your pipeline includes transformation products, you can request a [MATLAB batch licensing token](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/alternates/non-interactive/MATLAB-BATCH.md#matlab-batch-licensing-token) by submitting the [MATLAB Batch Licensing Pilot](https://www.mathworks.com/support/batch-tokens.html) form.
+- Private project — The extension does not automatically license any products for you. You can request a token by submitting the [MATLAB Batch Licensing Pilot](https://www.mathworks.com/support/batch-tokens.html) form.
   
 To use a MATLAB batch licensing token, first set it as a [secret variable](https://learn.microsoft.com/en-us/azure/devops/pipelines/process/set-secret-variables?view=azure-devops&tabs=yaml%2Cbash). Then, map the secret variable to an environment variable named `MLM_LICENSE_TOKEN` in your YAML pipeline. For an example, see [Use MATLAB Batch Licensing Token](#use-matlab-batch-licensing-token). 
 
