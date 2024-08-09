@@ -10,6 +10,8 @@ import * as net from "net";
 import * as path from "path";
 import * as sinon from "sinon";
 import * as matlab from "./../src/matlab";
+import * as script from "./../src/script";
+import * as utils from "./../src/utils";
 
 export default function suite() {
   describe("matlab.ts test suite", () => {
@@ -17,6 +19,7 @@ export default function suite() {
       let stubCacheFile: sinon.SinonStub;
       let stubFindLocalTool: sinon.SinonStub;
       let writeFileStub: sinon.SinonStub;
+      let stubDownloadAndRun: sinon.SinonStub;
       let platform: string;
       const defaultToolcacheLoc = "/opt/hostedtoolcache/matlab/2023.2.999/x64";
       const releaseInfo = {
@@ -32,6 +35,7 @@ export default function suite() {
         stubFindLocalTool.callsFake((tool, ver) => {
           return "";
         });
+        stubDownloadAndRun = sinon.stub(script, "downloadAndRunScript");
         platform = "linux";
       });
 
@@ -39,6 +43,7 @@ export default function suite() {
         stubCacheFile.restore();
         stubFindLocalTool.restore();
         writeFileStub.restore();
+        stubDownloadAndRun.restore();
       });
 
       it("makeToolcacheDir returns toolpath if in toolcache", async () => {
@@ -222,6 +227,14 @@ export default function suite() {
             await matlab.setupBatch(platform, architecture);
           });
         });
+
+        it(`works on mac with apple silicon`, async () => {
+            platform = "darwin";
+            architecture = "arm64";
+            assert.doesNotReject(async () => {
+                await matlab.setupBatch(platform, architecture);
+            });
+        });
       });
 
       it("setupBatch rejects on unsupported platforms", async () => {
@@ -328,6 +341,100 @@ export default function suite() {
           await matlab.getReleaseInfo("latest");
         });
       });
+    });
+
+    describe("installSystemDependencies", () => {
+        let platform: string;
+        let architecture: string;
+        let release: string;
+
+        let stubDownloadAndRun: sinon.SinonStub;
+        let stubDownloadTool: sinon.SinonStub;
+        let stubExec: sinon.SinonStub;
+
+        beforeEach(() => {
+            platform = "linux";
+            architecture = "x64";
+            release = "r2024a";
+
+            stubDownloadAndRun = sinon.stub(script, "downloadAndRunScript");
+            stubDownloadTool = sinon.stub(utils, "downloadTool");
+            stubDownloadTool.resolves("/path/to/jdk.pkg");
+            stubExec = sinon.stub(taskLib, "exec");
+            stubExec.resolves(0);
+        });
+
+        afterEach(() => {
+            stubDownloadAndRun.restore();
+            stubDownloadTool.restore();
+            stubExec.restore();
+        });
+
+        describe("test on all supported platforms", () => {
+            it("works on Linux", async () => {
+                await assert.doesNotReject(async () => {
+                    await matlab.installSystemDependencies(platform, architecture, release);
+                });
+                assert(stubDownloadAndRun.calledOnce);
+            });
+
+            it("works on Windows", async () => {
+                platform = "windows";
+                await assert.doesNotReject(async () => {
+                    await matlab.installSystemDependencies(platform, architecture, release);
+                });
+                assert(stubDownloadAndRun.notCalled);
+            });
+
+            it("works on Mac", async () => {
+                platform = "darwin";
+                await assert.doesNotReject(async () => {
+                    await matlab.installSystemDependencies(platform, architecture, release);
+                });
+                assert(stubDownloadAndRun.notCalled);
+            });
+
+            it("works on Mac with Apple silicon", async () => {
+                platform = "darwin";
+                architecture = "arm64";
+                await assert.doesNotReject(async () => {
+                    await matlab.installSystemDependencies(platform, architecture, release);
+                });
+                assert(stubDownloadAndRun.notCalled);
+                assert(stubDownloadTool.calledOnce);
+                assert(stubExec.calledOnce);
+            });
+
+            it("works on Mac with Apple silicon < R2023b", async () => {
+                platform = "darwin";
+                architecture = "arm64";
+                release = "r2022a";
+                await assert.doesNotReject(async () => {
+                    await matlab.installSystemDependencies(platform, architecture, release);
+                });
+                assert(stubDownloadAndRun.notCalled);
+                assert(stubDownloadTool.notCalled);
+                assert(stubExec.calledOnce);
+            });
+        });
+
+        it("rejects when the apple silicon JDK download fails", async () => {
+            platform = "darwin";
+            architecture = "arm64";
+            stubDownloadTool.rejects("bam");
+            assert.rejects(async () => {
+                await matlab.installSystemDependencies(platform, architecture, release);
+            });
+        });
+
+        it("rejects when the apple silicon JDK fails to install", async () => {
+            platform = "darwin";
+            architecture = "arm64";
+            stubExec.resolves(1);
+            assert.rejects(async () => {
+                await matlab.installSystemDependencies(platform, architecture, release);
+            });
+        });
     });
   });
 }

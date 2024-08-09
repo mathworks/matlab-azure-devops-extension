@@ -5,6 +5,7 @@ import * as toolLib from "azure-pipelines-tool-lib/tool";
 import * as fs from "fs";
 import * as https from "https";
 import * as path from "path";
+import * as script from "./script";
 import { downloadTool } from "./utils";
 
 export interface Release {
@@ -110,7 +111,7 @@ async function resolveLatest(): Promise<string> {
 }
 
 export async function setupBatch(platform: string, architecture: string) {
-    if (architecture !== "x64") {
+    if (architecture !== "x64" && !(platform === "darwin" && architecture === "arm64")) {
         return Promise.reject(Error(`This task is not supported on ${platform} runners using the ${architecture} architecture.`));
     }
 
@@ -126,7 +127,11 @@ export async function setupBatch(platform: string, architecture: string) {
             matlabBatchUrl = matlabBatchRootUrl + "glnxa64/matlab-batch";
             break;
         case "darwin":
-            matlabBatchUrl = matlabBatchRootUrl + "maci64/matlab-batch";
+            if (architecture === "x64") {
+                matlabBatchUrl = matlabBatchRootUrl + "maci64/matlab-batch";
+            } else {
+                matlabBatchUrl = matlabBatchRootUrl + "maca64/matlab-batch";
+            }
             break;
         default:
             return Promise.reject(Error(`This task is not supported on ${platform} runners.`));
@@ -144,4 +149,35 @@ export async function setupBatch(platform: string, architecture: string) {
         return Promise.reject(Error("Unable to add execute permissions to matlab-batch binary."));
     }
     return;
+}
+
+export async function installSystemDependencies(platform: string, architecture: string, release: string) {
+    if (platform === "linux") {
+        return script.downloadAndRunScript(platform, "https://ssd.mathworks.com/supportfiles/ci/matlab-deps/v0/install.sh", [release]);
+    } else if (platform === "darwin" && architecture === "arm64") {
+        if (release < "r2023b") {
+            return installAppleSiliconRosetta();
+        } else {
+            return installAppleSiliconJdk();
+        }
+    }
+}
+
+async function installAppleSiliconRosetta() {
+    const exitCode = await taskLib.exec("sudo", ["softwareupdate", "--install-rosetta", "--agree-to-licenses"]);
+    if (exitCode !== 0) {
+        return Promise.reject(Error("Unable to install Rosetta 2."));
+    }
+}
+
+async function installAppleSiliconJdk() {
+    const jdk = await downloadTool(
+        "https://coretto.aws/downloads/resources/8.402.08.1/amazon-corretto-8.402.08.1-macosx-aarch64.pkg",
+        "jdk.pkg",
+    );
+
+    const exitCode = await taskLib.exec("sudo", ["installer", "-pkg", `"${jdk}"`, "-target", "/"]);
+    if (exitCode !== 0) {
+        return Promise.reject(Error("Unable to install Java runtime."));
+    }
 }

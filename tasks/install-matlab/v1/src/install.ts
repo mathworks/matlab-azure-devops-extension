@@ -4,7 +4,6 @@ import * as toolLib from "azure-pipelines-tool-lib/tool";
 import * as path from "path";
 import * as matlab from "./matlab";
 import * as mpm from "./mpm";
-import * as script from "./script";
 
 export async function install(platform: string, architecture: string, release: string, products: string) {
     const parsedRelease: matlab.Release = await matlab.getReleaseInfo(release);
@@ -12,18 +11,20 @@ export async function install(platform: string, architecture: string, release: s
         throw new Error(`Release '${parsedRelease.name}' is not supported. Use 'R2020b' or a later release.`);
     }
 
-    // install core system dependencies on Linux
-    let exitCode = 0;
-    if (platform === "linux") {
-        const depArgs: string[] = [parsedRelease.name];
-        exitCode = await script.downloadAndRunScript(platform, "https://ssd.mathworks.com/supportfiles/ci/matlab-deps/v0/install.sh", depArgs);
-        if (exitCode !== 0) {
-            throw new Error("Failed to install core system dependencies.");
-        }
+    // install core system dependencies on Linux and Apple silicon
+    const exitCode = await matlab.installSystemDependencies(platform, architecture, parsedRelease.name);
+    if (exitCode !== 0) {
+        throw new Error("Failed to install core system dependencies.");
+    }
+
+    // Use Intel MATLAB for releases before R2023b
+    let matlabArch = architecture;
+    if (platform === "darwin" && architecture === "arm64" && parsedRelease.name < "r2023b") {
+        matlabArch = "x64";
     }
 
     // setup mpm
-    const mpmPath: string = await mpm.setup(platform, architecture);
+    const mpmPath: string = await mpm.setup(platform, matlabArch);
 
     // install MATLAB using mpm
     const [toolpath, alreadyExists] = await matlab.makeToolcacheDir(parsedRelease, platform);
@@ -39,5 +40,5 @@ export async function install(platform: string, architecture: string, release: s
     }
 
     // install matlab-batch
-    await matlab.setupBatch(platform, architecture);
+    await matlab.setupBatch(platform, matlabArch);
 }
