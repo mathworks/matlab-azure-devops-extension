@@ -64,7 +64,7 @@ export default function suite() {
         });
 
         it("fails if setting up core deps fails", async () => {
-            stubInstallSystemDependencies.resolves(1);
+            stubInstallSystemDependencies.rejects("bam");
             assert.rejects(async () => { await install.install(platform, architecture, release, products); });
         });
 

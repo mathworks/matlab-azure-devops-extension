@@ -358,6 +358,7 @@ export default function suite() {
             release = "r2024a";
 
             stubDownloadAndRun = sinon.stub(script, "downloadAndRunScript");
+            stubDownloadAndRun.resolves(0);
             stubDownloadTool = sinon.stub(utils, "downloadTool");
             stubDownloadTool.resolves("/path/to/jdk.pkg");
             stubExec = sinon.stub(taskLib, "exec");

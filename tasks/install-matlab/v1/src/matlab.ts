@@ -153,7 +153,7 @@ export async function setupBatch(platform: string, architecture: string) {
 
 export async function installSystemDependencies(platform: string, architecture: string, release: string) {
     if (platform === "linux") {
-        const exitCode =  script.downloadAndRunScript(platform, "https://ssd.mathworks.com/supportfiles/ci/matlab-deps/v0/install.sh", [release]);
+        const exitCode = await script.downloadAndRunScript(platform, "https://ssd.mathworks.com/supportfiles/ci/matlab-deps/v0/install.sh", [release]);
         if (exitCode !== 0) {
             return Promise.reject(Error("Unable to install core dependencies."));
         }
