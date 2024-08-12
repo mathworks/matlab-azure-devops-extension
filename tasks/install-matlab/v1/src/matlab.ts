@@ -153,7 +153,10 @@ export async function setupBatch(platform: string, architecture: string) {
 
 export async function installSystemDependencies(platform: string, architecture: string, release: string) {
     if (platform === "linux") {
-        return script.downloadAndRunScript(platform, "https://ssd.mathworks.com/supportfiles/ci/matlab-deps/v0/install.sh", [release]);
+        const exitCode =  script.downloadAndRunScript(platform, "https://ssd.mathworks.com/supportfiles/ci/matlab-deps/v0/install.sh", [release]);
+        if (exitCode !== 0) {
+            return Promise.reject(Error("Unable to install core dependencies."));
+        }
     } else if (platform === "darwin" && architecture === "arm64") {
         if (release < "r2023b") {
             return installAppleSiliconRosetta();

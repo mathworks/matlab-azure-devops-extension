@@ -12,10 +12,7 @@ export async function install(platform: string, architecture: string, release: s
     }
 
     // install core system dependencies on Linux and Apple silicon
-    const exitCode = await matlab.installSystemDependencies(platform, architecture, parsedRelease.name);
-    if (exitCode !== 0) {
-        throw new Error("Failed to install core system dependencies.");
-    }
+    await matlab.installSystemDependencies(platform, architecture, parsedRelease.name);
 
     // Use Intel MATLAB for releases before R2023b
     let matlabArch = architecture;
