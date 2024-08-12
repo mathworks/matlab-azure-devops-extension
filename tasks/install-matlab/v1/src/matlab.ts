@@ -175,7 +175,7 @@ async function installAppleSiliconRosetta() {
 
 async function installAppleSiliconJdk() {
     const jdk = await downloadTool(
-        "https://coretto.aws/downloads/resources/8.402.08.1/amazon-corretto-8.402.08.1-macosx-aarch64.pkg",
+        "https://corretto.aws/downloads/resources/8.402.08.1/amazon-corretto-8.402.08.1-macosx-aarch64.pkg",
         "jdk.pkg",
     );
 

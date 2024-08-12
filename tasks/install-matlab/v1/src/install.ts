@@ -11,13 +11,6 @@ export async function install(platform: string, architecture: string, release: s
         throw new Error(`Release '${parsedRelease.name}' is not supported. Use 'R2020b' or a later release.`);
     }
 
-    console.log("VER");
-    console.log(process.version);
-    console.log("ARCH");
-    console.log(process.arch);
-    console.log("INPUT ARCH");
-    console.log(architecture);
-
     // install core system dependencies on Linux and Apple silicon
     await matlab.installSystemDependencies(platform, architecture, parsedRelease.name);
 
