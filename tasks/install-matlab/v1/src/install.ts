@@ -1,5 +1,6 @@
 // Copyright 2023-2024 The MathWorks, Inc.
 
+import {AgentHostedMode, getAgentMode} from "azure-pipelines-task-lib/task";
 import * as toolLib from "azure-pipelines-tool-lib/tool";
 import * as path from "path";
 import * as matlab from "./matlab";
@@ -11,8 +12,10 @@ export async function install(platform: string, architecture: string, release: s
         throw new Error(`Release '${parsedRelease.name}' is not supported. Use 'R2020b' or a later release.`);
     }
 
-    // install core system dependencies on Linux and Apple silicon
-    await matlab.installSystemDependencies(platform, architecture, parsedRelease.name);
+    // install core system dependencies on Linux and Apple silicon on cloud-hosted agents
+    if (getAgentMode() === AgentHostedMode.MsHosted) {
+        await matlab.installSystemDependencies(platform, architecture, parsedRelease.name);
+    }
 
     // Use Intel MATLAB for releases before R2023b
     let matlabArch = architecture;

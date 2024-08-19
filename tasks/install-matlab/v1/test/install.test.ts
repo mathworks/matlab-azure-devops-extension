@@ -1,6 +1,7 @@
-// Copyright 2023 The MathWorks, Inc.
+// Copyright 2023-2024 The MathWorks, Inc.
 
 import * as assert from "assert";
+import * as taskLib from "azure-pipelines-task-lib/task";
 import * as toolLib from "azure-pipelines-tool-lib/tool";
 import * as sinon from "sinon";
 import * as install from "../src/install";
@@ -11,6 +12,7 @@ import * as script from "../src/script";
 export default function suite() {
     describe("install.ts test suite", () => {
         let stubGetReleaseInfo: sinon.SinonStub;
+        let stubGetAgentMode: sinon.SinonStub;
         let stubInstallSystemDependencies: sinon.SinonStub;
         let stubMakeToolcacheDir: sinon.SinonStub;
         let stubSetupBatch: sinon.SinonStub;
@@ -30,6 +32,8 @@ export default function suite() {
             stubGetReleaseInfo.callsFake((rel) => {
                 return releaseInfo;
             });
+            stubGetAgentMode = sinon.stub(taskLib, "getAgentMode");
+            stubGetAgentMode.returns(taskLib.AgentHostedMode.MsHosted);
             stubInstallSystemDependencies = sinon.stub(matlab, "installSystemDependencies");
             stubInstallSystemDependencies.resolves(0);
             stubMakeToolcacheDir = sinon.stub(matlab, "makeToolcacheDir");
@@ -44,6 +48,7 @@ export default function suite() {
 
         afterEach(() => {
             stubGetReleaseInfo.restore();
+            stubGetAgentMode.restore();
             stubInstallSystemDependencies.restore();
             stubMakeToolcacheDir.restore();
             stubSetupBatch.restore();
@@ -66,6 +71,12 @@ export default function suite() {
         it("fails if setting up core deps fails", async () => {
             stubInstallSystemDependencies.rejects("bam");
             assert.rejects(async () => { await install.install(platform, architecture, release, products); });
+        });
+
+        it("does not install core deps if self-hosted", async () => {
+            stubGetAgentMode.returns(taskLib.AgentHostedMode.SelfHosted);
+            await install.install(platform, architecture, release, products);
+            assert(stubInstallSystemDependencies.notCalled);
         });
 
         it("does not install if MATLAB already exists in toolcache", async () => {
