@@ -7,7 +7,7 @@ import { downloadTool } from "./utils";
 export async function setup(platform: string, architecture: string): Promise<string> {
     const mpmRootUrl: string = "https://www.mathworks.com/mpm/";
     let mpmUrl: string;
-    if (architecture !== "x64") {
+    if (architecture !== "x64" && !(platform === "darwin" && architecture === "arm64")) {
         return Promise.reject(Error(`This action is not supported on ${platform} runners using the ${architecture} architecture.`));
     }
     let mpm: string;
@@ -26,7 +26,11 @@ export async function setup(platform: string, architecture: string): Promise<str
             }
             break;
         case "darwin":
-            mpmUrl = mpmRootUrl + "maci64/mpm";
+            if (architecture === "x64") {
+                mpmUrl = mpmRootUrl + "maci64/mpm";
+            } else {
+                mpmUrl = mpmRootUrl + "maca64/mpm";
+            }
             mpm = await downloadTool(mpmUrl, "mpm");
             exitCode = await taskLib.exec("chmod", ["+x", mpm]);
             if (exitCode !== 0) {

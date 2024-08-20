@@ -1,6 +1,7 @@
-// Copyright 2023 The MathWorks, Inc.
+// Copyright 2023-2024 The MathWorks, Inc.
 
 import * as assert from "assert";
+import * as taskLib from "azure-pipelines-task-lib/task";
 import * as toolLib from "azure-pipelines-tool-lib/tool";
 import * as sinon from "sinon";
 import * as install from "../src/install";
@@ -11,7 +12,8 @@ import * as script from "../src/script";
 export default function suite() {
     describe("install.ts test suite", () => {
         let stubGetReleaseInfo: sinon.SinonStub;
-        let stubDownloadAndRunScript: sinon.SinonStub;
+        let stubGetAgentMode: sinon.SinonStub;
+        let stubInstallSystemDependencies: sinon.SinonStub;
         let stubMakeToolcacheDir: sinon.SinonStub;
         let stubSetupBatch: sinon.SinonStub;
         let stubMpmSetup: sinon.SinonStub;
@@ -30,10 +32,10 @@ export default function suite() {
             stubGetReleaseInfo.callsFake((rel) => {
                 return releaseInfo;
             });
-            stubDownloadAndRunScript = sinon.stub(script, "downloadAndRunScript");
-            stubDownloadAndRunScript.callsFake((plat, url, args) => {
-                return Promise.resolve(0);
-            });
+            stubGetAgentMode = sinon.stub(taskLib, "getAgentMode");
+            stubGetAgentMode.returns(taskLib.AgentHostedMode.MsHosted);
+            stubInstallSystemDependencies = sinon.stub(matlab, "installSystemDependencies");
+            stubInstallSystemDependencies.resolves(0);
             stubMakeToolcacheDir = sinon.stub(matlab, "makeToolcacheDir");
             stubMakeToolcacheDir.callsFake((rel) => {
                 return [toolcacheDir, false];
@@ -46,7 +48,8 @@ export default function suite() {
 
         afterEach(() => {
             stubGetReleaseInfo.restore();
-            stubDownloadAndRunScript.restore();
+            stubGetAgentMode.restore();
+            stubInstallSystemDependencies.restore();
             stubMakeToolcacheDir.restore();
             stubSetupBatch.restore();
             stubMpmSetup.restore();
@@ -58,13 +61,6 @@ export default function suite() {
             assert.doesNotReject(async () => { await install.install(platform, architecture, release, products); });
         });
 
-        it("does not run setup script on windows", async () => {
-            const windows = "win32";
-            assert.doesNotReject(async () => { await install.install(windows, architecture, release, products); });
-            await install.install(windows, architecture, release, products);
-            assert(stubDownloadAndRunScript.notCalled);
-        });
-
         it("fails for unsupported release", async () => {
             stubGetReleaseInfo.callsFake((rel) => {
                 return {name: "r2020a", version: "2020.1.999", update: "latest"};
@@ -72,18 +68,24 @@ export default function suite() {
             assert.rejects(async () => { await install.install(platform, architecture, "r2020a", products); });
         });
 
-        it("fails if setup script fails", async () => {
-            stubDownloadAndRunScript.callsFake((plat, url, args) => {
-                return Promise.resolve(1);
-            });
+        it("fails if setting up core deps fails", async () => {
+            stubInstallSystemDependencies.rejects("bam");
             assert.rejects(async () => { await install.install(platform, architecture, release, products); });
+        });
+
+        it("does not install core deps if self-hosted", async () => {
+            stubGetAgentMode.returns(taskLib.AgentHostedMode.SelfHosted);
+            await install.install(platform, architecture, release, products);
+            assert(stubInstallSystemDependencies.notCalled);
         });
 
         it("does not install if MATLAB already exists in toolcache", async () => {
             stubMakeToolcacheDir.callsFake((rel) => {
                 return [toolcacheDir, true];
             });
-            assert.doesNotReject(async () => { await install.install(platform, architecture, release, products); });
+            await assert.doesNotReject(async () => {
+                await install.install(platform, architecture, release, products);
+            });
             assert(stubMpmInstall.notCalled);
         });
 
@@ -92,6 +94,13 @@ export default function suite() {
                 throw new Error("BAM!");
             });
             assert.rejects(async () => { await install.install(platform, architecture, release, products); });
+        });
+
+        it("installs Intel version on Apple silicon prior to R2023b", async () => {
+            await install.install("darwin", "arm64", release, products);
+            assert(stubInstallSystemDependencies.calledWith("darwin", "arm64", "r2022b"));
+            assert(stubSetupBatch.calledWith("darwin", "x64"));
+            assert(stubMpmSetup.calledWith("darwin", "x64"));
         });
     });
 }

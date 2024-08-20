@@ -42,6 +42,12 @@
     "execution": {
         "Node10": {
             "target": "main.js"
+        },
+        "Node16": {
+            "target": "main.js"
+        },
+        "Node20": {
+            "target": "main.js"
         }
     },
     "messages": {

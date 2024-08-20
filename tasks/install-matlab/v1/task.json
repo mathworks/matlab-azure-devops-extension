@@ -34,6 +34,12 @@
     "execution": {
         "Node10": {
             "target": "src/main.js"
+        },
+        "Node16": {
+            "target": "src/main.js"
+        },
+        "Node20": {
+            "target": "src/main.js"
         }
     }
 }

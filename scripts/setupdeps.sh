@@ -2,7 +2,7 @@
 
 VERSION=${1:-v2}
 RMC_BASE_URL="https://ssd.mathworks.com/supportfiles/ci/run-matlab-command/$VERSION"
-SUPPORTED_OS=('win64' 'maci64' 'glnxa64')
+SUPPORTED_OS=('win64' 'maci64' 'maca64' 'glnxa64')
 
 # Create dist directory if it doesn't already exist
 DISTDIR="$(pwd)/bin"
