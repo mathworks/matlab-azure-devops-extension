@@ -145,7 +145,10 @@ export async function setupBatch(platform: string, architecture: string) {
         throw new Error("Failed to add MATLAB to system path.");
     }
     if (platform !== "win32") {
-        const exitCode = await taskLib.exec("chmod", ["+x", path.join(matlabBatchPath, "matlab-batch" + matlabBatchExt)]);
+        const exitCode = await taskLib.exec(
+            "chmod",
+            ["+x", path.join(matlabBatchPath, "matlab-batch" + matlabBatchExt)],
+        );
         if (exitCode !== 0) {
             return Promise.reject(Error("Unable to add execute permissions to matlab-batch binary."));
         }
