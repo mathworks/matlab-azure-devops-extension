@@ -92,18 +92,18 @@ export default function suite() {
         });
 
         describe("ci bin helper path", () => {
-            const testBin = (platform: string, subdirectory: string, ext: string) => {
-                it(`considers the appropriate rmc bin on ${platform}`, () => {
-                    const architecture = "x64";
+            const testBin = (platform: string, architecture: string, subdirectory: string, ext: string) => {
+                it(`considers the appropriate rmc bin on ${platform} ${architecture}`, () => {
                     const p = matlab.getRunMATLABCommandScriptPath(platform, architecture);
                     assert(path.extname(p) === ext);
                     assert(p.includes(subdirectory));
                 });
             };
 
-            testBin("linux", "glnxa64", "");
-            testBin("win32", "win64", ".exe");
-            testBin("darwin", "maci64", "");
+            testBin("linux", "x64", "glnxa64", "");
+            testBin("win32", "x64", "win64", ".exe");
+            testBin("darwin", "x64", "maci64", "");
+            testBin("darwin", "arm64", "maca64", "");
 
             it("errors on unsupported platform", () => {
                 assert.throws(() => matlab.getRunMATLABCommandScriptPath("sunos", "x64"));
