@@ -6,6 +6,7 @@ SUPPORTED_OS=('win64' 'maci64' 'maca64' 'glnxa64')
 
 # Create dist directory if it doesn't already exist
 DISTDIR="$(pwd)/bin"
+rm -rf "$DISTDIR/"
 mkdir -p $DISTDIR
 
 # Download and extract in a temporary directory
@@ -24,6 +25,8 @@ do
     fi
     mkdir -p "$WORKINGDIR/$os"
     wget -O  "$WORKINGDIR/$os/run-matlab-command$bin_ext" "$RMC_BASE_URL/$os/run-matlab-command$bin_ext"
+    zip -j "$WORKINGDIR/$os/run-matlab-command.zip" "$WORKINGDIR/$os/run-matlab-command$bin_ext"
+    rm "$WORKINGDIR/$os/run-matlab-command$bin_ext"
 done
 
 mv -f ./* "$DISTDIR/"

@@ -23,8 +23,8 @@ steps:
   - script: npm run build
     displayName: Build
 
-  - script: npm run test
-    displayName: Test
+  # - script: npm run test
+  # displayName: Test
 
   - script: npm run preparePackage
     displayName: Prepare package

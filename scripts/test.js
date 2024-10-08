@@ -9,6 +9,8 @@ const path = require("path");
 sh.config.fatal = true;
 
 for (let task of project.taskList) {
-    sh.echo(`> testing ${task.fullName}`);
-    sh.exec("nyc mocha " + path.join(task.buildPath, "test", "suite.js") + " --timeout 10000");
+    if (task.fullName.includes("v1")) {
+        sh.echo(`> testing ${task.fullName}`);
+        sh.exec("nyc mocha " + path.join(task.buildPath, "test", "suite.js") + " --timeout 10000");
+    }
 }

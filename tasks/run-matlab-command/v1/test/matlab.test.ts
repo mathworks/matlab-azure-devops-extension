@@ -93,9 +93,9 @@ export default function suite() {
 
         describe("ci bin helper path", () => {
             const testBin = (platform: string, subdirectory: string, ext: string) => {
-                it(`considers the appropriate rmc bin on ${platform}`, () => {
+                it(`considers the appropriate rmc bin on ${platform}`, async () => {
                     const architecture = "x64";
-                    const p = matlab.getRunMATLABCommandScriptPath(platform, architecture);
+                    const p = await matlab.getRunMATLABCommandPath(platform, architecture);
                     assert(path.extname(p) === ext);
                     assert(p.includes(subdirectory));
                 });
@@ -106,11 +106,11 @@ export default function suite() {
             testBin("darwin", "maci64", "");
 
             it("errors on unsupported platform", () => {
-                assert.throws(() => matlab.getRunMATLABCommandScriptPath("sunos", "x64"));
+                assert.throws(async () => await matlab.getRunMATLABCommandPath("sunos", "x64"));
             });
 
             it("errors on unsupported architecture", () => {
-                assert.throws(() => matlab.getRunMATLABCommandScriptPath("linux", "x86"));
+                assert.throws(async () => await matlab.getRunMATLABCommandPath("linux", "x86"));
             });
         });
     });
