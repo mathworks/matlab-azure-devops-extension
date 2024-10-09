@@ -72,9 +72,6 @@ jobs:
           microsoft_hosted_windows:
             poolName: Azure Pipelines
             vmImage: windows-latest
-          self_hosted_windows:
-            poolName: vmssagentpool
-            vmImage: # blank for self-hosted
       pool:
         name: $(poolName)
         vmImage: $(vmImage)
@@ -82,7 +79,6 @@ jobs:
         - checkout: none
         - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@${{ version }}
           displayName: Install MATLAB on Microsoft-hosted agents
-          condition: not(startsWith(variables['Agent.Name'], 'vmss'))
         - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@${{ version }}
           displayName: Run MATLAB statement
           inputs:
@@ -146,9 +142,6 @@ jobs:
           microsoft_hosted_linux:
             poolName: Azure Pipelines
             vmImage: ubuntu-22.04
-          self_hosted_windows:
-            poolName: vmssagentpool
-            vmImage: # blank for self-hosted
       pool:
         name: $(poolName)
         vmImage: $(vmImage)
@@ -158,12 +151,10 @@ jobs:
         - checkout: none
         - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@${{ version }}
           displayName: Install MATLAB on Microsoft-hosted agents
-          condition: and(eq(${{ version }}, '0'), not(startsWith(variables['Agent.Name'], 'vmss')))
         - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@${{ version }}
           inputs:
             products: Simulink Simulink_Test Simulink_Coverage Parallel_Computing_Toolbox
           displayName: Install MATLAB on Microsoft-hosted agents
-          condition: and(eq(${{ version }}, '1'), not(startsWith(variables['Agent.Name'], 'vmss')))
         - bash: |
             echo 'myvar = 123' > startup.m
             mkdir src
@@ -373,7 +364,6 @@ jobs:
         - checkout: none
         - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@${{ version }}
           displayName: Install MATLAB on Microsoft-hosted agents
-          condition: not(startsWith(variables['Agent.Name'], 'vmss'))
         - bash: |
             cat << EOF > buildfile.m
             function plan = buildfile
