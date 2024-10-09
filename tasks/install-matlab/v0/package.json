@@ -4,7 +4,7 @@
     "private": true,
     "dependencies": {
         "@types/node": "^22.7.5",
-        "@types/q": "^1.5.8",
+        "@types/q": "^1.5.4",
         "azure-pipelines-task-lib": "5.0.1-preview.0",
         "azure-pipelines-tool-lib": "^2.0.8"
     }
