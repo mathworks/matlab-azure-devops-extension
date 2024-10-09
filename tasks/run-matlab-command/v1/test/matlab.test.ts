@@ -34,7 +34,7 @@ export default function suite() {
                 stubGetVariable = sinon.stub(taskLib, "getVariable");
                 stubExtractZip = sinon.stub(toolLib, "extractZip");
                 stubTool = sinon.stub(taskLib, "tool");
-                // used to check if run-matlab-command has been unzipped
+                // used to check if run-matlab-command has already been unzipped
                 stubExist = sinon.stub(taskLib, "exist").get(
                     () => (s: string) => false,
                 );
@@ -86,7 +86,7 @@ export default function suite() {
             });
 
             it("does not unzip if run-matlab-command is already there", async () => {
-                // used to check if run-matlab-command has been unzipped
+                // return true becuase run-matlab-command has already been unzipped
                 stubExist = sinon.stub(taskLib, "exist").get(
                     () => (s: string) => true,
                 );
