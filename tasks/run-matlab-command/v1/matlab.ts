@@ -1,6 +1,7 @@
 // Copyright 2024 The MathWorks, Inc.
 
 import * as taskLib from "azure-pipelines-task-lib/task";
+import * as toolLib from "azure-pipelines-tool-lib/tool";
 import * as fs from "fs";
 import * as path from "path";
 import { v4 as uuidV4 } from "uuid";
@@ -20,7 +21,7 @@ export async function runCommand(command: string, platform: string, architecture
     );
 
     console.log("========================== Starting Command Output ===========================");
-    const runToolPath = getRunMATLABCommandScriptPath(platform, architecture);
+    const runToolPath = await getRunMATLABCommandPath(platform, architecture);
     fs.chmodSync(runToolPath, "777");
     const runTool = taskLib.tool(runToolPath);
     runTool.arg("setenv('MW_ORIG_WORKING_FOLDER', cd('" + tempDirectory.replace(/'/g, "''") + "'));" + scriptName);
@@ -35,10 +36,11 @@ export async function runCommand(command: string, platform: string, architecture
     }
 }
 
-export function getRunMATLABCommandScriptPath(platform: string, architecture: string): string {
+export async function getRunMATLABCommandPath(platform: string, architecture: string): Promise<string> {
     if (architecture !== "x64") {
-        const msg = `This task is not supported on ${platform} runners using the ${architecture} architecture.`;
-        throw new Error(msg);
+        return Promise.reject(
+            `This task is not supported on ${platform} runners using the ${architecture} architecture.`,
+        );
     }
     let ext;
     let platformDir;
@@ -56,10 +58,16 @@ export function getRunMATLABCommandScriptPath(platform: string, architecture: st
             platformDir = "glnxa64";
             break;
         default:
-            throw new Error(
+            return Promise.reject(
                 `This task is not supported on ${platform} runners using the ${architecture} architecture.`,
             );
     }
 
-    return path.join(__dirname, "bin", platformDir, `run-matlab-command${ext}`);
+    const binDir = path.join(__dirname, "bin", platformDir);
+    const rmcPath = path.join(binDir, `run-matlab-command${ext}`);
+    if (!taskLib.exist(rmcPath)) {
+        const zipPath = path.join(binDir, "run-matlab-command.zip");
+        await toolLib.extractZip(zipPath, binDir);
+    }
+    return Promise.resolve(rmcPath);
 }

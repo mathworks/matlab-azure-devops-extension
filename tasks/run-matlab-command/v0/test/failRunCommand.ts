@@ -45,17 +45,20 @@ const a: ma.TaskLibAnswers = {
             stdout: "BAM!",
         },
     },
+    exist: {
+        [runCmdPath]: true,
+    },
 } as ma.TaskLibAnswers;
 tr.setAnswers(a);
 
 // mock fs
-import fs = require("fs");
-const fsClone = Object.assign({}, fs);
-fsClone.writeFileSync = (filePath: any, contents: any, options: any) => {
-    // tslint:disable-next-line:no-console
-    console.log(`writing ${contents} to ${filePath}`);
-};
-tr.registerMock("fs", fsClone);
+tr.registerMock("fs", {
+    chmodSync: () => Promise.resolve(0),
+    writeFileSync: (filePath: any, contents: any, options: any) => {
+        // tslint:disable-next-line:no-console
+        console.log(`writing ${contents} to ${filePath}`);
+    },
+});
 
 // mock uuidv4
 tr.registerMock("uuid", {

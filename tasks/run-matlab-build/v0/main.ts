@@ -1,6 +1,7 @@
 // Copyright 2022-2023 The MathWorks, Inc.
 
 import * as taskLib from "azure-pipelines-task-lib/task";
+import * as toolLib from "azure-pipelines-tool-lib/tool";
 import { chmodSync } from "fs";
 import * as path from "path";
 import {architecture, platform} from "./utils";
@@ -41,7 +42,13 @@ async function runBuild(options: IRunBuildOptions, args?: string) {
         default:
             throw new Error(`This task is not supported on ${platform()} runners using the ${architecture()} architecture.`);
     }
-    const runToolPath = path.join(__dirname, "bin", platformDir, `run-matlab-command${ext}`);
+    const binDir = path.join(__dirname, "bin", platformDir);
+    const runToolPath = path.join(binDir, `run-matlab-command${ext}`);
+    if (!taskLib.exist(runToolPath)) {
+        const zipPath = path.join(binDir, "run-matlab-command.zip");
+        await toolLib.extractZip(zipPath, binDir);
+    }
+
     chmodSync(runToolPath, "777");
     const runTool = taskLib.tool(runToolPath);
     let buildtoolCommand: string = "buildtool";

@@ -72,9 +72,6 @@ jobs:
           microsoft_hosted_windows:
             poolName: Azure Pipelines
             vmImage: windows-latest
-          self_hosted_windows:
-            poolName: vmssagentpool
-            vmImage: # blank for self-hosted
       pool:
         name: $(poolName)
         vmImage: $(vmImage)
@@ -82,7 +79,6 @@ jobs:
         - checkout: none
         - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@${{ version }}
           displayName: Install MATLAB on Microsoft-hosted agents
-          condition: not(startsWith(variables['Agent.Name'], 'vmss'))
         - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@${{ version }}
           displayName: Run MATLAB statement
           inputs:
@@ -146,9 +142,6 @@ jobs:
           microsoft_hosted_linux:
             poolName: Azure Pipelines
             vmImage: ubuntu-22.04
-          self_hosted_windows:
-            poolName: vmssagentpool
-            vmImage: # blank for self-hosted
       pool:
         name: $(poolName)
         vmImage: $(vmImage)
@@ -158,12 +151,12 @@ jobs:
         - checkout: none
         - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@${{ version }}
           displayName: Install MATLAB on Microsoft-hosted agents
-          condition: and(eq(${{ version }}, '0'), not(startsWith(variables['Agent.Name'], 'vmss')))
+          condition: eq(${{ version }}, '0')
         - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@${{ version }}
           inputs:
             products: Simulink Simulink_Test Simulink_Coverage Parallel_Computing_Toolbox
           displayName: Install MATLAB on Microsoft-hosted agents
-          condition: and(eq(${{ version }}, '1'), not(startsWith(variables['Agent.Name'], 'vmss')))
+          condition: eq(${{ version }}, '1')
         - bash: |
             echo 'myvar = 123' > startup.m
             mkdir src
@@ -239,18 +232,19 @@ jobs:
             grep -q "runner.addPlugin(FailOnWarningsPlugin())" console.log
             rm console.log
           displayName: Verify tests ran with strict checks
-        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@${{ version }}
-          displayName: Run MATLAB tests in parallel
-          inputs:
-            useParallel: true
-            sourceFolder: src
-          condition: not(eq(${{ version }}, '0'))
-        - bash: |
-            set -e
-            grep -q "Starting parallel pool (parpool)" console.log
-            rm console.log
-          displayName: Verify tests ran in parallel
-          condition: not(eq(${{ version }}, '0'))
+        # Disable parallel tests until PCT bug is fixed g3416906
+        # - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@${{ version }}
+        #   displayName: Run MATLAB tests in parallel
+        #   inputs:
+        #     useParallel: true
+        #     sourceFolder: src
+        #   condition: not(eq(${{ version }}, '0'))
+        # - bash: |
+        #     set -e
+        #     grep -q "Starting parallel pool (parpool)" console.log
+        #     rm console.log
+        #   displayName: Verify tests ran in parallel
+        #   condition: not(eq(${{ version }}, '0'))
         - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@${{ version }}
           displayName: Run MATLAB tests with detailed display level for event details
           inputs:

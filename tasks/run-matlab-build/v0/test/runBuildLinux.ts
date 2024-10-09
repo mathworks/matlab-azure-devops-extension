@@ -16,6 +16,10 @@ tr.registerMock("./utils", {
     architecture: () => "x64",
 });
 
+tr.registerMock("fs", {
+    chmodSync: () => Promise.resolve(0),
+});
+
 const a: ma.TaskLibAnswers = {
     checkPath: {
         [runCmdPath]: true,
@@ -25,6 +29,9 @@ const a: ma.TaskLibAnswers = {
             code: 0,
             stdout: "ran test task",
         },
+    },
+    exist: {
+        [runCmdPath]: true,
     },
 } as ma.TaskLibAnswers;
 tr.setAnswers(a);
