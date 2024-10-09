@@ -2,6 +2,7 @@
 
 import * as assert from "assert";
 import * as taskLib from "azure-pipelines-task-lib/task";
+import * as toolLib from "azure-pipelines-tool-lib/tool";
 import * as fs from "fs";
 import * as path from "path";
 import * as sinon from "sinon";
@@ -15,6 +16,7 @@ export default function suite() {
             let stubCheckPath: sinon.SinonStub;
             let stubGetVariable: sinon.SinonStub;
             let stubTool: sinon.SinonStub;
+            let stubExtractZip: sinon.SinonStub;
             let argsCapture: string[];
             let execReturn: Promise<number>;
             const platform = "linux";
@@ -29,6 +31,7 @@ export default function suite() {
                 stubChmodSync = sinon.stub(fs, "chmodSync");
                 stubCheckPath = sinon.stub(taskLib, "checkPath");
                 stubGetVariable = sinon.stub(taskLib, "getVariable");
+                stubExtractZip = sinon.stub(toolLib, "extractZip");
                 stubTool = sinon.stub(taskLib, "tool");
                 argsCapture = [];
                 execReturn = Promise.resolve(0);
@@ -49,19 +52,20 @@ export default function suite() {
                 stubChmodSync.restore();
                 stubCheckPath.restore();
                 stubGetVariable.restore();
+                stubExtractZip.restore();
                 stubTool.restore();
             });
 
             it("ideally works", async () => {
                 assert.doesNotReject(matlab.runCommand("myscript", platform, architecture));
                 // calls with myscript command as the only arg
-                assert(argsCapture.length === 1);
+                assert(argsCapture.length === 1, argsCapture.length.toString());
             });
 
             it("ideally works with arguments", async () => {
                 assert.doesNotReject(matlab.runCommand("myscript", platform, architecture, "-nojvm -logfile file"));
                 // calls with myscript command and startup options
-                assert(argsCapture.length === 2);
+                assert(argsCapture.length === 2, argsCapture.length.toString());
                 // 3 startup options
                 assert(argsCapture[1].length === 3);
                 assert(argsCapture[1].includes("-nojvm"));
@@ -92,10 +96,22 @@ export default function suite() {
         });
 
         describe("ci bin helper path", () => {
+            let stubExtractZip: sinon.SinonStub;
+
+            beforeEach(() => {
+                stubExtractZip = sinon.stub(toolLib, "extractZip");
+            });
+
+            afterEach(() => {
+                stubExtractZip.restore();
+            });
+
             const testBin = (platform: string, subdirectory: string, ext: string) => {
                 it(`considers the appropriate rmc bin on ${platform}`, async () => {
                     const architecture = "x64";
                     const p = await matlab.getRunMATLABCommandPath(platform, architecture);
+                    // unzips run-matlab-command binary
+                    assert(stubExtractZip.callCount === 1);
                     assert(path.extname(p) === ext);
                     assert(p.includes(subdirectory));
                 });
@@ -106,11 +122,11 @@ export default function suite() {
             testBin("darwin", "maci64", "");
 
             it("errors on unsupported platform", () => {
-                assert.throws(async () => await matlab.getRunMATLABCommandPath("sunos", "x64"));
+                assert.rejects(async () => await matlab.getRunMATLABCommandPath("sunos", "x64"));
             });
 
             it("errors on unsupported architecture", () => {
-                assert.throws(async () => await matlab.getRunMATLABCommandPath("linux", "x86"));
+                assert.rejects(async () => await matlab.getRunMATLABCommandPath("linux", "x86"));
             });
         });
     });

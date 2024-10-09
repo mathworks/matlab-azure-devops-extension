@@ -59,8 +59,10 @@ async function runCommand(command: string, args?: string) {
     console.log("========================== Starting Command Output ===========================");
     const binDir = path.join(__dirname, "bin", platformDir);
     const runToolPath = path.join(binDir, `run-matlab-command${ext}`);
-    const zipPath = path.join(binDir, "run-matlab-command.zip");
-    await toolLib.extractZip(zipPath, binDir);
+    if (!taskLib.exist(runToolPath)) {
+        const zipPath = path.join(binDir, "run-matlab-command.zip");
+        await toolLib.extractZip(zipPath, binDir);
+    }
 
     chmodSync(runToolPath, "777");
     const runTool = taskLib.tool(runToolPath);

@@ -38,8 +38,9 @@ export async function runCommand(command: string, platform: string, architecture
 
 export async function getRunMATLABCommandPath(platform: string, architecture: string): Promise<string> {
     if (architecture !== "x64") {
-        const msg = `This task is not supported on ${platform} runners using the ${architecture} architecture.`;
-        return Promise.reject(new Error(msg));
+        return Promise.reject(
+            `This task is not supported on ${platform} runners using the ${architecture} architecture.`,
+        );
     }
     let ext;
     let platformDir;
@@ -57,14 +58,16 @@ export async function getRunMATLABCommandPath(platform: string, architecture: st
             platformDir = "glnxa64";
             break;
         default:
-            return Promise.reject(new Error(
+            return Promise.reject(
                 `This task is not supported on ${platform} runners using the ${architecture} architecture.`,
-            ));
+            );
     }
 
     const binDir = path.join(__dirname, "bin", platformDir);
     const rmcPath = path.join(binDir, `run-matlab-command${ext}`);
-    const zipPath = path.join(binDir, "run-matlab-command.zip");
-    await toolLib.extractZip(zipPath, binDir);
+    if (!taskLib.exist(rmcPath)) {
+        const zipPath = path.join(binDir, "run-matlab-command.zip");
+        await toolLib.extractZip(zipPath, binDir);
+    }
     return rmcPath;
 }
