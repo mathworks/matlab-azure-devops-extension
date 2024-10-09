@@ -69,5 +69,5 @@ export async function getRunMATLABCommandPath(platform: string, architecture: st
         const zipPath = path.join(binDir, "run-matlab-command.zip");
         await toolLib.extractZip(zipPath, binDir);
     }
-    return rmcPath;
+    return Promise.resolve(rmcPath);
 }
