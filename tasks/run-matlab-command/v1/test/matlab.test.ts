@@ -59,7 +59,7 @@ export default function suite() {
             it("ideally works", async () => {
                 assert.doesNotReject(matlab.runCommand("myscript", platform, architecture));
                 // calls with myscript command as the only arg
-                assert(argsCapture.length === 1, argsCapture.length.toString());
+                assert(argsCapture.length === 1);
             });
 
             it("ideally works with arguments", async () => {
