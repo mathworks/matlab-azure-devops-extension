@@ -239,18 +239,19 @@ jobs:
             grep -q "runner.addPlugin(FailOnWarningsPlugin())" console.log
             rm console.log
           displayName: Verify tests ran with strict checks
-        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@${{ version }}
-          displayName: Run MATLAB tests in parallel
-          inputs:
-            useParallel: true
-            sourceFolder: src
-          condition: not(eq(${{ version }}, '0'))
-        - bash: |
-            set -e
-            grep -q "Starting parallel pool (parpool)" console.log
-            rm console.log
-          displayName: Verify tests ran in parallel
-          condition: not(eq(${{ version }}, '0'))
+        # Disable parallel tests until PCT bug is fixed g3416906
+        # - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@${{ version }}
+        #   displayName: Run MATLAB tests in parallel
+        #   inputs:
+        #     useParallel: true
+        #     sourceFolder: src
+        #   condition: not(eq(${{ version }}, '0'))
+        # - bash: |
+        #     set -e
+        #     grep -q "Starting parallel pool (parpool)" console.log
+        #     rm console.log
+        #   displayName: Verify tests ran in parallel
+        #   condition: not(eq(${{ version }}, '0'))
         - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@${{ version }}
           displayName: Run MATLAB tests with detailed display level for event details
           inputs:
