@@ -2,7 +2,7 @@
 
 import * as taskLib from "azure-pipelines-task-lib/task";
 import * as matlab from "./matlab";
-import { downloadTool } from "./utils";
+import { downloadToolWithRetries } from "./utils";
 
 export async function setup(platform: string, architecture: string): Promise<string> {
     const mpmRootUrl: string = "https://www.mathworks.com/mpm/";

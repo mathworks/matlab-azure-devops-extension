@@ -189,7 +189,7 @@ export default function suite() {
         stubCacheFile.callsFake((srcFile, desFile, tool, ver) => {
           return Promise.resolve(matlabBatchPath);
         });
-        stubDownloadTool = sinon.stub(toolLib, "downloadTool");
+        stubDownloadTool = sinon.stub(toolLib, "downloadToolWithRetries");
         stubDownloadTool.callsFake((url, name) => {
           return Promise.resolve(matlabBatchPath);
         });
@@ -359,7 +359,7 @@ export default function suite() {
 
             stubDownloadAndRun = sinon.stub(script, "downloadAndRunScript");
             stubDownloadAndRun.resolves(0);
-            stubDownloadTool = sinon.stub(utils, "downloadTool");
+            stubDownloadTool = sinon.stub(utils, "downloadToolWithRetries");
             stubDownloadTool.resolves("/path/to/jdk.pkg");
             stubExec = sinon.stub(taskLib, "exec");
             stubExec.resolves(0);

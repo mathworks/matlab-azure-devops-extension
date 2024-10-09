@@ -6,7 +6,7 @@ import * as fs from "fs";
 import * as https from "https";
 import * as path from "path";
 import * as script from "./script";
-import { downloadTool } from "./utils";
+import { downloadToolWithRetries } from "./utils";
 
 export interface Release {
     name: string;
