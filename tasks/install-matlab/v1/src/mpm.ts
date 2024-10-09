@@ -15,11 +15,11 @@ export async function setup(platform: string, architecture: string): Promise<str
     switch (platform) {
         case "win32":
             mpmUrl = mpmRootUrl + "win64/mpm";
-            mpm = await downloadTool(mpmUrl, "mpm.exe");
+            mpm = await downloadToolWithRetries(mpmUrl, "mpm.exe");
             break;
         case "linux":
             mpmUrl = mpmRootUrl + "glnxa64/mpm";
-            mpm = await downloadTool(mpmUrl, "mpm");
+            mpm = await downloadToolWithRetries(mpmUrl, "mpm");
             exitCode = await taskLib.exec("chmod", ["+x", mpm]);
             if (exitCode !== 0) {
                 return Promise.reject(Error("Unable to set up mpm."));
@@ -31,7 +31,7 @@ export async function setup(platform: string, architecture: string): Promise<str
             } else {
                 mpmUrl = mpmRootUrl + "maca64/mpm";
             }
-            mpm = await downloadTool(mpmUrl, "mpm");
+            mpm = await downloadToolWithRetries(mpmUrl, "mpm");
             exitCode = await taskLib.exec("chmod", ["+x", mpm]);
             if (exitCode !== 0) {
                 return Promise.reject(Error("Unable to set up mpm."));
