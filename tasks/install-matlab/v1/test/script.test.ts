@@ -30,7 +30,7 @@ export default function suite() {
     describe("script.ts test suite", () => {
         beforeEach(() => {
             // setup stubs
-            stubDownloadTool = sinon.stub(toolLib, "downloadTool");
+            stubDownloadTool = sinon.stub(toolLib, "downloadToolWithRetries");
             stubDownloadTool.callsFake((url, fileName?, handlers?) => {
                 return Promise.resolve("/path/to/script");
             });

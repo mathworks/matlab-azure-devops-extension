@@ -25,7 +25,7 @@ tlClone.assertAgent = (variable: string) => {
 tr.registerMock("azure-pipelines-task-lib/mock-task", tlClone);
 
 tr.registerMock("azure-pipelines-tool-lib/tool", {
-    downloadTool() {
+    downloadToolWithRetries() {
         throw new Error("Download failed");
     },
 });

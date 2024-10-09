@@ -16,7 +16,7 @@ export default function suite() {
     describe("mpm.ts test suite", () => {
         beforeEach(() => {
             // setup stubs
-            stubDownloadTool = sinon.stub(toolLib, "downloadTool");
+            stubDownloadTool = sinon.stub(toolLib, "downloadToolWithRetries");
             stubDownloadTool.callsFake((url, fileName) => {
                 return Promise.resolve(`${agentTemp}/fileName`);
             });

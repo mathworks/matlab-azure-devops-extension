@@ -4,7 +4,7 @@ import * as taskLib from "azure-pipelines-task-lib/task";
 import * as toolLib from "azure-pipelines-tool-lib/tool";
 import * as path from "path";
 
-export async function downloadTool(url: string, fileName: string): Promise<string> {
+export async function downloadToolWithRetries(url: string, fileName: string): Promise<string> {
     let destPath: string;
     if (path.isAbsolute(fileName)) {
         destPath = fileName;
@@ -17,6 +17,6 @@ export async function downloadTool(url: string, fileName: string): Promise<strin
     }
 
     taskLib.rmRF(destPath);
-    await toolLib.downloadTool(url, destPath);
+    await toolLib.downloadToolWithRetries(url, destPath);
     return destPath;
 }
