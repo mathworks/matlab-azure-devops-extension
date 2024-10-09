@@ -26,7 +26,7 @@ tlClone.assertAgent = (variable: string) => {
 tr.registerMock("azure-pipelines-task-lib/mock-task", tlClone);
 
 tr.registerMock("azure-pipelines-tool-lib/tool", {
-    downloadTool(url: string) {
+    downloadToolWithRetries(url: string) {
         if (url === "https://ssd.mathworks.com/supportfiles/ci/matlab-deps/v0/install.sh") {
             return "install.sh";
         } else if (url === "https://ssd.mathworks.com/supportfiles/ci/ephemeral-matlab/v0/ci-install.sh") {

@@ -91,7 +91,7 @@ function installRoot(programName: string) {
 // similar to "curl | sh"
 async function curlsh(url: string, args: string | string[]) {
     // download script
-    const scriptPath = await toolLib.downloadTool(url);
+    const scriptPath = await toolLib.downloadToolWithRetries(url);
 
     // execute script
     const bashPath = taskLib.which("bash", true);

@@ -5,7 +5,7 @@ import * as toolLib from "azure-pipelines-tool-lib/tool";
 import * as path from "path";
 
 export async function downloadAndRunScript(platform: string, url: string, args: string | string[]) {
-    const scriptPath = await toolLib.downloadTool(url);
+    const scriptPath = await toolLib.downloadToolWithRetries(url);
     const bashPath = await taskLib.which("bash", true);
     const sudoPath = await taskLib.which("sudo", false);
     let bash;
