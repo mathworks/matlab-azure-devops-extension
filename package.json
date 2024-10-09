@@ -13,8 +13,8 @@
     },
     "devDependencies": {
         "@types/mocha": "^8.2.2",
-        "@types/node": "^15.0.2",
-        "@types/shelljs": "^0.8.8",
+        "@types/node": "^22.7.5",
+        "@types/shelljs": "^0.8.15",
         "@types/sinon": "^10.0.13",
         "@types/uuid": "^9.0.8",
         "mocha": "^10.0.0",
