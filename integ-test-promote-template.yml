@@ -151,10 +151,12 @@ jobs:
         - checkout: none
         - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@${{ version }}
           displayName: Install MATLAB on Microsoft-hosted agents
+          condition: eq(${{ version }}, '0')
         - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@${{ version }}
           inputs:
             products: Simulink Simulink_Test Simulink_Coverage Parallel_Computing_Toolbox
           displayName: Install MATLAB on Microsoft-hosted agents
+          condition: eq(${{ version }}, '1')
         - bash: |
             echo 'myvar = 123' > startup.m
             mkdir src
@@ -364,6 +366,7 @@ jobs:
         - checkout: none
         - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@${{ version }}
           displayName: Install MATLAB on Microsoft-hosted agents
+          condition: not(startsWith(variables['Agent.Name'], 'vmss'))
         - bash: |
             cat << EOF > buildfile.m
             function plan = buildfile
