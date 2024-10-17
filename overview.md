@@ -125,8 +125,25 @@ steps:
     MLM_LICENSE_TOKEN: $(myToken)
 ```
 
+### Use Virtual Display on Linux Agent
+Microsoft-hosted Linux&reg; agents do not provide a display. To run MATLAB code that requires a display, such as tests that interact with an app UI, first set up a virtual display on the agent by starting an Xvfb display server. For example, set up a virtual server to run the tests for an app created in MATLAB.
+
+```YAML
+pool:
+  vmImage: ubuntu-latest
+steps:
+  - script: |
+      sudo apt-get install -y xvfb
+      Xvfb :99 &
+      echo "##vso[task.setVariable variable=DISPLAY]:99"
+    displayName: 'Start virtual display server'
+    condition: eq(variables['Agent.OS'], 'Linux') 
+  - task: InstallMATLAB@1
+  - task: RunMATLABTests@1
+```
+
 ### Build Across Multiple Platforms
-The **Install MATLAB** task supports the Linux&reg;, Windows&reg;, and macOS platforms. Use a `matrix` job strategy to run a build using the MATLAB build tool on all the supported platforms. This pipeline runs three jobs.
+The **Install MATLAB** task supports the Linux, Windows&reg;, and macOS platforms. Use a `matrix` job strategy to run a build using the MATLAB build tool on all the supported platforms. This pipeline runs three jobs.
 
 ```YAML
 strategy:
