@@ -136,7 +136,7 @@ steps:
       sudo apt-get install -y xvfb
       Xvfb :99 &
       echo "##vso[task.setVariable variable=DISPLAY]:99"
-    displayName: 'Start virtual display server'
+    displayName: Start virtual display server
     condition: eq(variables['Agent.OS'],'Linux') 
   - task: InstallMATLAB@1
   - task: RunMATLABTests@1
