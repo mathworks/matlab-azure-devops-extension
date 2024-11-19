@@ -1,6 +1,7 @@
 // Copyright 2020-2024 The MathWorks, Inc.
 
 import * as taskLib from "azure-pipelines-task-lib/task";
+import * as toolLib from "azure-pipelines-tool-lib/tool";
 import { chmodSync } from "fs";
 import * as fs from "fs";
 import * as path from "path";
@@ -56,7 +57,13 @@ async function runCommand(command: string, args?: string) {
             throw new Error(`This task is not supported on ${platform()} runners using the ${architecture()} architecture.`);
     }
     console.log("========================== Starting Command Output ===========================");
-    const runToolPath = path.join(__dirname, "bin", platformDir, `run-matlab-command${ext}`);
+    const binDir = path.join(__dirname, "bin", platformDir);
+    const runToolPath = path.join(binDir, `run-matlab-command${ext}`);
+    if (!taskLib.exist(runToolPath)) {
+        const zipPath = path.join(binDir, "run-matlab-command.zip");
+        await toolLib.extractZip(zipPath, binDir);
+    }
+
     chmodSync(runToolPath, "777");
     const runTool = taskLib.tool(runToolPath);
     runTool.arg("setenv('MW_ORIG_WORKING_FOLDER', cd('" + tempDirectory.replace(/'/g, "''") + "'));" + scriptName);

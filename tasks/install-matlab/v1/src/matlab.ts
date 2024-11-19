@@ -6,7 +6,7 @@ import * as fs from "fs";
 import * as https from "https";
 import * as path from "path";
 import * as script from "./script";
-import { downloadTool } from "./utils";
+import { downloadToolWithRetries } from "./utils";
 
 export interface Release {
     name: string;
@@ -137,7 +137,7 @@ export async function setupBatch(platform: string, architecture: string) {
             return Promise.reject(Error(`This task is not supported on ${platform} runners.`));
     }
 
-    const tempPath = await downloadTool(matlabBatchUrl, `matlab-batch${matlabBatchExt}`);
+    const tempPath = await downloadToolWithRetries(matlabBatchUrl, `matlab-batch${matlabBatchExt}`);
     const matlabBatchPath = await toolLib.cacheFile(tempPath, `matlab-batch${matlabBatchExt}`, "matlab-batch", "1.0.0");
     try {
         toolLib.prependPath(matlabBatchPath);
@@ -178,7 +178,7 @@ async function installAppleSiliconRosetta() {
 }
 
 async function installAppleSiliconJdk() {
-    const jdk = await downloadTool(
+    const jdk = await downloadToolWithRetries(
         "https://corretto.aws/downloads/resources/8.402.08.1/amazon-corretto-8.402.08.1-macosx-aarch64.pkg",
         "jdk.pkg",
     );
