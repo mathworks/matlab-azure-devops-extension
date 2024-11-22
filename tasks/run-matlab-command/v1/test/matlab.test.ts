@@ -130,9 +130,8 @@ export default function suite() {
                 stubExtractZip.restore();
             });
 
-            const testBin = (platform: string, subdirectory: string, ext: string) => {
-                it(`considers the appropriate rmc bin on ${platform}`, async () => {
-                    const architecture = "x64";
+            const testBin = (platform: string, architecture: string, subdirectory: string, ext: string) => {
+                it(`considers the appropriate rmc bin on ${platform} ${architecture}`, async () => {
                     const p = await matlab.getRunMATLABCommandPath(platform, architecture);
                     // unzips run-matlab-command binary
                     assert(stubExtractZip.callCount === 1);
@@ -141,9 +140,10 @@ export default function suite() {
                 });
             };
 
-            testBin("linux", "glnxa64", "");
-            testBin("win32", "win64", ".exe");
-            testBin("darwin", "maci64", "");
+            testBin("linux", "x64", "glnxa64", "");
+            testBin("win32", "x64", "win64", ".exe");
+            testBin("darwin", "x64", "maci64", "");
+            testBin("darwin", "arm64", "maca64", "");
 
             it("errors on unsupported platform", () => {
                 assert.rejects(async () => await matlab.getRunMATLABCommandPath("sunos", "x64"));

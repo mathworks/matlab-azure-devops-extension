@@ -144,11 +144,15 @@ export async function setupBatch(platform: string, architecture: string) {
     } catch (err: any) {
         throw new Error("Failed to add MATLAB to system path.");
     }
-    const exitCode = await taskLib.exec("chmod", ["+x", path.join(matlabBatchPath, "matlab-batch" + matlabBatchExt)]);
-    if (exitCode !== 0) {
-        return Promise.reject(Error("Unable to add execute permissions to matlab-batch binary."));
+    if (platform !== "win32") {
+        const exitCode = await taskLib.exec(
+            "chmod",
+            ["+x", path.join(matlabBatchPath, "matlab-batch" + matlabBatchExt)],
+        );
+        if (exitCode !== 0) {
+            return Promise.reject(Error("Unable to add execute permissions to matlab-batch binary."));
+        }
     }
-    return;
 }
 
 export async function installSystemDependencies(platform: string, architecture: string, release: string) {

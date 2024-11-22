@@ -37,10 +37,9 @@ export async function runCommand(command: string, platform: string, architecture
 }
 
 export async function getRunMATLABCommandPath(platform: string, architecture: string): Promise<string> {
-    if (architecture !== "x64") {
-        return Promise.reject(
-            `This task is not supported on ${platform} runners using the ${architecture} architecture.`,
-        );
+    if (architecture !== "x64" && !(platform === "darwin" && architecture === "arm64")) {
+        const msg = `This task is not supported on ${platform} runners using the ${architecture} architecture.`;
+        return Promise.reject(Error(msg));
     }
     let ext;
     let platformDir;
@@ -51,16 +50,19 @@ export async function getRunMATLABCommandPath(platform: string, architecture: st
             break;
         case "darwin":
             ext = "";
-            platformDir = "maci64";
+            if (architecture === "x64") {
+                platformDir = "maci64";
+            } else {
+                platformDir = "maca64";
+            }
             break;
         case "linux":
             ext = "";
             platformDir = "glnxa64";
             break;
         default:
-            return Promise.reject(
-                `This task is not supported on ${platform} runners using the ${architecture} architecture.`,
-            );
+            const msg = `This task is not supported on ${platform} runners using the ${architecture} architecture.`;
+            return Promise.reject(Error(msg));
     }
 
     const binDir = path.join(__dirname, "bin", platformDir);
