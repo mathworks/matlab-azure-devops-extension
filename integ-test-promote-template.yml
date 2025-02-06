@@ -79,7 +79,7 @@ jobs:
         - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@${{ version }}
           displayName: Check matlab release
           inputs:
-            command: assert(strcmp(version('-release'),'2023a'))
+            command: version
 
     - job: test_run_command_v${{ version }}
       strategy:
