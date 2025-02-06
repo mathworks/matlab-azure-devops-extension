@@ -58,8 +58,12 @@ export async function install(
         "install",
         `--release=${release.name + release.update}`,
         `--destination=${destination}`,
-        "--products",
     ];
+
+    if (release.isPrerelease) {
+        mpmArguments = mpmArguments.concat("--release-status=Prerelease");
+    }
+    mpmArguments = mpmArguments.concat("--products");
     mpmArguments = mpmArguments.concat(parsedProducts);
 
     const exitCode = await taskLib.exec(mpmPath, mpmArguments);

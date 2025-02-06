@@ -26,6 +26,7 @@ export default function suite() {
         name: "r2023b",
         version: "2023.2.999",
         update: "Latest",
+        isPrerelease: false,
       };
 
       beforeEach(() => {
@@ -300,12 +301,27 @@ export default function suite() {
         mockResp.statusCode = 200;
         stubHttpsGet.callsFake((url, callback) => {
           callback(mockResp);
-          mockResp.emit("data", "r2022b");
+          mockResp.emit("data", "r2024b");
           mockResp.emit("end");
           return Promise.resolve(null);
         });
         const release = await matlab.getReleaseInfo("latest");
-        assert(release.name === "r2022b");
+        assert(release.name === "r2024b");
+        assert(release.isPrerelease === false);
+      });
+
+      it("getReleaseInfo resolves latest-including-prerelease", async () => {
+        const mockResp = new http.IncomingMessage(new net.Socket());
+        mockResp.statusCode = 200;
+        stubHttpsGet.callsFake((url, callback) => {
+          callback(mockResp);
+          mockResp.emit("data", "r2025aprerelease");
+          mockResp.emit("end");
+          return Promise.resolve(null);
+        });
+        const release = await matlab.getReleaseInfo("latest");
+        assert(release.name === "r2025a");
+        assert(release.isPrerelease === true);
       });
 
       it("getReleaseInfo is case insensitive", async () => {
@@ -313,6 +329,7 @@ export default function suite() {
         assert(release.name === "r2022b");
         assert(release.version === "2022.2.999");
         assert(release.update === "Latest");
+        assert(release.isPrerelease === false);
       });
 
       it("getReleaseInfo allows specifying update number", async () => {
@@ -320,6 +337,7 @@ export default function suite() {
         assert(release.name === "r2022a");
         assert(release.version === "2022.1.2");
         assert(release.update === "u2");
+        assert(release.isPrerelease === false);
       });
 
       it("getReleaseInfo rejects for invalid release input", async () => {

@@ -60,6 +60,27 @@ jobs:
           inputs:
             command: assert(strcmp(version('-release'),'2023a'))
 
+    - job: test_install_latest_including_prerelease_v${{ version }}
+      condition: not(eq(${{ version }}, '0'))
+      strategy:
+        matrix:
+          microsoft_hosted_linux:
+            poolName: Azure Pipelines
+            vmImage: ubuntu-22.04
+      pool:
+        name: $(poolName)
+        vmImage: $(vmImage)
+      steps:
+        - checkout: none
+        - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@${{ version }}
+          displayName: Install MATLAB
+          inputs:
+            release: latest-including-prerelease
+        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@${{ version }}
+          displayName: Print MATLAB version
+          inputs:
+            command: version
+
     - job: test_run_command_v${{ version }}
       strategy:
         matrix:
