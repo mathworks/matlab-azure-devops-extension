@@ -75,7 +75,7 @@ jobs:
         - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@${{ version }}
           displayName: Install MATLAB
           inputs:
-            release: latest-including-prererlease
+            release: latest-including-prerelease
         - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@${{ version }}
           displayName: Check matlab release
           inputs:
