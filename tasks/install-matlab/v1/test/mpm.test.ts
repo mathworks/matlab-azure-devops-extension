@@ -133,6 +133,26 @@ export default function suite() {
             });
         });
 
+        it("add --release-status flag for prerelease", async () => {
+            const mpmPath = "mpm";
+            const releaseInfo = {name: "r2025a", version: "9.13.0", update: "Latest", isPrerelease: true};
+            const destination = "/opt/matlab";
+            const products = "MATLAB Compiler";
+            const expectedMpmArgs = [
+                "install",
+                "--release=r2025aLatest",
+                `--destination=${destination}`,
+                "--release-status=Prerelease",
+                "--products",
+                "MATLAB",
+                "Compiler",
+            ];
+            assert.doesNotReject(async () => { mpm.install(mpmPath, releaseInfo, products, destination); });
+            mpm.install(mpmPath, releaseInfo, destination, products).then(() => {
+                assert(stubExec.calledWithMatch(mpmPath, expectedMpmArgs));
+            });
+        });
+
         it("install rejects on failed install", async () => {
             const mpmPath = "mpm";
             const releaseInfo = {name: "r2022b", version: "9.13.0", update: "latest", isPrerelease: false};
