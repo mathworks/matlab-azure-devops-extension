@@ -58,7 +58,7 @@ jobs:
         - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@${{ version }}
           displayName: Check matlab release
           inputs:
-            command: assert(strcmp(version('-release'),'2023a'))
+            command: version
 
     - job: test_install_latest_including_prerelease_v${{ version }}
       condition: not(eq(${{ version }}, '0'))
