@@ -56,7 +56,7 @@ jobs:
           inputs:
             release: R2023a
         - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@${{ version }}
-          displayName: Check matlab release
+          displayName: Print MATLAB version
           inputs:
             command: version
 
