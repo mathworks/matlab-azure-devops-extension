@@ -116,7 +116,7 @@ export default function suite() {
 
         it("install ideally works", async () => {
             const mpmPath = "mpm";
-            const releaseInfo = {name: "r2022b", version: "9.13.0", update: "Latest"};
+            const releaseInfo = {name: "r2022b", version: "9.13.0", update: "Latest", isPrerelease: false};
             const destination = "/opt/matlab";
             const products = "MATLAB Compiler";
             const expectedMpmArgs = [
@@ -135,7 +135,7 @@ export default function suite() {
 
         it("install rejects on failed install", async () => {
             const mpmPath = "mpm";
-            const releaseInfo = {name: "r2022b", version: "9.13.0", update: "latest"};
+            const releaseInfo = {name: "r2022b", version: "9.13.0", update: "latest", isPrerelease: false};
             const destination = "/opt/matlab";
             const products = "MATLAB Compiler";
             stubExec.callsFake((bin, args?) => {

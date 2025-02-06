@@ -12,6 +12,7 @@ export interface Release {
     name: string;
     version: string;
     update: string;
+    isPrerelease: boolean;
 }
 
 export async function makeToolcacheDir(release: Release, platform: string): Promise<[string, boolean]> {
@@ -66,8 +67,11 @@ async function windowsHostedToolpath(release: Release): Promise<string> {
 export async function getReleaseInfo(release: string): Promise<Release> {
     // Get release name from input parameter
     let name: string;
+    let isPrerelease: boolean = false;
     if (release.toLowerCase().trim() === "latest") {
-        name = await resolveLatest();
+        name = await fetchReleaseInfo("latest");
+    } else if (release.toLowerCase().trim() === "latest-including-prerelease") {
+        name = await fetchReleaseInfo("latest-including-prerelease");
     } else {
         const nameMatch = release.toLowerCase().match(/r[0-9]{4}[a-b]/);
         if (!nameMatch) {
@@ -88,18 +92,24 @@ export async function getReleaseInfo(release: string): Promise<Release> {
     } else {
         update = "Latest";
         version += ".999";
+        if (name.includes("prerelease")) {
+            name = name.replace("prerelease", "");
+            version += "-prerelease";
+            isPrerelease = true;
+        }
     }
 
     return {
         name,
         version,
         update,
+        isPrerelease,
     };
 }
 
-async function resolveLatest(): Promise<string> {
+async function fetchReleaseInfo(name: string): Promise<string> {
     return new Promise((resolve, reject) => {
-        https.get("https://ssd.mathworks.com/supportfiles/ci/matlab-release/v0/latest", (resp) => {
+        https.get(`https://ssd.mathworks.com/supportfiles/ci/matlab-release/v0/${name}`, (resp) => {
             if (resp.statusCode !== 200) {
                 reject(Error(`Unable to retrieve latest MATLAB release information. Contact MathWorks at continuous-integration@mathworks.com if the problem persists.`));
             }
@@ -108,6 +118,7 @@ async function resolveLatest(): Promise<string> {
             });
         });
     });
+
 }
 
 export async function setupBatch(platform: string, architecture: string) {
