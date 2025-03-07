@@ -201,6 +201,8 @@ If you are using a Linux agent, verify that the following software is installed 
 If you are using a macOS agent with an Apple silicon processor, verify that Java&reg; Runtime Environment (JRE&trade;) is installed on your agent. For information about this requirement and to get a compatible JRE version, see [MATLAB on Apple Silicon Macs](https://www.mathworks.com/support/requirements/apple-silicon.html).
 
 
+>**Note:** The **Install MATLAB** task automatically includes the [MATLAB batch licensing executable](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/alternates/non-interactive/MATLAB-BATCH.md) (`matlab-batch`). For an example, see [Use MATLAB Batch Licensing Token](#use-matlab-batch-licensing-token).
+
 ### Run MATLAB Build
 Use the **Run MATLAB Build** task to run a build using the MATLAB build tool. Starting in R2022b, you can use this task to run the MATLAB build tasks specified in a build file. By default, the **Run MATLAB Build** task looks for a build file named `buildfile.m` in the root of your repository. For more information about the build tool, see [Overview of MATLAB Build Tool](https://www.mathworks.com/help/matlab/matlab_prog/overview-of-matlab-build-tool.html).
 
