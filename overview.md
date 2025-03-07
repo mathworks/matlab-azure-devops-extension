@@ -3,7 +3,7 @@ This extension enables you to build and test your MATLAB&reg; project as part of
 To run your pipeline using this extension, [install the extension](https://docs.microsoft.com/en-us/azure/devops/marketplace/install-extension?view=azure-devops&tabs=browser) to your Azure&reg; DevOps organization. To install the extension, click the **Get it free** button at the top of this page. You can use the extension with Microsoft&reg;-hosted or self-hosted [agents](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/agents?view=azure-devops&tabs=browser):
 
 - To use a Microsoft-hosted agent, include the [Install MATLAB](#install-matlab) task in your pipeline to install your preferred MATLAB release on the agent.
-- To use a self-hosted agent, set up a computer with MATLAB as your self-hosted agent and register the agent with Azure Pipelines. The agent uses the topmost MATLAB release on the system path to execute your pipeline.
+- To use a self-hosted agent, set up a computer with MATLAB as your self-hosted agent and register the agent with Azure Pipelines. (On self-hosted UNIX&reg; agents, you can alternatively use the **Install MATLAB** task instead of having MATLAB installed.) The agent uses the topmost MATLAB release on the system path to execute your pipeline.
 
 ## Examples
 When you author your pipeline in a file named `azure-pipelines.yml` in the root of your repository, the extension provides you with four different tasks:
@@ -13,7 +13,7 @@ When you author your pipeline in a file named `azure-pipelines.yml` in the root 
 - To run MATLAB scripts, functions, and statements, use the [Run MATLAB Command](#run-matlab-command) task.
 
 ### Run a MATLAB Build
-On a self-hosted agent, run a MATLAB build task named `mytask`, specified in a build file named `buildfile.m` in the root of your repository, as well as all the tasks on which it depends. To run the MATLAB build, specify the **Run MATLAB Build** task in your pipeline. (The **Run MATLAB Build** task is supported in MATLAB R2022b and later.)
+On a self-hosted agent that has MATLAB installed, run a MATLAB build task named `mytask`, specified in a build file named `buildfile.m` in the root of your repository, as well as all the tasks on which it depends. To run the MATLAB build, specify the **Run MATLAB Build** task in your pipeline. (The **Run MATLAB Build** task is supported in MATLAB R2022b and later.)
 
 ```YAML
 pool: myPool
