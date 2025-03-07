@@ -171,7 +171,7 @@ You can access the extension tasks using the YAML pipeline editor in Azure DevOp
 ### Install MATLAB
 Use the **Install MATLAB** task to install MATLAB and other MathWorks&reg; products on a Microsoft-hosted (Linux, Windows, or macOS) agent or self-hosted (Linux or macOS) agent. When you specify this task as part of your pipeline, the task installs your preferred MATLAB release (R2021a or later) on the agent and prepends the MATLAB `bin` folder to the `PATH` system environment variable, which makes the release available for the build. If you do not specify a release, the task installs the latest release of MATLAB.
 
->**Note:** The **Install MATLAB** task automatically includes the dependencies required to run MATLAB and other MathWorks products only for Microsoft-hosted agents. If you are using a self-hosted agent, you are responsible for making the required dependencies available on your agent. For details, see [Required Software on Self-Hosted Agents](#required-software-on-self-hosted-agents).
+>**Note:** The **Install MATLAB** task automatically includes the dependencies required to run MATLAB and other MathWorks products only for Microsoft-hosted agents. If you are using a self-hosted agent, you are responsible for making the required dependencies available to your agent. For details, see [Required Software on Self-Hosted Agents](#required-software-on-self-hosted-agents).
 
 Specify the **Install MATLAB** task in your YAML pipeline as `InstallMATLAB@1`. The task accepts optional inputs.
 
@@ -190,11 +190,8 @@ To use a MATLAB batch licensing token, first set it as a [secret variable](https
 
 >**Note:** The **Install MATLAB** task automatically includes the [MATLAB batch licensing executable](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/alternates/non-interactive/MATLAB-BATCH.md) (`matlab-batch`). To use a MATLAB batch licensing token in a pipeline that does not use this task, you must first download the executable and add it to the system path.
 
-
 #### Required Software on Self-Hosted Agents
-Before using the **Install MATLAB** task to install MATLAB and other products on a self-hosted UNIX agent, verify that the required software is installed on your agent.
-
->**Note:** The **Install MATLAB** task automatically includes the [MATLAB batch licensing executable](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/alternates/non-interactive/MATLAB-BATCH.md) (`matlab-batch`). For an example, see [Use MATLAB Batch Licensing Token](#use-matlab-batch-licensing-token).
+Before using the **Install MATLAB** task to install MATLAB and other MathWorks products on a self-hosted UNIX agent, verify that the required software is installed on your agent.
 
 ##### Linux
 If you are using a Linux agent, verify that the following software is installed on your agent:
@@ -204,6 +201,7 @@ If you are using a Linux agent, verify that the following software is installed 
 ##### macOS
 If you are using a macOS agent with an Apple silicon processor, verify that Java&reg; Runtime Environment (JRE&trade;) is installed on your agent. For information about this requirement and to get a compatible JRE version, see [MATLAB on Apple Silicon Macs](https://www.mathworks.com/support/requirements/apple-silicon.html).
 
+>**Tip:** One convenient way to include the required dependencies on a self-hosted agent is to specify the [MATLAB Dependencies Container Image on Docker&reg; Hub](https://hub.docker.com/r/mathworks/matlab-deps) in your YAML pipeline. For an example, see [Use MATLAB Batch Licensing Token](#use-matlab-batch-licensing-token).
 
 ### Run MATLAB Build
 Use the **Run MATLAB Build** task to run a build using the MATLAB build tool. Starting in R2022b, you can use this task to run the MATLAB build tasks specified in a build file. By default, the **Run MATLAB Build** task looks for a build file named `buildfile.m` in the root of your repository. For more information about the build tool, see [Overview of MATLAB Build Tool](https://www.mathworks.com/help/matlab/matlab_prog/overview-of-matlab-build-tool.html).
