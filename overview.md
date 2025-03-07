@@ -171,7 +171,7 @@ You can access the extension tasks using the YAML pipeline editor in Azure DevOp
 ### Install MATLAB
 Use the **Install MATLAB** task to install MATLAB and other MathWorks&reg; products on a Microsoft-hosted (Linux, Windows, or macOS) agent or self-hosted (Linux or macOS) agent. When you specify this task as part of your pipeline, the task installs your preferred MATLAB release (R2021a or later) on the agent and prepends the MATLAB `bin` folder to the `PATH` system environment variable, which makes the release available for the build. If you do not specify a release, the task installs the latest release of MATLAB.
 
->**Note:** The **Install MATLAB** task automatically includes the depedendencies required to run products only on Microsoft-hosted agents. If you are using a self-hosted runner, verify that the required dependencies exist on your agent. For details, see [Required Software on Self-Hosted Agents](#required-software-on-self-hosted-agents).
+>**Note:** The **Install MATLAB** task automatically includes the dependencies required to run MATLAB and other MathWorks products only on Microsoft-hosted agents. If you are using a self-hosted agent, you are responsible for making the required dependencies available on your agent. For details, see [Required Software on Self-Hosted Agents](#required-software-on-self-hosted-agents).
 
 Specify the **Install MATLAB** task in your YAML pipeline as `InstallMATLAB@1`. The task accepts optional inputs.
 
