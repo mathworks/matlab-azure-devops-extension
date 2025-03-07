@@ -106,7 +106,7 @@ steps:
 ```
 
 ### Use MATLAB Batch Licensing Token
-On a Microsoft-hosted or self-hosted agent, you need a [MATLAB batch licensing token](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/alternates/non-interactive/MATLAB-BATCH.md#matlab-batch-licensing-token) if your project is private or if your pipeline includes transformation products, such as MATLAB Coder&trade; and MATLAB Compiler&trade;. Batch licensing tokens are strings that enable MATLAB to start in noninteractive environments. You can request a token by submitting the [MATLAB Batch Licensing Pilot](https://www.mathworks.com/support/batch-tokens.html) form. 
+When you set up your pipeline using the **Install MATLAB** task, you need a [MATLAB batch licensing token](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/alternates/non-interactive/MATLAB-BATCH.md#matlab-batch-licensing-token) if your project is private or if your pipeline includes transformation products, such as MATLAB Coder&trade; and MATLAB Compiler&trade;. Batch licensing tokens are strings that enable MATLAB to start in noninteractive environments. You can request a token by submitting the [MATLAB Batch Licensing Pilot](https://www.mathworks.com/support/batch-tokens.html) form. 
 
 To use a MATLAB batch licensing token:
 
@@ -114,7 +114,7 @@ To use a MATLAB batch licensing token:
 2. Map the secret variable to an environment variable named `MLM_LICENSE_TOKEN` in each of the **Run MATLAB Build**, **Run MATLAB Tests**, and **Run MATLAB Command** tasks of your YAML pipeline. 
 
 For example, author a pipeline that uses the latest release of MATLAB on a self-hosted UNIX agent to run the tests in your private project:
-- To include the dependencies required to run MATLAB on the self-hosted agent, run your pipeline job in a container built from the [MATLAB Dependencies Container Image on Docker&reg; Hub](https://hub.docker.com/r/mathworks/matlab-deps).
+- To include the dependencies required to run MATLAB on the self-hosted agent, use a container built from the [MATLAB Dependencies Container Image on Docker&reg; Hub](https://hub.docker.com/r/mathworks/matlab-deps). (You do not need to run your pipeline job in this container if you are using a Microsoft-hosted agent.)
 - To install the latest release of MATLAB on the agent, specify the **Install MATLAB** task in your pipeline.
 - To run the tests, specify the **Run MATLAB Tests** task. To license MATLAB for running the task, map a secret variable to an environment variable named `MLM_LICENSE_TOKEN` in the task. In this example, `myToken` is the name of the secret variable that holds the batch licensing token.
 
