@@ -1,13 +1,13 @@
 This extension enables you to build and test your MATLAB&reg; project as part of your pipeline. For example, you can automatically identify any code issues in your project, run tests and generate test and coverage artifacts, and package your files into a toolbox.
 
-To run your pipeline using this extension, [install the extension](https://docs.microsoft.com/en-us/azure/devops/marketplace/install-extension?view=azure-devops&tabs=browser) to your Azure&reg; DevOps organization. To install the extension, click the **Get it free** button at the top of this page. You can use the extension with self-hosted or Microsoft&reg;-hosted [agents](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/agents?view=azure-devops&tabs=browser):
+To run your pipeline using this extension, [install the extension](https://docs.microsoft.com/en-us/azure/devops/marketplace/install-extension?view=azure-devops&tabs=browser) to your Azure&reg; DevOps organization. To install the extension, click the **Get it free** button at the top of this page. You can use the extension with Microsoft&reg;-hosted or self-hosted [agents](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/agents?view=azure-devops&tabs=browser):
 
-- To use a self-hosted agent, you must set up a computer with MATLAB as your self-hosted agent and register the agent with Azure Pipelines. The agent uses the topmost MATLAB release on the system path to execute your pipeline.
-- To use a Microsoft-hosted agent, you must include the [Install MATLAB](#install-matlab) task in your pipeline to install your preferred MATLAB release on the agent.
+- To use a Microsoft-hosted agent, include the [Install MATLAB](#install-matlab) task in your pipeline to install your preferred MATLAB release on the agent.
+- To use a self-hosted agent, set up a computer with MATLAB as your self-hosted agent and register the agent with Azure Pipelines. The agent uses the topmost MATLAB release on the system path to execute your pipeline.
 
 ## Examples
 When you author your pipeline in a file named `azure-pipelines.yml` in the root of your repository, the extension provides you with four different tasks:
-- To install a specific release of MATLAB on a Microsoft-hosted agent, use the [Install MATLAB](#install-matlab) task.
+- To set up your pipeline with a specific release of MATLAB, use the [Install MATLAB](#install-matlab) task.
 - To run a MATLAB build using the MATLAB build tool, use the [Run MATLAB Build](#run-matlab-build) task.
 - To run MATLAB and Simulink&reg; tests and generate artifacts, use the [Run MATLAB Tests](#run-matlab-tests) task.
 - To run MATLAB scripts, functions, and statements, use the [Run MATLAB Command](#run-matlab-command) task.
@@ -187,6 +187,19 @@ Product licensing for your pipeline depends on your project visibility as well a
 To use a MATLAB batch licensing token, first set it as a [secret variable](https://learn.microsoft.com/en-us/azure/devops/pipelines/process/set-secret-variables?view=azure-devops&tabs=yaml%2Cbash). Then, map the secret variable to an environment variable named `MLM_LICENSE_TOKEN` in your YAML pipeline. For an example, see [Use MATLAB Batch Licensing Token](#use-matlab-batch-licensing-token). 
 
 >**Note:** The **Install MATLAB** task automatically includes the [MATLAB batch licensing executable](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/alternates/non-interactive/MATLAB-BATCH.md) (`matlab-batch`). To use a MATLAB batch licensing token in a pipeline that does not use this task, you must first download the executable and add it to the system path.
+
+
+#### Required Software
+Before using MATLAB Package Manager to automatically install MATLAB and other products, verify that the required software is installed on your Linux or macOS agent.
+
+##### Linux
+If you are using a Linux agent, verify that the following software is installed on your agent:
+- Third-party packages required to run the `mpm` command — To view the list of `mpm` dependencies, refer to the Linux section of [Get MATLAB Package Manager](https://www.mathworks.com/help/install/ug/get-mpm-os-command-line.html).
+- All MATLAB dependencies — To view the list of MATLAB dependencies, go to the [MATLAB Dependencies](https://github.com/mathworks-ref-arch/container-images/tree/main/matlab-deps) repository on GitHub. Then, open the `<release>/<system>/base-dependencies.txt` file for your MATLAB version and your build agent's operating system.
+
+##### macOS
+If you are using a macOS agent with an Apple silicon processor, verify that Java&reg; Runtime Environment (JRE&trade;) is installed on your agent. For information about this requirement and to get a compatible JRE version, see [MATLAB on Apple Silicon Macs](https://www.mathworks.com/support/requirements/apple-silicon.html).
+
 
 ### Run MATLAB Build
 Use the **Run MATLAB Build** task to run a build using the MATLAB build tool. Starting in R2022b, you can use this task to run the MATLAB build tasks specified in a build file. By default, the **Run MATLAB Build** task looks for a build file named `buildfile.m` in the root of your repository. For more information about the build tool, see [Overview of MATLAB Build Tool](https://www.mathworks.com/help/matlab/matlab_prog/overview-of-matlab-build-tool.html).
