@@ -116,8 +116,8 @@ To use a MATLAB batch licensing token:
 For example, use the latest release of MATLAB on a Microsoft-hosted agent to run the tests in your private project. To install the latest release of MATLAB on the agent, specify the **Install MATLAB** task in your pipeline. To run the tests, specify the **Run MATLAB Tests** task. In this example, `myToken` is the name of the secret variable that holds the batch licensing token.
 
 ```YAML
-pool:
-  vmImage: ubuntu-latest
+pool: myPool
+container: mathworks/matlab-deps:latest
 steps:
 - task: InstallMATLAB@1
 - task: RunMATLABTests@1
@@ -169,7 +169,7 @@ You can access the extension tasks using the YAML pipeline editor in Azure DevOp
 ![tasks](https://github.com/mathworks/matlab-azure-devops-extension/assets/48831250/d48ddb8b-a87f-4334-a301-64293b822647)
 
 ### Install MATLAB
-Use the **Install MATLAB** task to install MATLAB and other MathWorks&reg; products on a Microsoft-hosted (Linux, Windows, or macOS) agent or self-hosted (Linux or macOS) agent. When you specify this task as part of your pipeline, the task installs your preferred MATLAB release (R2021a or later) on the agent and prepends the MATLAB `bin` folder to the `PATH` system environment variable, which makes the version available for the build. If you do not specify a release, the task installs the latest release of MATLAB.
+Use the **Install MATLAB** task to install MATLAB and other MathWorks&reg; products on a Microsoft-hosted (Linux, Windows, or macOS) agent or self-hosted (Linux or macOS) agent. When you specify this task as part of your pipeline, the task installs your preferred MATLAB release (R2021a or later) on the agent and prepends the MATLAB `bin` folder to the `PATH` system environment variable, which makes the release available for the build. If you do not specify a release, the task installs the latest release of MATLAB.
 
 Specify the **Install MATLAB** task in your YAML pipeline as `InstallMATLAB@1`. The task accepts optional inputs.
 
