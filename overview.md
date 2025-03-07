@@ -106,14 +106,14 @@ steps:
 ```
 
 ### Use MATLAB Batch Licensing Token
-On a Microsoft-hosted agent, you need a [MATLAB batch licensing token](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/alternates/non-interactive/MATLAB-BATCH.md#matlab-batch-licensing-token) if your project is private or if your pipeline includes transformation products, such as MATLAB Coder&trade; and MATLAB Compiler&trade;. Batch licensing tokens are strings that enable MATLAB to start in noninteractive environments. You can request a token by submitting the [MATLAB Batch Licensing Pilot](https://www.mathworks.com/support/batch-tokens.html) form. 
+On a Microsoft-hosted or self-hosted agent, you need a [MATLAB batch licensing token](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/alternates/non-interactive/MATLAB-BATCH.md#matlab-batch-licensing-token) if your project is private or if your pipeline includes transformation products, such as MATLAB Coder&trade; and MATLAB Compiler&trade;. Batch licensing tokens are strings that enable MATLAB to start in noninteractive environments. You can request a token by submitting the [MATLAB Batch Licensing Pilot](https://www.mathworks.com/support/batch-tokens.html) form. 
 
 To use a MATLAB batch licensing token:
 
 1. Set the token as a secret variable. For more information about secret variables, see [Set secret variables](https://learn.microsoft.com/en-us/azure/devops/pipelines/process/set-secret-variables?view=azure-devops&tabs=yaml%2Cbash).
 2. Map the secret variable to an environment variable named `MLM_LICENSE_TOKEN` in each of the **Run MATLAB Build**, **Run MATLAB Tests**, and **Run MATLAB Command** tasks of your YAML pipeline. 
 
-For example, use the latest release of MATLAB on a Microsoft-hosted agent to run the tests in your private project. To install the latest release of MATLAB on the agent, specify the **Install MATLAB** task in your pipeline. To run the tests, specify the **Run MATLAB Tests** task. In this example, `myToken` is the name of the secret variable that holds the batch licensing token.
+For example, use the latest release of MATLAB on a self-hosted agent to run the tests in your private project. To install the latest release of MATLAB on the agent, specify the **Install MATLAB** task in your pipeline. To run the tests, specify the **Run MATLAB Tests** task. In this example, `myToken` is the name of the secret variable that holds the batch licensing token.
 
 ```YAML
 pool: myPool
