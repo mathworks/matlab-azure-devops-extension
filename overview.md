@@ -106,7 +106,7 @@ steps:
 ```
 
 ### Use MATLAB Batch Licensing Token
-When you set up your pipeline using the **Install MATLAB** task, you need a [MATLAB batch licensing token](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/alternates/non-interactive/MATLAB-BATCH.md#matlab-batch-licensing-token) if your project is private or if your pipeline includes transformation products, such as MATLAB Coder&trade; and MATLAB Compiler&trade;. Batch licensing tokens are strings that enable MATLAB to start in noninteractive environments. You can request a token by submitting the [MATLAB Batch Licensing Pilot](https://www.mathworks.com/support/batch-tokens.html) form. 
+When you use the **Install MATLAB** task, you need a [MATLAB batch licensing token](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/alternates/non-interactive/MATLAB-BATCH.md#matlab-batch-licensing-token) if your project is private or if your pipeline includes transformation products, such as MATLAB Coder&trade; and MATLAB Compiler&trade;. Batch licensing tokens are strings that enable MATLAB to start in noninteractive environments. You can request a token by submitting the [MATLAB Batch Licensing Pilot](https://www.mathworks.com/support/batch-tokens.html) form. 
 
 To use a MATLAB batch licensing token:
 
@@ -194,7 +194,7 @@ If you are using a Linux agent, verify that the following software is installed 
 ##### macOS
 If you are using a macOS agent with an Apple silicon processor, verify that Java&reg; Runtime Environment (JRE&trade;) is installed on your agent. For information about this requirement and to get a compatible JRE version, see [MATLAB on Apple Silicon Macs](https://www.mathworks.com/support/requirements/apple-silicon.html).
 
->**Tip:** One convenient way to include the required dependencies on a self-hosted agent is to specify the [MATLAB Dependencies Container Image on Docker&reg; Hub](https://hub.docker.com/r/mathworks/matlab-deps) in your YAML pipeline. For an example, see [Use MATLAB Batch Licensing Token](#use-matlab-batch-licensing-token).
+>**Tip:** One convenient way to include the required dependencies on a self-hosted agent is to specify the [MATLAB Dependencies Container Image on Docker&reg; Hub](https://hub.docker.com/r/mathworks/matlab-deps) in your YAML pipeline.
 
 #### Licensing
 Product licensing for your pipeline depends on your project visibility as well as the type of products to install:
