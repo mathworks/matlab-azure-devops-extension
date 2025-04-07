@@ -39,9 +39,6 @@ export async function install(platform: string, architecture: string, release: s
         throw new Error("Failed to add MATLAB to system path.");
     }
 
-    // install matlab-batch
-    await matlab.setupBatch(platform, matlabArch);
-
     // add MATLAB Runtime to system path on Windows
     if (platform === "win32") {
         try {
@@ -54,4 +51,8 @@ export async function install(platform: string, architecture: string, release: s
             throw new Error("Failed to add MATLAB Runtime to system path on windows.");
         }
     }
+
+    // install matlab-batch
+    await matlab.setupBatch(platform, matlabArch);
+
 }
