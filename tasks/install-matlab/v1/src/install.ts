@@ -2,10 +2,10 @@
 
 import {AgentHostedMode, getAgentMode} from "azure-pipelines-task-lib/task";
 import * as toolLib from "azure-pipelines-tool-lib/tool";
+import * as fs from "fs";
 import * as path from "path";
 import * as matlab from "./matlab";
 import * as mpm from "./mpm";
-import * as fs from "fs";
 
 export async function install(platform: string, architecture: string, release: string, products: string) {
     const parsedRelease: matlab.Release = await matlab.getReleaseInfo(release);
