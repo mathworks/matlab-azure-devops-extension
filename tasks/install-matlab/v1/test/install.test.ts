@@ -58,6 +58,7 @@ export default function suite() {
             stubMpmSetup.restore();
             stubMpmInstall.restore();
             stubPrependPath.restore();
+            stubExistsSync.restore();
         });
 
         it("ideally works", async () => {
