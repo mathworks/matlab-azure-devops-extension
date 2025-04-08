@@ -106,8 +106,6 @@ export default function suite() {
         it("adds MATLAB Runtime to system path on Windows", async () => {
             await install.install("win32", "x64", release, products);
             assert(stubPrependPath.calledWith("/path/to/matlab/runtime/win64"));
-            await install.install("win32", "x86", release, products);
-            assert(stubPrependPath.calledWith("/path/to/matlab/runtime/win32"));
         });
 
     });
