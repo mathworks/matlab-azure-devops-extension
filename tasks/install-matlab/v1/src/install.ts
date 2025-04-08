@@ -5,6 +5,7 @@ import * as toolLib from "azure-pipelines-tool-lib/tool";
 import * as path from "path";
 import * as matlab from "./matlab";
 import * as mpm from "./mpm";
+import * as fs from "fs";
 
 export async function install(platform: string, architecture: string, release: string, products: string) {
     const parsedRelease: matlab.Release = await matlab.getReleaseInfo(release);
@@ -42,12 +43,15 @@ export async function install(platform: string, architecture: string, release: s
     // add MATLAB Runtime to system path on Windows
     if (platform === "win32") {
         try {
-            if (matlabArch === "x86") {
-                toolLib.prependPath(path.join(toolpath, "runtime", "win32"));
-            } else {
-                toolLib.prependPath(path.join(toolpath, "runtime", "win64"));
-            }
+            const runtimePath = matlabArch === "x86" ? path.join(toolpath, "runtime", "win32") : path.join(toolpath, "runtime", "win64");
+
+            console.log(`Attempting to add Runtime path: ${runtimePath}`);
+            console.log(`Directory exists: ${fs.existsSync(runtimePath)}`);
+            console.log(`Full toolpath: ${toolpath}`);
+
+            toolLib.prependPath(runtimePath);
         } catch (err: any) {
+            console.log(`Error details: ${err.message}`);
             throw new Error("Failed to add MATLAB Runtime to system path on windows.");
         }
     }
