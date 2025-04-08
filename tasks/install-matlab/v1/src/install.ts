@@ -39,24 +39,23 @@ export async function install(platform: string, architecture: string, release: s
     } catch (err: any) {
         throw new Error("Failed to add MATLAB to system path.");
     }
-
+    
+    // install matlab-batch
+    await matlab.setupBatch(platform, matlabArch);
+    
     // add MATLAB Runtime to system path on Windows
     if (platform === "win32") {
         try {
             const runtimePath = matlabArch === "x86" ? path.join(toolpath, "runtime", "win32") : path.join(toolpath, "runtime", "win64");
-
+    
             console.log(`Attempting to add Runtime path: ${runtimePath}`);
             console.log(`Directory exists: ${fs.existsSync(runtimePath)}`);
             console.log(`Full toolpath: ${toolpath}`);
-
+    
             toolLib.prependPath(runtimePath);
         } catch (err: any) {
             console.log(`Error details: ${err.message}`);
             throw new Error("Failed to add MATLAB Runtime to system path on windows.");
         }
     }
-
-    // install matlab-batch
-    await matlab.setupBatch(platform, matlabArch);
-
 }
