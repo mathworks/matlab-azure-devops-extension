@@ -3,6 +3,7 @@
 import * as assert from "assert";
 import * as taskLib from "azure-pipelines-task-lib/task";
 import * as toolLib from "azure-pipelines-tool-lib/tool";
+import * as fs from "fs";
 import * as sinon from "sinon";
 import * as install from "../src/install";
 import * as matlab from "../src/matlab";
@@ -19,6 +20,7 @@ export default function suite() {
         let stubMpmSetup: sinon.SinonStub;
         let stubMpmInstall: sinon.SinonStub;
         let stubPrependPath: sinon.SinonStub;
+        let stubExistsSync: sinon.SinonStub;
 
         const platform = "linux";
         const architecture = "x64";
@@ -44,6 +46,7 @@ export default function suite() {
             stubMpmSetup = sinon.stub(mpm, "setup");
             stubMpmInstall = sinon.stub(mpm, "install");
             stubPrependPath = sinon.stub(toolLib, "prependPath");
+            stubExistsSync = sinon.stub(fs, "existsSync");
         });
 
         afterEach(() => {
@@ -103,9 +106,11 @@ export default function suite() {
             assert(stubMpmSetup.calledWith("darwin", "x64"));
         });
 
-        it("adds MATLAB Runtime to system path on Windows", async () => {
+        // Update the test cases
+        it("adds MATLAB Runtime to system path on Windows if directory exists", async () => {
+            stubExistsSync.returns(true);
             await install.install("win32", "x64", release, products);
-            assert(stubPrependPath.calledWith("/path/to/matlab/runtime/win64"));
+            assert(stubPrependPath.calledWith(`${toolcacheDir}/runtime/win64`));
         });
 
     });

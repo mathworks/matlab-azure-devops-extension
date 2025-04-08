@@ -51,7 +51,6 @@ export async function install(platform: string, architecture: string, release: s
                 toolLib.prependPath(runtimePath);
             }
         } catch (err: any) {
-            console.log(`Error details: ${err.message}`);
             throw new Error("Failed to add MATLAB Runtime to system path on windows.");
         }
     }
