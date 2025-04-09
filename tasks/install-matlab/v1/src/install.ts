@@ -2,6 +2,7 @@
 
 import {AgentHostedMode, getAgentMode} from "azure-pipelines-task-lib/task";
 import * as toolLib from "azure-pipelines-tool-lib/tool";
+import * as fs from "fs";
 import * as path from "path";
 import * as matlab from "./matlab";
 import * as mpm from "./mpm";
@@ -41,4 +42,16 @@ export async function install(platform: string, architecture: string, release: s
 
     // install matlab-batch
     await matlab.setupBatch(platform, matlabArch);
+
+    // add MATLAB Runtime to system path on Windows
+    if (platform === "win32") {
+        try {
+            const runtimePath = path.join(toolpath, "runtime", matlabArch === "x86" ? "win32" : "win64");
+            if (fs.existsSync(runtimePath)) {
+                toolLib.prependPath(runtimePath);
+            }
+        } catch (err: any) {
+            throw new Error("Failed to add MATLAB Runtime to system path on windows.");
+        }
+    }
 }
