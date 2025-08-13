@@ -265,7 +265,7 @@ When you use this task, all of the required files must be on the MATLAB search p
 - [Continuous Integration with MATLAB on CI Platforms](https://www.mathworks.com/help/matlab/matlab_prog/continuous-integration-with-matlab-on-ci-platforms.html)
 
 ## Feedback and Support
-If you encounter any product licensing issues, consider requesting a MATLAB batch licensing token to use in your pipeline. For more information, see [Use MATLAB Batch Licensing Token](#use-matlab-batch-licensing-token).
+If you encounter a product licensing issue, consider requesting a MATLAB batch licensing token to use in your pipeline. For more information, see [Use MATLAB Batch Licensing Token](#use-matlab-batch-licensing-token).
 
 If you encounter a technical issue or have an enhancement request about this extension, create an issue [here](https://github.com/mathworks/matlab-azure-devops-extension/issues).
 
