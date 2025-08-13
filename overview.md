@@ -267,6 +267,6 @@ When you use this task, all of the required files must be on the MATLAB search p
 ## Feedback and Support
 If you have any questions or suggestions, contact MathWorks at [continuous-integration@mathworks.com](mailto:continuous-integration@mathworks.com).
 
-If you encounter a technical issue or have an enhancement request about this extension, create an issue [here](./issues).
+If you encounter a technical issue or have an enhancement request about this extension, create an issue [here](https://github.com/mathworks/matlab-azure-devops-extension/issues).
 
 For support, contact [MathWorks Technical Support](https://www.mathworks.com/support/contact_us.html).
