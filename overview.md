@@ -264,5 +264,9 @@ When you use this task, all of the required files must be on the MATLAB search p
 - [Continuous Integration with MATLAB and Simulink](https://www.mathworks.com/solutions/continuous-integration.html)
 - [Continuous Integration with MATLAB on CI Platforms](https://www.mathworks.com/help/matlab/matlab_prog/continuous-integration-with-matlab-on-ci-platforms.html)
 
-## Contact Us
+## Feedback and Support
 If you have any questions or suggestions, contact MathWorks at [continuous-integration@mathworks.com](mailto:continuous-integration@mathworks.com).
+
+If you encounter a technical issue or have an enhancement request about this extension, create an issue [here](./issues).
+
+For support, contact [MathWorks Technical Support](https://www.mathworks.com/support/contact_us.html).
