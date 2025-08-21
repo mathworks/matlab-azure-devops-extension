@@ -267,6 +267,6 @@ When you use this task, all of the required files must be on the MATLAB search p
 ## Feedback and Support
 If you encounter a product licensing issue, consider requesting a MATLAB batch licensing token to use in your pipeline. For more information, see [Use MATLAB Batch Licensing Token](#use-matlab-batch-licensing-token).
 
-If you have an enhancement request about this extension, create an issue [here](https://github.com/mathworks/matlab-azure-devops-extension/issues).
+If you have an enhancement request or other feedback about this extension, create an issue on the [Issues](https://github.com/mathworks/matlab-azure-devops-extension/issues) page.
 
 For support, contact [MathWorks Technical Support](https://www.mathworks.com/support/contact_us.html).
