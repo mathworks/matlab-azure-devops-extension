@@ -245,7 +245,6 @@ jobs:
             grep -v FirstTest test-results/matlab/selectbytag.xml
             grep -v simpleTest test-results/matlab/selectbytag.xml
           displayName: Verify test filtered by tag name
-        # Will uncomment this once Genscript changes are released
         # - bash: |
         #     set -e
         #     grep -q StartupTest test-results/matlab/selectbyname.xml
