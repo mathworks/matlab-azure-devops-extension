@@ -217,10 +217,15 @@ jobs:
             testResultsJUnit: test-results/matlab/selectbyfolder.xml
             selectByFolder: tests/filteredTest
         - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@${{ version }}
-          displayName: Run MATLAB tests filter by folder
+          displayName: Run MATLAB tests filter by tag
           inputs:
             testResultsJUnit: test-results/matlab/selectbytag.xml
             selectByTag: FILTERED
+        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@${{ version }}
+          displayName: Run MATLAB tests filter by name
+          inputs:
+            testResultsJUnit: test-results/matlab/selectbyname.xml
+            selectByName: "filtertest/* mytest/StartupTest"
         - bash: |
             set -e
             grep -q FirstTest test-results/matlab/results.xml
@@ -240,6 +245,13 @@ jobs:
             grep -v FirstTest test-results/matlab/selectbytag.xml
             grep -v simpleTest test-results/matlab/selectbytag.xml
           displayName: Verify test filtered by tag name
+        # Will uncomment this once Genscript changes are released
+        # - bash: |
+        #     set -e
+        #     grep -q StartupTest test-results/matlab/selectbyname.xml
+        #     grep -v simpleTest test-results/matlab/selectbyname.xml
+        #     ! grep -q FirstTest test-results/matlab/selectbytag.xml
+        #   displayName: Verify test filtered by name
         - bash: |
             echo 'diary console.log' >> startup.m
           displayName: Set up diary for logging

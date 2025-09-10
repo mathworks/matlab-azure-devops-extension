@@ -15,6 +15,7 @@ export default function suite() {
                 CoberturaModelCoverage: "",
                 SelectByTag: "",
                 SelectByFolder: "",
+                SelectByName: "",
                 Strict: false,
                 UseParallel: false,
                 OutputDetail: "",
@@ -32,6 +33,7 @@ export default function suite() {
             assert(actual.includes("'CoberturaModelCoverage',''"));
             assert(actual.includes("'SelectByTag',''"));
             assert(actual.includes("'SelectByFolder',''"));
+            assert(actual.includes("'SelectByName',''"));
             assert(actual.includes("'Strict',false"));
             assert(actual.includes("'UseParallel',false"));
             assert(actual.includes("'OutputDetail',''"));
@@ -39,7 +41,7 @@ export default function suite() {
 
             const expected = `genscript('Test', 'JUnitTestResults','', 'CoberturaCodeCoverage','',
                 'SourceFolder','', 'PDFTestReport','', 'SimulinkTestResults','',
-                'CoberturaModelCoverage','', 'SelectByTag','', 'SelectByFolder','',
+                'CoberturaModelCoverage','', 'SelectByTag','', 'SelectByFolder','', 'SelectByName','',
                 'Strict',false, 'UseParallel',false, 'OutputDetail','', 'LoggingLevel','')`
                 .replace(/\s+/g, "");
             assert(actual.replace(/\s+/g, "").includes(expected));
@@ -55,6 +57,7 @@ export default function suite() {
                 CoberturaModelCoverage: "test-results/modelcoverage.xml",
                 SelectByTag: "FeatureA",
                 SelectByFolder: "test/tools;test/toolbox",
+                SelectByName: "tTestA/* tTestB/*",
                 Strict: true,
                 UseParallel: true,
                 OutputDetail: "Detailed",
@@ -72,6 +75,7 @@ export default function suite() {
             assert(actual.includes("'CoberturaModelCoverage','test-results/modelcoverage.xml'"));
             assert(actual.includes("'SelectByTag','FeatureA'"));
             assert(actual.includes("'SelectByFolder','test/tools;test/toolbox'"));
+            assert(actual.includes("'SelectByName','{'tTestA/*', 'tTestB/*'}'"));
             assert(actual.includes("'Strict',true"));
             assert(actual.includes("'UseParallel',true"));
             assert(actual.includes("'OutputDetail','Detailed'"));
@@ -81,7 +85,7 @@ export default function suite() {
                 'CoberturaCodeCoverage','code-coverage/coverage.xml', 'SourceFolder','source',
                 'PDFTestReport','test-results/pdf-results.pdf', 'SimulinkTestResults','test-results/simulinkTest.mldatx',
                 'CoberturaModelCoverage','test-results/modelcoverage.xml', 'SelectByTag','FeatureA',
-                'SelectByFolder','test/tools;test/toolbox', 'Strict',true, 'UseParallel',true, 'OutputDetail','Detailed',
+                'SelectByFolder','test/tools;test/toolbox', 'SelectByName','{'tTestA/*', 'tTestB/*'}', 'Strict',true, 'UseParallel',true, 'OutputDetail','Detailed',
                 'LoggingLevel','Detailed' )`
                 .replace(/\s+/g, "");
             assert(actual.replace(/\s+/g, "").includes(expected));
