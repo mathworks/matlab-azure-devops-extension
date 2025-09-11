@@ -130,6 +130,15 @@
             "helpMarkDown": "Path to write the code coverage results in Cobertura XML format."
         },
         {
+            "name": "codeCoverageHTML",
+            "type": "string",
+            "label": "HTML code coverage",
+            "defaultValue": "",
+            "required": false,
+            "groupName": "coverageArtifacts",
+            "helpMarkDown": "Path to write the code coverage results in HTML format."
+        },
+        {
             "name": "modelCoverageCobertura",
             "type": "string",
             "label": "Cobertura model coverage",

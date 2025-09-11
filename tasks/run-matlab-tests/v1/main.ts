@@ -11,6 +11,7 @@ async function run() {
         const options: scriptgen.IRunTestsOptions = {
             JUnitTestResults: taskLib.getInput("testResultsJUnit"),
             CoberturaCodeCoverage: taskLib.getInput("codeCoverageCobertura"),
+            HTMLCodeCoverage: taskLib.getInput("codeCoverageHTML"),
             SourceFolder: taskLib.getInput("sourceFolder"),
             SelectByFolder: taskLib.getInput("selectByFolder"),
             SelectByTag: taskLib.getInput("selectByTag"),

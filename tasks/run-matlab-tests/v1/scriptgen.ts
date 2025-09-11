@@ -5,6 +5,7 @@ import * as path from "path";
 export interface IRunTestsOptions {
     JUnitTestResults?: string;
     CoberturaCodeCoverage?: string;
+    HTMLCodeCoverage?: string;
     SourceFolder?: string;
     PDFTestReport?: string;
     SimulinkTestResults?: string;
@@ -22,6 +23,7 @@ export function generateCommand(options: IRunTestsOptions): string {
         `testScript = genscript('Test',` +
             `'JUnitTestResults','${options.JUnitTestResults || ""}',` +
             `'CoberturaCodeCoverage','${options.CoberturaCodeCoverage || ""}',` +
+            `'HTMLCodeCoverage','${options.HTMLCodeCoverage || ""}',` +
             `'SourceFolder','${options.SourceFolder || ""}',` +
             `'PDFTestReport','${options.PDFTestReport || ""}',` +
             `'SimulinkTestResults','${options.SimulinkTestResults || ""}',` +
