@@ -232,7 +232,7 @@ jobs:
           displayName: Verify code coverage file was created
         - bash: |
             set -e
-            grep -q add code-coverage/coverageHTML
+            test -d code-coverage/coverageHTML
           displayName: Verify code coverage folder was created
         - bash: |
             set -e
