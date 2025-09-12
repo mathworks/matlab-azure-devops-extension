@@ -229,7 +229,7 @@ jobs:
         - bash: |
             set -e
             grep -q add code-coverage/coverage.xml
-            grep -q add code-coverage/coverage.html
+            grep -q add code-coverage/coverag.html
           displayName: Verify code coverage file was created
         - bash: |
             set -e
