@@ -210,13 +210,8 @@ jobs:
           inputs:
             testResultsJUnit: test-results/matlab/results.xml
             codeCoverageCobertura: code-coverage/coverage.xml
-            sourceFolder: src
-        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@${{ version }}
-          displayName: Run MATLAB tests producing artifacts
-          inputs:
             codeCoverageHTML: code-coverage/coverageHTML
             sourceFolder: src
-          condition: not(eq(${{ version }}, '0'))
         - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@${{ version }}
           displayName: Run MATLAB tests filter by folder
           inputs:
@@ -239,6 +234,7 @@ jobs:
             set -e
             test -d code-coverage/coverageHTML
           displayName: Verify code coverage folder was created
+          condition: not(eq(${{ version }}, '0'))
         - bash: |
             set -e
             grep -q simpleTest test-results/matlab/selectbyfolder.xml
