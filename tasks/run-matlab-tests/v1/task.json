@@ -109,7 +109,7 @@
             "defaultValue": "",
             "groupName": "testArtifacts",
             "required": false,
-            "helpMarkDown": "Path to write the test results in HTML format (requires MATLAB R2020b or later on macOS platforms)."
+            "helpMarkDown": "Path to write the test results in HTML format."
         },
         {
             "name": "testResultsJUnit",
