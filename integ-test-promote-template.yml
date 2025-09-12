@@ -210,6 +210,7 @@ jobs:
           inputs:
             testResultsJUnit: test-results/matlab/results.xml
             codeCoverageCobertura: code-coverage/coverage.xml
+            codeCoverageHTML: code-coverage/coverage.html
             sourceFolder: src
         - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@${{ version }}
           displayName: Run MATLAB tests filter by folder
@@ -228,6 +229,7 @@ jobs:
         - bash: |
             set -e
             grep -q add code-coverage/coverage.xml
+            grep -q add code-coverage/coverage.html
           displayName: Verify code coverage file was created
         - bash: |
             set -e
