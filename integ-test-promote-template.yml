@@ -358,6 +358,7 @@ jobs:
           inputs:
             selectByFolder: "simtests"
             modelCoverageCobertura: test-results/matlab/modelcoverage.xml
+            modelCoverageHTML: test-results/matlab/modelcoverageHTML
             testResultsSimulinkTest: test-results/matlab/stmResult.mldatx
             testResultsPDF: test-results/matlab/results.pdf
           condition: eq(variables['Agent.OS'], 'Linux')
@@ -365,6 +366,11 @@ jobs:
             set -e
             grep -q new_temp_model test-results/matlab/modelcoverage.xml
           displayName: Verify Model coverage was created
+          condition: eq(variables['Agent.OS'], 'Linux')
+        - bash: |
+            set -e
+            test -d test-results/matlab/modelcoverageHTML
+          displayName: Verify HTML Model coverage was created
           condition: eq(variables['Agent.OS'], 'Linux')
         - bash: |
             set -e
