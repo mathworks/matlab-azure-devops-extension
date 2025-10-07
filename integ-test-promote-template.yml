@@ -209,6 +209,7 @@ jobs:
           displayName: Run MATLAB tests producing artifacts
           inputs:
             testResultsJUnit: test-results/matlab/results.xml
+            testResultHTML:  test-results/matlab/resultsHTML
             codeCoverageCobertura: code-coverage/coverage.xml
             codeCoverageHTML: code-coverage/coverageHTML
             sourceFolder: src
@@ -226,6 +227,10 @@ jobs:
             set -e
             grep -q FirstTest test-results/matlab/results.xml
           displayName: Verify test results file was created
+        - bash: |
+            set -e
+            test -d test-results/matlab/resultsHTML
+          displayName: Verify test results folder was created
         - bash: |
             set -e
             grep -q add code-coverage/coverage.xml
