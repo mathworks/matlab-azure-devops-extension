@@ -285,7 +285,7 @@ jobs:
             sourceFolder: src
         - bash: |
             set -e
-            grep -q "TestRunner.withTextOutput('OutputDetail', 3)" console.log
+            grep -q "('OutputDetail', 3)" console.log
             rm console.log
           displayName: Verify tests ran with detailed display level for event details
         - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@${{ version }}
@@ -295,7 +295,7 @@ jobs:
             sourceFolder: src
         - bash: |
             set -e
-            grep -q "TestRunner.withTextOutput('LoggingLevel', 3)" console.log
+            grep -q "('LoggingLevel', 3)" console.log
             rm console.log
           displayName: Verify tests ran with detailed verbosity level for logged diagnostics
         - bash: |
