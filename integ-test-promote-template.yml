@@ -231,6 +231,7 @@ jobs:
             set -e
             test -d test-results/matlab/resultsHTML
           displayName: Verify test results folder was created
+          condition: not(eq(${{ version }}, '0'))
         - bash: |
             set -e
             grep -q add code-coverage/coverage.xml
