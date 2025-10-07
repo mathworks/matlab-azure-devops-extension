@@ -209,7 +209,7 @@ jobs:
           displayName: Run MATLAB tests producing artifacts
           inputs:
             testResultsJUnit: test-results/matlab/results.xml
-            testResultHTML:  test-results/matlab/resultsHTML
+            testResultsHTML:  test-results/matlab/resultsHTML
             codeCoverageCobertura: code-coverage/coverage.xml
             codeCoverageHTML: code-coverage/coverageHTML
             sourceFolder: src
