@@ -230,6 +230,7 @@ jobs:
         - bash: |
             set -e
             test -d test-results/matlab/resultsHTML
+            test -f test-results/matlab/resultsHTML/*.html
           displayName: Verify test results folder was created
           condition: not(eq(${{ version }}, '0'))
         - bash: |
@@ -239,6 +240,7 @@ jobs:
         - bash: |
             set -e
             test -d code-coverage/coverageHTML
+            test -f code-coverage/coverageHTML/*.html
           displayName: Verify code coverage folder was created
           condition: not(eq(${{ version }}, '0'))
         - bash: |
@@ -370,6 +372,7 @@ jobs:
         - bash: |
             set -e
             test -d test-results/matlab/modelcoverageHTML
+            test -f test-results/matlab/modelCoverageHTML/*.html
           displayName: Verify HTML Model coverage was created
           condition: not(eq(${{ version }}, '0'))
         - bash: |
@@ -382,27 +385,6 @@ jobs:
             test -f test-results/matlab/results.pdf
           displayName: Verify PDF report was created
           condition: eq(variables['Agent.OS'], 'Linux')
-        - task: PublishPipelineArtifact@1
-          displayName: Upload MATLAB test and coverage artifacts
-          inputs:
-            targetPath: '$(System.DefaultWorkingDirectory)/test-results/matlab'
-            artifact: 'matlab-test-results-v${{ version }}'
-            publishLocation: 'pipeline'
-
-        - task: PublishPipelineArtifact@1
-          displayName: Upload MATLAB code coverage artifacts
-          inputs:
-            targetPath: '$(System.DefaultWorkingDirectory)/code-coverage'
-            artifact: 'matlab-code-coverage-v${{ version }}'
-            publishLocation: 'pipeline'
-
-        - task: PublishPipelineArtifact@1
-          displayName: Upload MATLAB model coverage artifacts
-          condition: eq(variables['Agent.OS'], 'Linux')
-          inputs:
-            targetPath: '$(System.DefaultWorkingDirectory)/test-results/matlab/modelcoverageHTML'
-            artifact: 'matlab-model-coverage-v${{ version }}'
-            publishLocation: 'pipeline'
         
 
     - job: test_run_build_v${{ version }}
