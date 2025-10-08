@@ -372,6 +372,7 @@ jobs:
         - bash: |
             set -e
             test -d test-results/matlab/modelcoverageHTML
+            test -f test-results/matlab/modelcoverageHTML/*.html
           displayName: Verify HTML Model coverage was created
           condition: not(eq(${{ version }}, '0'))
         - bash: |
@@ -384,29 +385,7 @@ jobs:
             test -f test-results/matlab/results.pdf
           displayName: Verify PDF report was created
           condition: eq(variables['Agent.OS'], 'Linux')
-        - bash: |
-            set -e
-            echo "Final test-results/matlab contents:"
-            ls -R test-results/matlab
-          displayName: List all MATLAB test artifacts
-          condition: eq(variables['Agent.OS'], 'Linux')
-        - bash: |
-            set -e
-            if [ -d test-results/matlab/modelCoverageHTML ]; then
-              echo "Contents of modelCoverageHTML:"
-              ls -R test-results/matlab/modelCoverageHTML
-            else
-              echo "modelCoverageHTML folder does not exist!"
-              exit 1
-            fi
-          displayName: List contents of modelCoverageHTML
-          condition: eq(variables['Agent.OS'], 'Linux')
-        - task: PublishPipelineArtifact@1
-          displayName: Upload MATLAB Test Results (PDF, XML, HTML)
-          inputs:
-            targetPath: 'test-results/matlab/modelcoverageHTML'
-            artifact: 'test-results/matlab/modelcoverageHTML'
-          condition: always()
+
     - job: test_run_build_v${{ version }}
       strategy:
         matrix:
