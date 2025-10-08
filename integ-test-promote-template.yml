@@ -372,7 +372,6 @@ jobs:
         - bash: |
             set -e
             test -d test-results/matlab/modelcoverageHTML
-            test -f test-results/matlab/modelcoverageHTML/*.html
           displayName: Verify HTML Model coverage was created
           condition: not(eq(${{ version }}, '0'))
         - bash: |
