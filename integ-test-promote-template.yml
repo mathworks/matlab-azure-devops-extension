@@ -388,7 +388,7 @@ jobs:
         - task: PublishPipelineArtifact@1
           displayName: Upload MATLAB Test Results (PDF, XML, HTML)
           inputs:
-            targetPath: 'test-results/matlab/modelCoverageHTML'
+            targetPath: 'test-results/matlab/modelcoverageHTML'
             artifact: 'matlab-test-artifacts-$(Agent.OS)-$(System.JobAttempt)'
           condition: always()
     - job: test_run_build_v${{ version }}
