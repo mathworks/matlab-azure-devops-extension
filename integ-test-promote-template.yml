@@ -389,7 +389,7 @@ jobs:
           displayName: Upload MATLAB Test Results (PDF, XML, HTML)
           inputs:
             targetPath: 'test-results/matlab'
-            artifact: 'matlab-test-artifacts'
+            artifact: 'matlab-test-artifacts-$(Agent.OS)'
           condition: always()
     - job: test_run_build_v${{ version }}
       strategy:
