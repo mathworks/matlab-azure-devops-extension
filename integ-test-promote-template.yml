@@ -231,7 +231,7 @@ jobs:
             set -e
             test -d test-results/matlab/resultsHTML
             test -f test-results/matlab/resultsHTML/*.html
-          displayName: Verify test results folder was created
+          displayName: Verify HTML test results folder and HTML file was created
           condition: not(eq(${{ version }}, '0'))
         - bash: |
             set -e
@@ -241,7 +241,7 @@ jobs:
             set -e
             test -d code-coverage/coverageHTML
             test -f code-coverage/coverageHTML/*.html
-          displayName: Verify code coverage folder was created
+          displayName: Verify HTML code coverage folder and HTML file was created
           condition: not(eq(${{ version }}, '0'))
         - bash: |
             set -e
@@ -373,7 +373,7 @@ jobs:
             set -e
             test -d test-results/matlab/modelcoverageHTML
             test -f test-results/matlab/modelcoverageHTML/*.html
-          displayName: Verify HTML Model coverage was created
+          displayName: Verify HTML Model coverage folder and HTML file was created
           condition: not(eq(${{ version }}, '0'))
         - bash: |
             set -e
