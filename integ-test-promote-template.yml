@@ -385,23 +385,6 @@ jobs:
             test -f test-results/matlab/results.pdf
           displayName: Verify PDF report was created
           condition: eq(variables['Agent.OS'], 'Linux')
-        - bash: |
-            set -e
-            echo "Final test-results/matlab contents:"
-            ls -R test-results/matlab
-          displayName: List all MATLAB test artifacts
-          condition: eq(variables['Agent.OS'], 'Linux')
-        - bash: |
-            set -e
-            if [ -d test-results/matlab/modelcoverageHTML ]; then
-              echo "Contents of modelcoverageHTML:"
-              ls -R test-results/matlab/modelcoverageHTML
-            else
-              echo "modelcoverageHTML folder does not exist!"
-              exit 1
-            fi
-          displayName: List contents of modelcoverageHTML
-          condition: eq(variables['Agent.OS'], 'Linux')
     - job: test_run_build_v${{ version }}
       strategy:
         matrix:
