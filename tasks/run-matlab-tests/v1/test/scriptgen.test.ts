@@ -24,7 +24,6 @@ export default function suite() {
 
             const actual = scriptgen.generateCommand(options);
 
-            console.log(actual);
             assert(actual.includes("genscript('Test'"));
             assert(actual.includes("'JUnitTestResults',''"));
             assert(actual.includes("'CoberturaCodeCoverage',''"));
@@ -67,7 +66,6 @@ export default function suite() {
 
             const actual = scriptgen.generateCommand(options);
 
-            console.log(actual);
             assert(actual.includes("genscript('Test'"));
             assert(actual.includes("'JUnitTestResults','test-results/results.xml'"));
             assert(actual.includes("'CoberturaCodeCoverage','code-coverage/coverage.xml'"));
