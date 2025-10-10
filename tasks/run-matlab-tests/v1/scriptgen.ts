@@ -20,12 +20,10 @@ export interface IRunTestsOptions {
 
 // Function to convert space separated names to cell array of character vectors
 export function getSelectByNameAsCellArray(input?: string): string {
-    if (!input) {
-        return "";
+    if (!input || !input.trim()) {
+        return '{}';
     }
-    // Split by whitespace, filter out empty, wrap each in single quotes
     const items = input.split(/\s+/).filter(Boolean).map((s) => `'${s}'`);
-    // Join with commas, wrap in {}
     return `{${items.join(", ")}}`;
 }
 
@@ -40,7 +38,7 @@ export function generateCommand(options: IRunTestsOptions): string {
             `'CoberturaModelCoverage','${options.CoberturaModelCoverage || ""}',` +
             `'SelectByTag','${options.SelectByTag || ""}',` +
             `'SelectByFolder','${options.SelectByFolder || ""}',` +
-            `'SelectByName','${getSelectByNameAsCellArray(options.SelectByName) || ""}',` +
+            `'SelectByName','${getSelectByNameAsCellArray(options.SelectByName)}',` +
             `'Strict',${options.Strict || false},` +
             `'UseParallel',${options.UseParallel || false},` +
             `'OutputDetail','${options.OutputDetail || ""}',` +
