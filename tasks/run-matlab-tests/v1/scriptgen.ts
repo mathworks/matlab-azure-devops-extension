@@ -21,7 +21,7 @@ export interface IRunTestsOptions {
 // Function to convert space separated names to cell array of character vectors
 export function getSelectByNameAsCellArray(input?: string): string {
     if (!input || !input.trim()) {
-        return '{}';
+        return "{}";
     }
     const items = input.split(/\s+/).filter(Boolean).map((s) => `'${s}'`);
     return `{${items.join(", ")}}`;
