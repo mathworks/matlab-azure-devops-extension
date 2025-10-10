@@ -77,7 +77,7 @@ export default function suite() {
             assert(actual.includes("'CoberturaModelCoverage','test-results/modelcoverage.xml'"));
             assert(actual.includes("'SelectByTag','FeatureA'"));
             assert(actual.includes("'SelectByFolder','test/tools;test/toolbox'"));
-            assert(actual.includes("'SelectByName','{'tTestA/*', 'tTestB/*'}'"));
+            assert(actual.includes("'SelectByName',{'tTestA/*', 'tTestB/*'}"));
             assert(actual.includes("'Strict',true"));
             assert(actual.includes("'UseParallel',true"));
             assert(actual.includes("'OutputDetail','Detailed'"));
