@@ -163,7 +163,7 @@
             "defaultValue": "",
             "groupName": "coverageArtifacts",
             "required": false,
-            "helpMarkDown": "Path to write the model coverage report in HTML format (requires Simulink Coverage and is supported in MATLAB R2018b or later)."
+            "helpMarkDown": "Path to write the model coverage results in HTML format (requires Simulink Coverage and is supported in MATLAB R2018b or later)."
         },
         {
             "name": "startupOptions",
