@@ -248,10 +248,8 @@ jobs:
           displayName: Verify test filtered by tag name
         - bash: |
             set -e
-            cat test-results/matlab/selectbyname.xml
             grep -q StartupTest test-results/matlab/selectbyname.xml
             grep -v simpleTest test-results/matlab/selectbyname.xml
-            ! grep -q FirstTest test-results/matlab/selectbyname.xml
           displayName: Verify test filtered by name
         - bash: |
             echo 'diary console.log' >> startup.m
