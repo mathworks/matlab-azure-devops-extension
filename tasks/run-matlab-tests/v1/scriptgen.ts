@@ -38,7 +38,7 @@ export function generateCommand(options: IRunTestsOptions): string {
             `'CoberturaModelCoverage','${options.CoberturaModelCoverage || ""}',` +
             `'SelectByTag','${options.SelectByTag || ""}',` +
             `'SelectByFolder','${options.SelectByFolder || ""}',` +
-            `'SelectByName','${getSelectByNameAsCellArray(options.SelectByName)}',` +
+            `'SelectByName',${getSelectByNameAsCellArray(options.SelectByName)},` +
             `'Strict',${options.Strict || false},` +
             `'UseParallel',${options.UseParallel || false},` +
             `'OutputDetail','${options.OutputDetail || ""}',` +
