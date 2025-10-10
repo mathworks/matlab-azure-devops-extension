@@ -87,7 +87,7 @@ export default function suite() {
                 'CoberturaCodeCoverage','code-coverage/coverage.xml', 'SourceFolder','source',
                 'PDFTestReport','test-results/pdf-results.pdf', 'SimulinkTestResults','test-results/simulinkTest.mldatx',
                 'CoberturaModelCoverage','test-results/modelcoverage.xml', 'SelectByTag','FeatureA',
-                'SelectByFolder','test/tools;test/toolbox', 'SelectByName','{'tTestA/*', 'tTestB/*'}', 'Strict',true, 'UseParallel',true, 'OutputDetail','Detailed',
+                'SelectByFolder','test/tools;test/toolbox', 'SelectByName',{'tTestA/*', 'tTestB/*'}, 'Strict',true, 'UseParallel',true, 'OutputDetail','Detailed',
                 'LoggingLevel','Detailed' )`
                 .replace(/\s+/g, "");
             assert(actual.replace(/\s+/g, "").includes(expected));
