@@ -33,7 +33,7 @@ export default function suite() {
             assert(actual.includes("'CoberturaModelCoverage',''"));
             assert(actual.includes("'SelectByTag',''"));
             assert(actual.includes("'SelectByFolder',''"));
-            assert(actual.includes("'SelectByName',''"));
+            assert(actual.includes("'SelectByName',{}"));
             assert(actual.includes("'Strict',false"));
             assert(actual.includes("'UseParallel',false"));
             assert(actual.includes("'OutputDetail',''"));
@@ -41,7 +41,7 @@ export default function suite() {
 
             const expected = `genscript('Test', 'JUnitTestResults','', 'CoberturaCodeCoverage','',
                 'SourceFolder','', 'PDFTestReport','', 'SimulinkTestResults','',
-                'CoberturaModelCoverage','', 'SelectByTag','', 'SelectByFolder','', 'SelectByName','',
+                'CoberturaModelCoverage','', 'SelectByTag','', 'SelectByFolder','', 'SelectByName',{},
                 'Strict',false, 'UseParallel',false, 'OutputDetail','', 'LoggingLevel','')`
                 .replace(/\s+/g, "");
             assert(actual.replace(/\s+/g, "").includes(expected));
