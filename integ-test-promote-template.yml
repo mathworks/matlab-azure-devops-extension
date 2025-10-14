@@ -294,7 +294,7 @@ jobs:
             sourceFolder: src
         - bash: |
             set -e
-            grep -q "TestRunner.withTextOutput('LoggingLevel', 3)" console.log
+            grep -q " testrunner('LoggingLevel', 3)" console.log
             rm console.log
           displayName: Verify tests ran with detailed verbosity level for logged diagnostics
         - bash: |
