@@ -297,7 +297,7 @@ jobs:
             sourceFolder: src
         - bash: |
             set -e
-            grep -q " ('LoggingLevel', 3)" console.log
+            grep -q "('LoggingLevel', 3)" console.log
             rm console.log
           displayName: Verify tests ran with detailed verbosity level for logged diagnostics
         - bash: |
