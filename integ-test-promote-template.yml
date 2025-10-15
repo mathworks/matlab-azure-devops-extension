@@ -478,18 +478,18 @@ jobs:
           displayName: Verify that correct tasks appear in buildlog.txt
           condition: not(eq(${{ version }}, '0'))
 
--job: test_run_tests_for_v1
-strategy:
-  matrix:
-    microsoft_hosted_linux:
-    poolName: Azure Pipelines
-    vmImage: ubuntu-22.04
-pool:
-  name: $(poolName)
-  vmImage: $(vmImage)
-workspace:
-  clean: all
-  steps:
+  - job: test_run_tests_for_v1
+    strategy:
+      matrix:
+        microsoft_hosted_linux:
+          poolName: Azure Pipelines
+          vmImage: ubuntu-22.04
+    pool:
+      name: $(poolName)git commit --amend -m "Updated file"
+      vmImage: $(vmImage)
+    workspace:
+      clean: all
+    steps:
       - checkout: none
       - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@${{ version }}
         displayName: Install MATLAB on Microsoft-hosted agents
@@ -525,12 +525,12 @@ workspace:
       - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@${{ version }}
         displayName: Run MATLAB tests filter by name
         inputs:
-            testResultsJUnit: test-results/matlab/selectbyname.xml
-            selectByName: "filtertest/* mytest/StartupTest"
-            sourceFolder: src
+                testResultsJUnit: test-results/matlab/selectbyname.xml
+                selectByName: "filtertest/* mytest/StartupTest"
+                sourceFolder: src
       - bash: |
-            set -e
-            grep -q StartupTest test-results/matlab/selectbyname.xml
-            grep -v simpleTest test-results/matlab/selectbyname.xml
+                set -e
+                grep -q StartupTest test-results/matlab/selectbyname.xml
+                grep -v simpleTest test-results/matlab/selectbyname.xml
         displayName: Verify test filtered by name
-      
+          
