@@ -225,7 +225,7 @@ jobs:
           displayName: Run MATLAB tests filter by name
           inputs:
             testResultsJUnit: test-results/matlab/selectbyname.xml
-            selectByName: "filtertest/* mytest/StartupTest"
+            selectByName: "filtertest/*, mytest/StartupTest"
             sourceFolder: src
           condition: not(eq(${{ version }}, '0'))
         - bash: |
