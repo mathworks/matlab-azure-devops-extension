@@ -250,7 +250,7 @@ jobs:
         - bash: |
             set -e
             grep -q StartupTest test-results/matlab/selectbyname.xml
-            grep -v simpleTest test-results/matlab/selectbyname.xml
+            grep -q simpleTest test-results/matlab/selectbyname.xml
             ! grep -q FirstTest test-results/matlab/selectbytag.xml
           displayName: Verify test filtered by name
           condition: not(eq(${{ version }}, '0'))
