@@ -127,7 +127,7 @@
             "defaultValue": "",
             "groupName": "testArtifacts",
             "required": false,
-            "helpMarkDown": "Path to export Simulink Test Manager results in MLDATX format (requires Simulink Test and is supported in MATLAB R2019a or later)."
+            "helpMarkDown": "File path to export Simulink Test Manager results in MLDATX format (requires Simulink Test and is supported in MATLAB R2019a or later)."
         },
         {
             "name": "codeCoverageCobertura",
