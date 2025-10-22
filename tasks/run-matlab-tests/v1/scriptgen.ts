@@ -5,10 +5,13 @@ import * as path from "path";
 export interface IRunTestsOptions {
     JUnitTestResults?: string;
     CoberturaCodeCoverage?: string;
+    HTMLCodeCoverage?: string;
     SourceFolder?: string;
     PDFTestReport?: string;
+    HTMLTestReport?: string;
     SimulinkTestResults?: string;
     CoberturaModelCoverage?: string;
+    HTMLModelCoverage?: string;
     SelectByTag?: string;
     SelectByFolder?: string;
     Strict?: boolean;
@@ -22,10 +25,13 @@ export function generateCommand(options: IRunTestsOptions): string {
         `testScript = genscript('Test',` +
             `'JUnitTestResults','${options.JUnitTestResults || ""}',` +
             `'CoberturaCodeCoverage','${options.CoberturaCodeCoverage || ""}',` +
+            `'HTMLCodeCoverage','${options.HTMLCodeCoverage || ""}',` +
             `'SourceFolder','${options.SourceFolder || ""}',` +
             `'PDFTestReport','${options.PDFTestReport || ""}',` +
+            `'HTMLTestReport','${options.HTMLTestReport || ""}',` +
             `'SimulinkTestResults','${options.SimulinkTestResults || ""}',` +
             `'CoberturaModelCoverage','${options.CoberturaModelCoverage || ""}',` +
+            `'HTMLModelCoverage','${options.HTMLModelCoverage || ""}',` +
             `'SelectByTag','${options.SelectByTag || ""}',` +
             `'SelectByFolder','${options.SelectByFolder || ""}',` +
             `'Strict',${options.Strict || false},` +
