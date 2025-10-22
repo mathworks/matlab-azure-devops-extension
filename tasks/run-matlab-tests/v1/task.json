@@ -100,7 +100,7 @@
             "defaultValue": "",
             "groupName": "testArtifacts",
             "required": false,
-            "helpMarkDown": "Path to write the test results in PDF format (requires MATLAB R2020b or later on macOS platforms)."
+            "helpMarkDown": "File path to write the test results in PDF format (requires MATLAB R2020b or later on macOS platforms)."
         },
         {
             "name": "testResultsHTML",
@@ -118,7 +118,7 @@
             "defaultValue": "",
             "groupName": "testArtifacts",
             "required": false,
-            "helpMarkDown": "Path to write the test results in JUnit-style XML format."
+            "helpMarkDown": "File path to write the test results in JUnit-style XML format."
         },
         {
             "name": "testResultsSimulinkTest",
@@ -136,7 +136,7 @@
             "defaultValue": "",
             "required": false,
             "groupName": "coverageArtifacts",
-            "helpMarkDown": "Path to write the code coverage results in Cobertura XML format."
+            "helpMarkDown": "File path to write the code coverage results in Cobertura XML format."
         },
         {
             "name": "codeCoverageHTML",
@@ -154,7 +154,7 @@
             "defaultValue": "",
             "groupName": "coverageArtifacts",
             "required": false,
-            "helpMarkDown": "Path to write the model coverage report in Cobertura XML format (requires Simulink Coverage and is supported in MATLAB R2018b or later)."
+            "helpMarkDown": "File path to write the model coverage report in Cobertura XML format (requires Simulink Coverage and is supported in MATLAB R2018b or later)."
         },
         {
             "name": "modelCoverageHTML",
