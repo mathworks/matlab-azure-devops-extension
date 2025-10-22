@@ -105,11 +105,11 @@
         {
             "name": "testResultsHTML",
             "type": "string",
-            "label": "HTML test report ",
+            "label": "HTML test report",
             "defaultValue": "",
             "groupName": "testArtifacts",
             "required": false,
-            "helpMarkDown": "Path to write the test results in HTML format."
+            "helpMarkDown": "Folder path to write the test results in HTML format."
         },
         {
             "name": "testResultsJUnit",
@@ -145,7 +145,7 @@
             "defaultValue": "",
             "required": false,
             "groupName": "coverageArtifacts",
-            "helpMarkDown": "Path to write the code coverage results in HTML format."
+            "helpMarkDown": "Folder path to write the code coverage results in HTML format."
         },
         {
             "name": "modelCoverageCobertura",
@@ -163,7 +163,7 @@
             "defaultValue": "",
             "groupName": "coverageArtifacts",
             "required": false,
-            "helpMarkDown": "Path to write the model coverage results in HTML format (requires Simulink Coverage and is supported in MATLAB R2018b or later)."
+            "helpMarkDown": "Folder path to write the model coverage results in HTML format (requires Simulink Coverage and is supported in MATLAB R2018b or later)."
         },
         {
             "name": "startupOptions",

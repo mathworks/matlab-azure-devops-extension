@@ -55,13 +55,13 @@ export default function suite() {
             const options: scriptgen.IRunTestsOptions = {
                 JUnitTestResults: "test-results/results.xml",
                 CoberturaCodeCoverage: "code-coverage/coverage.xml",
-                HTMLCodeCoverage: "code-coverage/coverage.html",
+                HTMLCodeCoverage: "code-coverage/coverageHTML",
                 SourceFolder: "source",
                 PDFTestReport: "test-results/pdf-results.pdf",
-                HTMLTestReport: "test-results/html-results.html",
+                HTMLTestReport: "test-results/html-resultsHTML",
                 SimulinkTestResults: "test-results/simulinkTest.mldatx",
                 CoberturaModelCoverage: "test-results/modelcoverage.xml",
-                HTMLModelCoverage: "test-results/modelcoverage.html",
+                HTMLModelCoverage: "test-results/modelcoverageHTML",
                 SelectByTag: "FeatureA",
                 SelectByFolder: "test/tools;test/toolbox",
                 Strict: true,
@@ -75,13 +75,13 @@ export default function suite() {
             assert(actual.includes("genscript('Test'"));
             assert(actual.includes("'JUnitTestResults','test-results/results.xml'"));
             assert(actual.includes("'CoberturaCodeCoverage','code-coverage/coverage.xml'"));
-            assert(actual.includes("'HTMLCodeCoverage','code-coverage/coverage.html'"));
+            assert(actual.includes("'HTMLCodeCoverage','code-coverage/coverageHTML'"));
             assert(actual.includes("'SourceFolder','source'"));
             assert(actual.includes("'PDFTestReport','test-results/pdf-results.pdf'"));
-            assert(actual.includes("'HTMLTestReport','test-results/html-results.html'"));
+            assert(actual.includes("'HTMLTestReport','test-results/html-resultsHTML'"));
             assert(actual.includes("'SimulinkTestResults','test-results/simulinkTest.mldatx'"));
             assert(actual.includes("'CoberturaModelCoverage','test-results/modelcoverage.xml'"));
-            assert(actual.includes("'HTMLModelCoverage','test-results/modelcoverage.html'"));
+            assert(actual.includes("'HTMLModelCoverage','test-results/modelcoverageHTML'"));
             assert(actual.includes("'SelectByTag','FeatureA'"));
             assert(actual.includes("'SelectByFolder','test/tools;test/toolbox'"));
             assert(actual.includes("'Strict',true"));
@@ -90,9 +90,9 @@ export default function suite() {
             assert(actual.includes("'LoggingLevel','Detailed'"));
 
             const expected = `genscript('Test', 'JUnitTestResults','test-results/results.xml',
-                'CoberturaCodeCoverage','code-coverage/coverage.xml','HTMLCodeCoverage','code-coverage/coverage.html', 'SourceFolder','source',
-                'PDFTestReport','test-results/pdf-results.pdf', 'HTMLTestReport','test-results/html-results.html', 'SimulinkTestResults','test-results/simulinkTest.mldatx',
-                'CoberturaModelCoverage','test-results/modelcoverage.xml', 'HTMLModelCoverage','test-results/modelcoverage.html', 'SelectByTag','FeatureA',
+                'CoberturaCodeCoverage','code-coverage/coverage.xml','HTMLCodeCoverage','code-coverage/coverageHTML', 'SourceFolder','source',
+                'PDFTestReport','test-results/pdf-results.pdf', 'HTMLTestReport','test-results/html-resultsHTML', 'SimulinkTestResults','test-results/simulinkTest.mldatx',
+                'CoberturaModelCoverage','test-results/modelcoverage.xml', 'HTMLModelCoverage','test-results/modelcoverageHTML', 'SelectByTag','FeatureA',
                 'SelectByFolder','test/tools;test/toolbox', 'Strict',true, 'UseParallel',true, 'OutputDetail','Detailed',
                 'LoggingLevel','Detailed' )`
                 .replace(/\s+/g, "");
