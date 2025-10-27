@@ -23,8 +23,8 @@ export function getSelectByNameAsCellArray(input?: string): string {
     if (!input || !input.trim()) {
         return "{}";
     }
-    const items = input.split(/\s+/).filter(Boolean).map((s) => `'${s}'`);
-    return `{${items.join(", ")}}`;
+    const items = input.split(/\s+/).filter(Boolean).map((s) => `\'${s}\'`);
+    return `\{${items.join(", ")}\}`;
 }
 
 export function generateCommand(options: IRunTestsOptions): string {
