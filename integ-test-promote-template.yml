@@ -278,7 +278,7 @@ jobs:
         - bash: |
             set -e
             grep -q StartupTest test-results/matlab/selectbynamewithmultiplespaces.xml
-            grep -q simpleTest test-results/matlab/selectbynamewithmultiplespacesectbyname.xml
+            grep -q simpleTest test-results/matlab/selectbynamewithmultiplespaces.xml
             ! grep -q FirstTest test-results/matlab/selectbynamewithmultiplespaces.xml
           displayName: Verify test filtered by name with multiple spaces
           condition: not(eq(${{ version }}, '0'))
