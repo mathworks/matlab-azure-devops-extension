@@ -209,7 +209,9 @@ jobs:
           displayName: Run MATLAB tests producing artifacts
           inputs:
             testResultsJUnit: test-results/matlab/results.xml
+            testResultsHTML:  test-results/matlab/resultsHTML
             codeCoverageCobertura: code-coverage/coverage.xml
+            codeCoverageHTML: code-coverage/coverageHTML
             sourceFolder: src
         - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@${{ version }}
           displayName: Run MATLAB tests filter by folder
@@ -241,8 +243,20 @@ jobs:
           displayName: Verify test results file was created
         - bash: |
             set -e
+            test -d test-results/matlab/resultsHTML
+            test -f test-results/matlab/resultsHTML/*.html
+          displayName: Verify HTML test results folder and HTML file was created
+          condition: not(eq(${{ version }}, '0'))
+        - bash: |
+            set -e
             grep -q add code-coverage/coverage.xml
           displayName: Verify code coverage file was created
+        - bash: |
+            set -e
+            test -d code-coverage/coverageHTML
+            test -f code-coverage/coverageHTML/*.html
+          displayName: Verify HTML code coverage folder and HTML file was created
+          condition: not(eq(${{ version }}, '0'))
         - bash: |
             set -e
             grep -q simpleTest test-results/matlab/selectbyfolder.xml
@@ -374,6 +388,7 @@ jobs:
           inputs:
             selectByFolder: "simtests"
             modelCoverageCobertura: test-results/matlab/modelcoverage.xml
+            modelCoverageHTML: test-results/matlab/modelcoverageHTML
             testResultsSimulinkTest: test-results/matlab/stmResult.mldatx
             testResultsPDF: test-results/matlab/results.pdf
           condition: eq(variables['Agent.OS'], 'Linux')
@@ -382,6 +397,12 @@ jobs:
             grep -q new_temp_model test-results/matlab/modelcoverage.xml
           displayName: Verify Model coverage was created
           condition: eq(variables['Agent.OS'], 'Linux')
+        - bash: |
+            set -e
+            test -d test-results/matlab/modelcoverageHTML
+            test -f test-results/matlab/modelcoverageHTML/*.html
+          displayName: Verify HTML Model coverage folder and HTML file was created
+          condition: not(eq(${{ version }}, '0'))
         - bash: |
             set -e
             test -f test-results/matlab/stmResult.mldatx
