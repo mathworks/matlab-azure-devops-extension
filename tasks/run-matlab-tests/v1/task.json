@@ -64,7 +64,7 @@
             "defaultValue": "",
             "groupName": "filterTests",
             "required": false,
-            "helpMarkDown": "Test name used to select test suite elements. To create a test suite, the task uses only the test elements with the specified name."
+            "helpMarkDown": "Test name used to select test suite elements. To create a test suite, the task uses only the test elements that match the specified name."
         },
         {
             "name": "strict",
