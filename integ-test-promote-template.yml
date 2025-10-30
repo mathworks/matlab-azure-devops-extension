@@ -60,6 +60,42 @@ jobs:
           inputs:
             command: assert(strcmp(version('-release'),'2023a'))
 
+    - job: test_install_with_toolcache_v${{ version }}
+      condition: not(eq(${{ version }}, '0'))
+      strategy:
+        matrix:
+          microsoft_hosted_linux:
+            poolName: Azure Pipelines
+            vmImage: ubuntu-22.04
+          microsoft_hosted_macos:
+            poolName: Azure Pipelines
+            vmImage: macOS-latest
+          microsoft_hosted_windows:
+            poolName: Azure Pipelines
+            vmImage: windows-latest
+      pool:
+        name: $(poolName)
+        vmImage: $(vmImage)
+      steps:
+        - checkout: none
+        - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@${{ version }}
+          displayName: Install MATLAB
+          inputs:
+            release: R2023a
+        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@${{ version }}
+          displayName: Check Image Processing Toolbox is NOT installed
+          inputs:
+            command: assert(~any(strcmp({ver().Name},'Image Processing Toolbox')))
+        - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@${{ version }}
+          displayName: Install MATLAB
+          inputs:
+            release: R2023a
+            products: Image_Processing_Toolbox
+        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@${{ version }}
+          displayName: Check Image Processing Toolbox is installed
+          inputs:
+            command: assert(any(strcmp({ver().Name},'Image Processing Toolbox')))
+
     - job: test_install_latest_including_prerelease_v${{ version }}
       condition: not(eq(${{ version }}, '0'))
       strategy:
