@@ -83,14 +83,14 @@ export default function suite() {
             assert(stubInstallSystemDependencies.notCalled);
         });
 
-        it("does not install if MATLAB already exists in toolcache", async () => {
+        it("re-calls MPM install even if MATLAB already exists in toolcache", async () => {
             stubMakeToolcacheDir.callsFake((rel) => {
                 return [toolcacheDir, true];
             });
             await assert.doesNotReject(async () => {
                 await install.install(platform, architecture, release, products);
             });
-            assert(stubMpmInstall.notCalled);
+            assert(stubMpmInstall.calledWith(sinon.match.any, releaseInfo, toolcacheDir, products));
         });
 
         it("fails if add to path fails", async () => {
