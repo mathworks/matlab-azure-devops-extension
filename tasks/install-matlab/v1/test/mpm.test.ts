@@ -162,7 +162,27 @@ export default function suite() {
                 // non-zero exit code
                 return Promise.resolve(1);
             });
-            assert.rejects(async () => mpm.install(mpmPath, releaseInfo, destination, products));
+            await assert.rejects(async () => mpm.install(mpmPath, releaseInfo, destination, products));
+        });
+
+        it("install does not fail when mpm reports products already installed", async () => {
+            const mpmPath = "mpm";
+            const releaseInfo = {name: "r2022b", version: "9.13.0", update: "Latest", isPrerelease: false};
+            const destination = "/opt/matlab";
+            const products = "MATLAB Compiler";
+
+            // Simulate mpm returning a non-zero exit code but writing the
+            // "already installed" message to the outStream so install should succeed.
+            stubExec.callsFake((bin, args?, options?) => {
+                if (options && options.outStream && typeof options.outStream.write === "function") {
+                    options.outStream.write("All specified products are already installed.\n");
+                }
+                return Promise.resolve(1);
+            });
+
+            // Should not reject
+            await mpm.install(mpmPath, releaseInfo, destination, products);
+            assert(stubExec.called);
         });
     });
 }
