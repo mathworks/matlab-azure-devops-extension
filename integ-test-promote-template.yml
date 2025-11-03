@@ -70,9 +70,12 @@ jobs:
           microsoft_hosted_macos:
             poolName: Azure Pipelines
             vmImage: macOS-latest
-          microsoft_hosted_windows:
-            poolName: Azure Pipelines
-            vmImage: windows-latest
+          # Installing with toolcache on Windows cannot be tested on Microsoft-hosted agents
+          # because InstallMATLAB sets up a symlinked toolcache for performance reasons and MPM
+          # does not play well with symlinks on Windows.
+          # microsoft_hosted_windows:
+          #   poolName: Azure Pipelines
+          #   vmImage: windows-latest
       pool:
         name: $(poolName)
         vmImage: $(vmImage)
