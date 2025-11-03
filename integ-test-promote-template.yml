@@ -90,7 +90,15 @@ jobs:
           inputs:
             command: assert(~any(strcmp({ver().Name},'Image Processing Toolbox')))
         - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@${{ version }}
-          displayName: Install MATLAB
+          displayName: Install MATLAB no-ops on second run without additional products
+          inputs:
+            release: R2023a
+        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@${{ version }}
+          displayName: Check Image Processing Toolbox is NOT installed
+          inputs:
+            command: assert(~any(strcmp({ver().Name},'Image Processing Toolbox')))
+        - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@${{ version }}
+          displayName: Install MATLAB installs additional products
           inputs:
             release: R2023a
             products: Image_Processing_Toolbox
