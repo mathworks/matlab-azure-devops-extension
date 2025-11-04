@@ -26,6 +26,7 @@ async function run() {
             OutputDetail: taskLib.getInput("outputDetail"),
             LoggingLevel: taskLib.getInput("loggingLevel")};
         const startupOpts: string | undefined = taskLib.getInput("startupOptions");
+        console.log("SelectByName:", options.SelectByName);
         const cmd = scriptgen.generateCommand(options);
         const platform = process.platform;
         const architecture = process.arch;
