@@ -58,6 +58,15 @@
             "helpMarkDown": "Test tag used to select test suite elements. To create a test suite, the task uses only the test elements with the specified tag."
         },
         {
+            "name": "selectByName",
+            "type": "string",
+            "label": "By name",
+            "defaultValue": "",
+            "groupName": "filterTests",
+            "required": false,
+            "helpMarkDown": "Test name used to select test suite elements. To create a test suite, the task uses only the test elements that match the specified name."
+        },
+        {
             "name": "strict",
             "type": "boolean",
             "label": "Strict",

@@ -266,10 +266,24 @@ jobs:
             testResultsJUnit: test-results/matlab/selectbyfolder.xml
             selectByFolder: tests/filteredTest
         - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@${{ version }}
-          displayName: Run MATLAB tests filter by folder
+          displayName: Run MATLAB tests filter by tag
           inputs:
             testResultsJUnit: test-results/matlab/selectbytag.xml
             selectByTag: FILTERED
+        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@${{ version }}
+          displayName: Run MATLAB tests filter by name
+          inputs:
+            testResultsJUnit: test-results/matlab/selectbyname.xml
+            selectByName: "filtertest/* mytest/StartupTest"
+            sourceFolder: src
+          condition: not(eq(${{ version }}, '0'))
+        - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABTests.RunMATLABTests@${{ version }}
+          displayName: Run MATLAB tests filter by name with multiple spaces
+          inputs:
+            testResultsJUnit: test-results/matlab/selectbynamewithmultiplespaces.xml
+            selectByName: "filtertest/*    mytest/StartupTest"
+            sourceFolder: src
+          condition: not(eq(${{ version }}, '0'))        
         - bash: |
             set -e
             grep -q FirstTest test-results/matlab/results.xml
@@ -301,6 +315,20 @@ jobs:
             grep -v FirstTest test-results/matlab/selectbytag.xml
             grep -v simpleTest test-results/matlab/selectbytag.xml
           displayName: Verify test filtered by tag name
+        - bash: |
+            set -e
+            grep -q StartupTest test-results/matlab/selectbyname.xml
+            grep -q simpleTest test-results/matlab/selectbyname.xml
+            ! grep -q FirstTest test-results/matlab/selectbyname.xml
+          displayName: Verify test filtered by name
+          condition: not(eq(${{ version }}, '0'))
+        - bash: |
+            set -e
+            grep -q StartupTest test-results/matlab/selectbynamewithmultiplespaces.xml
+            grep -q simpleTest test-results/matlab/selectbynamewithmultiplespaces.xml
+            ! grep -q FirstTest test-results/matlab/selectbynamewithmultiplespaces.xml
+          displayName: Verify test filtered by name with multiple spaces
+          condition: not(eq(${{ version }}, '0'))
         - bash: |
             echo 'diary console.log' >> startup.m
           displayName: Set up diary for logging

@@ -14,10 +14,20 @@ export interface IRunTestsOptions {
     HTMLModelCoverage?: string;
     SelectByTag?: string;
     SelectByFolder?: string;
+    SelectByName?: string;
     Strict?: boolean;
     UseParallel?: boolean;
     OutputDetail?: string;
     LoggingLevel?: string;
+}
+
+// Function to convert space separated names to cell array of character vectors
+export function getSelectByNameAsCellArray(input?: string): string {
+    if (!input || !input.trim()) {
+        return "{}";
+    }
+    const items = input.split(/\s+/).filter(Boolean).map((s) => `\'${s}\'`);
+    return `\{${items.join(", ")}\}`;
 }
 
 export function generateCommand(options: IRunTestsOptions): string {
@@ -34,6 +44,7 @@ export function generateCommand(options: IRunTestsOptions): string {
             `'HTMLModelCoverage','${options.HTMLModelCoverage || ""}',` +
             `'SelectByTag','${options.SelectByTag || ""}',` +
             `'SelectByFolder','${options.SelectByFolder || ""}',` +
+            `'SelectByName',${getSelectByNameAsCellArray(options.SelectByName)},` +
             `'Strict',${options.Strict || false},` +
             `'UseParallel',${options.UseParallel || false},` +
             `'OutputDetail','${options.OutputDetail || ""}',` +

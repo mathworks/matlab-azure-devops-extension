@@ -15,6 +15,7 @@ async function run() {
             SourceFolder: taskLib.getInput("sourceFolder"),
             SelectByFolder: taskLib.getInput("selectByFolder"),
             SelectByTag: taskLib.getInput("selectByTag"),
+            SelectByName: taskLib.getInput("selectByName"),
             CoberturaModelCoverage: taskLib.getInput("modelCoverageCobertura"),
             HTMLModelCoverage: taskLib.getInput("modelCoverageHTML"),
             SimulinkTestResults: taskLib.getInput("testResultsSimulinkTest"),
