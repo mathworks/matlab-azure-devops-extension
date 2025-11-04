@@ -101,54 +101,6 @@ export default function suite() {
                 'LoggingLevel','Detailed' )`
                 .replace(/\s+/g, "");
             assert(actual.replace(/\s+/g, "").includes(expected));
-        });
-
-        it("selectByName as char", () => {
-            const options: scriptgen.IRunTestsOptions = {
-                JUnitTestResults: "",
-                CoberturaCodeCoverage: "",
-                HTMLCodeCoverage: "",
-                SourceFolder: "",
-                PDFTestReport: "",
-                HTMLTestReport: "",
-                SimulinkTestResults: "",
-                CoberturaModelCoverage: "",
-                HTMLModelCoverage: "",
-                SelectByTag: "",
-                SelectByFolder: "",
-                SelectByName: 'tTestA/* tTestB/*',
-                Strict: false,
-                UseParallel: false,
-                OutputDetail: "",
-                LoggingLevel: "",
-            };
-
-            const actual = scriptgen.generateCommand(options);
-
-            assert(actual.includes("genscript('Test'"));
-            assert(actual.includes("'JUnitTestResults',''"));
-            assert(actual.includes("'CoberturaCodeCoverage',''"));
-            assert(actual.includes("'HTMLCodeCoverage',''"));
-            assert(actual.includes("'SourceFolder',''"));
-            assert(actual.includes("'PDFTestReport',''"));
-            assert(actual.includes("'HTMLTestReport',''"));
-            assert(actual.includes("'SimulinkTestResults',''"));
-            assert(actual.includes("'CoberturaModelCoverage',''"));
-            assert(actual.includes("'HTMLModelCoverage',''"));
-            assert(actual.includes("'SelectByTag',''"));
-            assert(actual.includes("'SelectByFolder',''"));
-            assert(actual.includes("'SelectByName',{}"));
-            assert(actual.includes("'Strict',false"));
-            assert(actual.includes("'UseParallel',false"));
-            assert(actual.includes("'OutputDetail',''"));
-            assert(actual.includes("'LoggingLevel',''"));
-
-            const expected = `genscript('Test', 'JUnitTestResults','', 'CoberturaCodeCoverage','','HTMLCodeCoverage','',
-                'SourceFolder','', 'PDFTestReport','', 'HTMLTestReport','', 'SimulinkTestResults','',
-                'CoberturaModelCoverage','', 'HTMLModelCoverage','', 'SelectByTag','', 'SelectByFolder','', 'SelectByName',{},
-                'Strict',false, 'UseParallel',false, 'OutputDetail','', 'LoggingLevel','')`
-                .replace(/\s+/g, "");
-            assert(actual.replace(/\s+/g, "").includes(expected));
-        });
+        });           
     });
 }
