@@ -101,6 +101,6 @@ export default function suite() {
                 'LoggingLevel','Detailed' )`
                 .replace(/\s+/g, "");
             assert(actual.replace(/\s+/g, "").includes(expected));
-        });           
+        });
     });
 }
