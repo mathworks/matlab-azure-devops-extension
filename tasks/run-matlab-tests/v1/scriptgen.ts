@@ -44,7 +44,7 @@ export function generateCommand(options: IRunTestsOptions): string {
             `'HTMLModelCoverage','${options.HTMLModelCoverage || ""}',` +
             `'SelectByTag','${options.SelectByTag || ""}',` +
             `'SelectByFolder','${options.SelectByFolder || ""}',` +
-            `'SelectByName',${getSelectByNameAsCellArray(options.SelectByName)},` +
+            `'SelectByName',${options.SelectByName || ""},` +
             `'Strict',${options.Strict || false},` +
             `'UseParallel',${options.UseParallel || false},` +
             `'OutputDetail','${options.OutputDetail || ""}',` +
