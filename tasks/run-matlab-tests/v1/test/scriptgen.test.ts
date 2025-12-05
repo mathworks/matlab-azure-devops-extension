@@ -47,7 +47,7 @@ export default function suite() {
 
             const expected = `genscript('Test', 'JUnitTestResults','', 'CoberturaCodeCoverage','','HTMLCodeCoverage','',
                 'SourceFolder','', 'PDFTestReport','', 'HTMLTestReport','', 'SimulinkTestResults','',
-                'CoberturaModelCoverage','', 'HTMLModelCoverage','', 'SelectByTag','', 'SelectByFolder','', 'SelectByName',{},
+                'CoberturaModelCoverage','', 'HTMLModelCoverage','', 'SelectByTag','', 'SelectByFolder','', 'SelectByName','',
                 'Strict',false, 'UseParallel',false, 'OutputDetail','', 'LoggingLevel','')`
                 .replace(/\s+/g, "");
             assert(actual.replace(/\s+/g, "").includes(expected));
@@ -87,7 +87,7 @@ export default function suite() {
             assert(actual.includes("'HTMLModelCoverage','test-results/modelcoverageHTML'"));
             assert(actual.includes("'SelectByTag','FeatureA'"));
             assert(actual.includes("'SelectByFolder','test/tools;test/toolbox'"));
-            assert(actual.includes("'SelectByName',{'tTestA/*', 'tTestB/*'}"));
+            assert(actual.includes("'SelectByName','tTestA/* tTestB/*'"));
             assert(actual.includes("'Strict',true"));
             assert(actual.includes("'UseParallel',true"));
             assert(actual.includes("'OutputDetail','Detailed'"));
@@ -97,7 +97,7 @@ export default function suite() {
                 'CoberturaCodeCoverage','code-coverage/coverage.xml','HTMLCodeCoverage','code-coverage/coverageHTML', 'SourceFolder','source',
                 'PDFTestReport','test-results/pdf-results.pdf', 'HTMLTestReport','test-results/html-resultsHTML', 'SimulinkTestResults','test-results/simulinkTest.mldatx',
                 'CoberturaModelCoverage','test-results/modelcoverage.xml', 'HTMLModelCoverage','test-results/modelcoverageHTML', 'SelectByTag','FeatureA',
-                'SelectByFolder','test/tools;test/toolbox', 'SelectByName','tTestA/*', tTestB/*', 'Strict',true, 'UseParallel',true, 'OutputDetail','Detailed',
+                'SelectByFolder','test/tools;test/toolbox', 'SelectByName','tTestA/* tTestB/*', 'Strict',true, 'UseParallel',true, 'OutputDetail','Detailed',
                 'LoggingLevel','Detailed' )`
                 .replace(/\s+/g, "");
             assert(actual.replace(/\s+/g, "").includes(expected));
