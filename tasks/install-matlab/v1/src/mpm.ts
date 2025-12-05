@@ -1,6 +1,8 @@
 // Copyright 2023-2024 The MathWorks, Inc.
 
 import * as taskLib from "azure-pipelines-task-lib/task";
+import * as trm from "azure-pipelines-task-lib/toolrunner";
+import { Writable } from "stream";
 import * as matlab from "./matlab";
 import { downloadToolWithRetries } from "./utils";
 
@@ -66,8 +68,25 @@ export async function install(
     mpmArguments = mpmArguments.concat("--products");
     mpmArguments = mpmArguments.concat(parsedProducts);
 
-    const exitCode = await taskLib.exec(mpmPath, mpmArguments);
-    if (exitCode !== 0) {
+    let output = "";
+    const captureStream = new Writable({
+        write(chunk, encoding, callback) {
+            const text = chunk.toString();
+            output += text;
+            process.stdout.write(text);
+            callback();
+        },
+    });
+
+    const options: trm.IExecOptions = {
+        outStream: captureStream,
+        errStream: captureStream,
+        ignoreReturnCode: true,
+    };
+
+    const exitCode = await taskLib.exec(mpmPath, mpmArguments, options);
+
+    if (exitCode !== 0 && !output.toLowerCase().includes("already installed")) {
         return Promise.reject(Error(`Failed to install MATLAB.`));
     }
     return;

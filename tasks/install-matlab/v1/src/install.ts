@@ -28,10 +28,8 @@ export async function install(platform: string, architecture: string, release: s
     const mpmPath: string = await mpm.setup(platform, matlabArch);
 
     // install MATLAB using mpm
-    const [toolpath, alreadyExists] = await matlab.makeToolcacheDir(parsedRelease, platform);
-    if (!alreadyExists) {
-        await mpm.install(mpmPath, parsedRelease, toolpath, products);
-    }
+    const [toolpath] = await matlab.makeToolcacheDir(parsedRelease, platform);
+    await mpm.install(mpmPath, parsedRelease, toolpath, products);
 
     // add MATLAB to system path
     try {
