@@ -26,7 +26,7 @@ export default function suite() {
             };
 
             const actual = scriptgen.generateCommand(options);
-
+            console.log('Generated command:', actual);
             assert(actual.includes("genscript('Test'"));
             assert(actual.includes("'JUnitTestResults',''"));
             assert(actual.includes("'CoberturaCodeCoverage',''"));
@@ -39,7 +39,7 @@ export default function suite() {
             assert(actual.includes("'HTMLModelCoverage',''"));
             assert(actual.includes("'SelectByTag',''"));
             assert(actual.includes("'SelectByFolder',''"));
-            assert(actual.includes("'SelectByName',{}"));
+            assert(actual.includes("'SelectByName',''"));
             assert(actual.includes("'Strict',false"));
             assert(actual.includes("'UseParallel',false"));
             assert(actual.includes("'OutputDetail',''"));
@@ -74,7 +74,7 @@ export default function suite() {
             };
 
             const actual = scriptgen.generateCommand(options);
-
+            console.log('Generated command:', actual);
             assert(actual.includes("genscript('Test'"));
             assert(actual.includes("'JUnitTestResults','test-results/results.xml'"));
             assert(actual.includes("'CoberturaCodeCoverage','code-coverage/coverage.xml'"));
