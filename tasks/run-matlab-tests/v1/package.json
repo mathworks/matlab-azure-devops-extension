@@ -5,7 +5,7 @@
     "scripts": {
         "postinstall": "npm run getBinDep && npm run getScriptgenDep",
         "getBinDep": "../../../scripts/setupdeps.sh v2",
-        "getScriptgenDep": "wget -q https://ssd.mathworks.com/supportfiles/ci/matlab-script-generator/v0/matlab-script-generator.zip -O scriptgen.zip; unzip -qod scriptgen scriptgen.zip; rm scriptgen.zip"
+        "getScriptgenDep": "wget -q https://github.com/Vahila/artifact-zip/releases/download/v1/matlab-script-generator-0.14.0-SNAPSHOT.zip -O scriptgen.zip; unzip -qod scriptgen scriptgen.zip; rm scriptgen.zip"
     },
     "dependencies": {
         "@types/node": "^22.7.5",
