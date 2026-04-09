@@ -12,12 +12,12 @@
         "preparePackage": "node ./scripts/preparePackage.js"
     },
     "devDependencies": {
-        "@types/mocha": "^8.2.2",
+        "@types/mocha": "^8.2.3",
         "@types/node": "^22.7.5",
         "@types/shelljs": "^0.8.15",
         "@types/sinon": "^10.0.13",
         "@types/uuid": "^9.0.8",
-        "mocha": "^10.0.0",
+        "mocha": "^10.8.2",
         "nyc": "^15.1.0",
         "shelljs": "^0.8.5",
         "sinon": "^15.0.1",
