@@ -164,21 +164,20 @@ export default function suite() {
 
     describe("setupBatch", () => {
       let stubGetVariable: sinon.SinonStub;
-      let stubCacheFile: sinon.SinonStub;
+      let stubExistsSync: sinon.SinonStub;
+      let stubMkdirSync: sinon.SinonStub;
       let stubDownloadTool: sinon.SinonStub;
       let stubPrependPath: sinon.SinonStub;
       let stubExec: sinon.SinonStub;
       let platform: string;
       let architecture: string;
-      const matlabBatchPath = "/path/to/downloaded/matlab-batch";
+      const tempDir = "/home/agent/_tmp";
 
       beforeEach(() => {
         stubGetVariable = sinon.stub(taskLib, "getVariable");
         stubGetVariable.callsFake((v) => {
-          if (v === "Agent.ToolsDirectory") {
-            return "C:\\Program Files\\hostedtoolcache\\MATLAB\\r2022b";
-          } else if (v === "Agent.TempDirectory") {
-            return "/home/agent/_tmp";
+          if (v === "Agent.TempDirectory") {
+            return tempDir;
           }
           return "";
         });
@@ -186,13 +185,12 @@ export default function suite() {
         stubExec.callsFake((tool, args) => {
           return Promise.resolve(0);
         });
-        stubCacheFile = sinon.stub(toolLib, "cacheFile");
-        stubCacheFile.callsFake((srcFile, desFile, tool, ver) => {
-          return Promise.resolve(matlabBatchPath);
-        });
+        stubExistsSync = sinon.stub(fs, "existsSync");
+        stubExistsSync.returns(false);
+        stubMkdirSync = sinon.stub(fs, "mkdirSync");
         stubDownloadTool = sinon.stub(toolLib, "downloadToolWithRetries");
         stubDownloadTool.callsFake((url, name) => {
-          return Promise.resolve(matlabBatchPath);
+          return Promise.resolve(name);
         });
         stubPrependPath = sinon.stub(toolLib, "prependPath");
         platform = "linux";
@@ -202,7 +200,8 @@ export default function suite() {
       afterEach(() => {
         stubGetVariable.restore();
         stubExec.restore();
-        stubCacheFile.restore();
+        stubExistsSync.restore();
+        stubMkdirSync.restore();
         stubDownloadTool.restore();
         stubPrependPath.restore();
       });
@@ -236,6 +235,13 @@ export default function suite() {
                 await matlab.setupBatch(platform, architecture);
             });
         });
+      });
+
+      it("setupBatch skips download when matlab-batch already exists", async () => {
+        stubExistsSync.returns(true);
+        await matlab.setupBatch(platform, architecture);
+        assert(stubPrependPath.calledWith(path.join(tempDir, "matlab-batch")));
+        assert(stubDownloadTool.notCalled);
       });
 
       it("setupBatch rejects on unsupported platforms", async () => {

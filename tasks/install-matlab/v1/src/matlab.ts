@@ -148,21 +148,29 @@ export async function setupBatch(platform: string, architecture: string) {
             return Promise.reject(Error(`This task is not supported on ${platform} runners.`));
     }
 
-    const tempPath = await downloadToolWithRetries(matlabBatchUrl, `matlab-batch${matlabBatchExt}`);
-    const matlabBatchPath = await toolLib.cacheFile(tempPath, `matlab-batch${matlabBatchExt}`, "matlab-batch", "1.0.0");
+    const matlabBatchBin = `matlab-batch${matlabBatchExt}`;
+    const tempDirectory = taskLib.getVariable("Agent.TempDirectory");
+    if (!tempDirectory) {
+        throw new Error("Agent.TempDirectory is not set");
+    }
+    const matlabBatchDir = path.join(tempDirectory, "matlab-batch");
+    const matlabBatchFile = path.join(matlabBatchDir, matlabBatchBin);
+
+    if (!fs.existsSync(matlabBatchFile)) {
+        fs.mkdirSync(matlabBatchDir, {recursive: true});
+        await downloadToolWithRetries(matlabBatchUrl, matlabBatchFile);
+        if (platform !== "win32") {
+            const exitCode = await taskLib.exec("chmod", ["+x", matlabBatchFile]);
+            if (exitCode !== 0) {
+                return Promise.reject(Error("Unable to add execute permissions to matlab-batch binary."));
+            }
+        }
+    }
+
     try {
-        toolLib.prependPath(matlabBatchPath);
+        toolLib.prependPath(matlabBatchDir);
     } catch (err: any) {
         throw new Error("Failed to add MATLAB to system path.");
-    }
-    if (platform !== "win32") {
-        const exitCode = await taskLib.exec(
-            "chmod",
-            ["+x", path.join(matlabBatchPath, "matlab-batch" + matlabBatchExt)],
-        );
-        if (exitCode !== 0) {
-            return Promise.reject(Error("Unable to add execute permissions to matlab-batch binary."));
-        }
     }
 }
 
