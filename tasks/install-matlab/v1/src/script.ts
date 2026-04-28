@@ -1,11 +1,11 @@
-// Copyright 2023-2024 The MathWorks, Inc.
+// Copyright 2023-2026 The MathWorks, Inc.
 
 import * as taskLib from "azure-pipelines-task-lib/task";
-import * as toolLib from "azure-pipelines-tool-lib/tool";
 import * as path from "path";
+import { downloadToolWithRetries } from "./tool-lib";
 
 export async function downloadAndRunScript(platform: string, url: string, args: string | string[]) {
-    const scriptPath = await toolLib.downloadToolWithRetries(url);
+    const scriptPath = await downloadToolWithRetries(url);
     const bashPath = await taskLib.which("bash", true);
     const sudoPath = await taskLib.which("sudo", false);
     let bash;

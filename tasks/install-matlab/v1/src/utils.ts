@@ -1,22 +1,7 @@
-// Copyright 2023-2024 The MathWorks, Inc.
+// Copyright 2023-2026 The MathWorks, Inc.
 
-import * as taskLib from "azure-pipelines-task-lib/task";
-import * as toolLib from "azure-pipelines-tool-lib/tool";
-import * as path from "path";
+import * as toolLib from "./tool-lib";
 
-export async function downloadToolWithRetries(url: string, fileName: string): Promise<string> {
-    let destPath: string;
-    if (path.isAbsolute(fileName)) {
-        destPath = fileName;
-    } else {
-        const tempDirectory = taskLib.getVariable("Agent.TempDirectory");
-        if (!tempDirectory) {
-            throw new Error("Agent.TempDirectory is not set");
-        }
-        destPath = path.join(tempDirectory, fileName);
-    }
-
-    taskLib.rmRF(destPath);
-    await toolLib.downloadToolWithRetries(url, destPath);
-    return destPath;
+export async function downloadToolWithRetries(url: string, fileName?: string): Promise<string> {
+    return toolLib.downloadToolWithRetries(url, fileName);
 }
