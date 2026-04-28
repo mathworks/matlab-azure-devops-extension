@@ -6,12 +6,21 @@ jobs:
           microsoft_hosted_linux:
             poolName: Azure Pipelines
             vmImage: ubuntu-22.04
+            matlabRelease: latest
           microsoft_hosted_macos:
             poolName: Azure Pipelines
             vmImage: macOS-latest
+            # R2026a dropped support for Intel macOS, and Azure DevOps does not
+            # yet offer Apple Silicon runners. Use R2025b until ARM64 runners
+            # are available.
+            ${{ if eq(version, '0') }}:
+              matlabRelease: latest
+            ${{ else }}:
+              matlabRelease: R2025b
           microsoft_hosted_windows:
             poolName: Azure Pipelines
             vmImage: windows-latest
+            matlabRelease: latest
       pool:
         name: $(poolName)
         vmImage: $(vmImage)
@@ -19,6 +28,8 @@ jobs:
         - checkout: none
         - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@${{ version }}
           displayName: Install MATLAB
+          inputs:
+            release: $(matlabRelease)
         - bash: |
             set -e
             os=$(uname)
@@ -134,12 +145,21 @@ jobs:
           microsoft_hosted_linux:
             poolName: Azure Pipelines
             vmImage: ubuntu-22.04
+            matlabRelease: latest
           microsoft_hosted_macos:
             poolName: Azure Pipelines
             vmImage: macOS-latest
+            # R2026a dropped support for Intel macOS, and Azure DevOps does not
+            # yet offer Apple Silicon runners. Use R2025b until ARM64 runners
+            # are available.
+            ${{ if eq(version, '0') }}:
+              matlabRelease: latest
+            ${{ else }}:
+              matlabRelease: R2025b
           microsoft_hosted_windows:
             poolName: Azure Pipelines
             vmImage: windows-latest
+            matlabRelease: latest
       pool:
         name: $(poolName)
         vmImage: $(vmImage)
@@ -147,6 +167,8 @@ jobs:
         - checkout: none
         - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@${{ version }}
           displayName: Install MATLAB on Microsoft-hosted agents
+          inputs:
+            release: $(matlabRelease)
         - task: MathWorks.matlab-azure-devops-extension-dev.RunMATLABCommand.RunMATLABCommand@${{ version }}
           displayName: Run MATLAB statement
           inputs:
@@ -467,14 +489,23 @@ jobs:
           microsoft_hosted_linux:
             poolName: Azure Pipelines
             vmImage: ubuntu-22.04
+            matlabRelease: latest
             setupTask: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@${{ version }}
           microsoft_hosted_macos:
             poolName: Azure Pipelines
             vmImage: macOS-latest
+            # R2026a dropped support for Intel macOS, and Azure DevOps does not
+            # yet offer Apple Silicon runners. Use R2025b until ARM64 runners
+            # are available.
+            ${{ if eq(version, '0') }}:
+              matlabRelease: latest
+            ${{ else }}:
+              matlabRelease: R2025b
             setupTask: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@${{ version }}
           microsoft_hosted_windows:
             poolName: Azure Pipelines
             vmImage: windows-latest
+            matlabRelease: latest
             setupTask: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@${{ version }}
       pool:
         name: $(poolName)
@@ -484,6 +515,8 @@ jobs:
         - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@${{ version }}
           displayName: Install MATLAB on Microsoft-hosted agents
           condition: not(startsWith(variables['Agent.Name'], 'vmss'))
+          inputs:
+            release: $(matlabRelease)
         - bash: |
             cat << EOF > buildfile.m
             function plan = buildfile
