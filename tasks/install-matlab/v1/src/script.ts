@@ -2,7 +2,7 @@
 
 import * as taskLib from "azure-pipelines-task-lib/task";
 import * as path from "path";
-import { downloadToolWithRetries } from "./tool-lib";
+import { downloadToolWithRetries } from "./utils";
 
 export async function downloadAndRunScript(platform: string, url: string, args: string | string[]) {
     const scriptPath = await downloadToolWithRetries(url);

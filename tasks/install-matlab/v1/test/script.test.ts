@@ -4,7 +4,7 @@ import * as assert from "assert";
 import * as taskLib from "azure-pipelines-task-lib/task";
 import * as sinon from "sinon";
 import * as script from "../src/script";
-import * as toolLib from "../src/tool-lib";
+import * as utils from "../src/utils";
 
 const bashPath = "/bin/bash";
 const mockToolRunner = {
@@ -30,7 +30,7 @@ export default function suite() {
     describe("script.ts test suite", () => {
         beforeEach(() => {
             // setup stubs
-            stubDownloadTool = sinon.stub(toolLib, "downloadToolWithRetries");
+            stubDownloadTool = sinon.stub(utils, "downloadToolWithRetries");
             stubDownloadTool.callsFake((url, fileName?) => {
                 return Promise.resolve("/path/to/script");
             });
