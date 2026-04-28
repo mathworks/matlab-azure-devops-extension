@@ -190,7 +190,7 @@ export default function suite() {
         stubCacheFile.callsFake((srcFile, desFile, tool, ver) => {
           return Promise.resolve(matlabBatchPath);
         });
-        stubDownloadTool = sinon.stub(toolLib, "downloadToolWithRetries");
+        stubDownloadTool = sinon.stub(utils, "downloadToolWithRetries");
         stubDownloadTool.callsFake((url, name) => {
           return Promise.resolve(matlabBatchPath);
         });

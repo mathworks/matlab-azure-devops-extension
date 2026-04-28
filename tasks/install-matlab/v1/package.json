@@ -6,6 +6,7 @@
         "@types/node": "^22.7.5",
         "@types/q": "^1.5.4",
         "azure-pipelines-task-lib": "^5.2.8",
-        "azure-pipelines-tool-lib": "^2.0.7"
+        "azure-pipelines-tool-lib": "^2.0.7",
+        "typed-rest-client": "^1.8.11"
     }
 }

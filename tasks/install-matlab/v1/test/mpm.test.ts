@@ -2,9 +2,10 @@
 
 import * as assert from "assert";
 import * as taskLib from "azure-pipelines-task-lib/task";
-import * as toolLib from "azure-pipelines-tool-lib/tool";
+import * as path from "path";
 import * as sinon from "sinon";
 import * as mpm from "../src/mpm";
+import * as utils from "../src/utils";
 
 export default function suite() {
     const arch = "x64";
@@ -16,9 +17,9 @@ export default function suite() {
     describe("mpm.ts test suite", () => {
         beforeEach(() => {
             // setup stubs
-            stubDownloadTool = sinon.stub(toolLib, "downloadToolWithRetries");
+            stubDownloadTool = sinon.stub(utils, "downloadToolWithRetries");
             stubDownloadTool.callsFake((url, fileName) => {
-                return Promise.resolve(`${agentTemp}/fileName`);
+                return Promise.resolve(path.join(agentTemp, fileName));
             });
             stubExec = sinon.stub(taskLib, "exec");
             stubExec.callsFake((bin, args) => {
@@ -90,7 +91,7 @@ export default function suite() {
 
         it("setup rejects when the download fails", async () => {
             const platform = "linux";
-            stubDownloadTool.callsFake((url, fileName?, handlers?) => {
+            stubDownloadTool.callsFake((url, fileName?) => {
                 return Promise.reject(Error("BAM!"));
             });
             assert.rejects(async () => { await mpm.setup(platform, arch); });
