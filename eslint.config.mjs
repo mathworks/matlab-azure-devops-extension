@@ -43,6 +43,6 @@ export default [
         },
     },
     {
-        ignores: ["node_modules/", "_build/", "_package/", "tasks/**/v0/**"],
+        ignores: ["node_modules/", "_build/", "_package/", "tasks/**/v0/**", "tasks/**/src/utils.ts"],
     },
 ];
