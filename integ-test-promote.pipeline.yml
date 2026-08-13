@@ -1,7 +1,7 @@
 resources:
   pipelines:
     - pipeline: integ_test_promote
-      source: pre-integ-test
+      source: build-test-publish
       trigger: true
 
 trigger: none
@@ -10,7 +10,24 @@ pr: none
 stages:
   - stage: integration_test
     displayName: Integration test
+    pool:
+      vmImage: ubuntu-latest
     jobs:
+      - job: wait_for_extension
+        displayName: Wait for extension to propagate
+        steps:
+          - task: TfxInstaller@5
+            displayName: Install tfx-cli
+            inputs:
+              version: v0.23.x
+          - task: QueryAzureDevOpsExtensionVersion@5
+            displayName: Verify dev extension version
+            inputs:
+              connectTo: VsTeam
+              connectedServiceName: MathWorks
+              publisherId: MathWorks
+              extensionId: matlab-azure-devops-extension
+              extensionTag: -dev
       - template: integ-test-promote-template.yml
         parameters:
           TASK_VERSION: ['0', '1']
@@ -29,22 +46,16 @@ stages:
               steps:
                 - checkout: none
 
-                - task: DownloadPipelineArtifact@2
+                - download: integ_test_promote
                   displayName: Get stored extension
-                  inputs:
-                    source: specific
-                    project: b3d35465-d584-454b-a4e9-e60757510c12
-                    pipeline: 6
-                    runVersion: latest
-                    artifact: extension
-                    path: $(Build.StagingDirectory)
+                  artifact: extension
 
-                - task: TfxInstaller@2
+                - task: TfxInstaller@5
                   displayName: Install tfx-cli
                   inputs:
-                    version: v0.7.x
+                    version: v0.23.x
 
-                - task: PublishAzureDevOpsExtension@2
+                - task: PublishAzureDevOpsExtension@5
                   displayName: Publish prerelease
                   inputs:
                     connectTo: VsTeam
@@ -52,7 +63,7 @@ stages:
                     fileType: vsix
                     extensionTag: -prerelease
                     extensionVisibility: private
-                    vsixFile: $(Build.StagingDirectory)/*.vsix
+                    vsixFile: $(Pipeline.Workspace)/integ_test_promote/extension/*.vsix
                     updateTasksVersion: false
 
   - stage: publish_release
@@ -69,26 +80,20 @@ stages:
               steps:
                 - checkout: none
 
-                - task: DownloadPipelineArtifact@2
+                - download: integ_test_promote
                   displayName: Get stored extension
-                  inputs:
-                    source: specific
-                    project: b3d35465-d584-454b-a4e9-e60757510c12
-                    pipeline: 6
-                    runVersion: latest
-                    artifact: extension
-                    path: $(Build.StagingDirectory)
+                  artifact: extension
 
-                - task: TfxInstaller@2
+                - task: TfxInstaller@5
                   displayName: Install tfx-cli
                   inputs:
-                    version: v0.7.x
+                    version: v0.23.x
 
-                - task: PublishAzureDevOpsExtension@2
+                - task: PublishAzureDevOpsExtension@5
                   displayName: Publish release
                   inputs:
                     connectTo: VsTeam
                     connectedServiceName: MathWorks
                     fileType: vsix
-                    vsixFile: $(Build.StagingDirectory)/*.vsix
+                    vsixFile: $(Pipeline.Workspace)/integ_test_promote/extension/*.vsix
                     updateTasksVersion: false
