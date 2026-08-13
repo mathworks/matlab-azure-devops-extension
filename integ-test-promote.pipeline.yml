@@ -20,11 +20,12 @@ stages:
             displayName: Install tfx-cli
             inputs:
               version: v0.23.x
-          - task: QueryAzureDevOpsExtensionVersion@5
-            displayName: Verify dev extension version
+          - task: IsAzureDevOpsExtensionValid@5
+            displayName: Validate dev extension
             inputs:
               connectTo: VsTeam
               connectedServiceName: MathWorks
+              method: id
               publisherId: MathWorks
               extensionId: matlab-azure-devops-extension
               extensionTag: -dev

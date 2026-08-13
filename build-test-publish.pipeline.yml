@@ -58,3 +58,4 @@ steps:
       extensionVisibility: private
       updateTasksVersion: false
       shareWith: iat-ci-dev
+      noWaitValidation: true
