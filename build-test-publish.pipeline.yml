@@ -4,6 +4,7 @@ trigger:
   - master
 
 variables:
+  system.debug: true
   packageFolder: _package
   vsixFolder: '$(Build.ArtifactStagingDirectory)/vsix'
   vsixFile: '$(vsixFolder)/matlab-$(Build.BuildNumber).vsix'
@@ -58,4 +59,4 @@ steps:
       extensionVisibility: private
       updateTasksVersion: false
       shareWith: iat-ci-dev
-      noWaitValidation: true
+      noWaitValidation: 'true'
