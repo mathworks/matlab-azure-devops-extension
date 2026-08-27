@@ -4,7 +4,6 @@ trigger:
   - master
 
 variables:
-  system.debug: true
   packageFolder: _package
   vsixFolder: '$(Build.ArtifactStagingDirectory)/vsix'
   vsixFile: '$(vsixFolder)/matlab-$(Build.BuildNumber).vsix'

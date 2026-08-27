@@ -134,16 +134,15 @@ export default function suite() {
             });
         });
 
-        it("add --release-status flag for prerelease", async () => {
+        it("append prerelease to --release for prerelease", async () => {
             const mpmPath = "mpm";
             const releaseInfo = {name: "r2025a", version: "9.13.0", update: "Latest", isPrerelease: true};
             const destination = "/opt/matlab";
             const products = "MATLAB Compiler";
             const expectedMpmArgs = [
                 "install",
-                "--release=r2025aLatest",
+                "--release=r2025aLatestprerelease",
                 `--destination=${destination}`,
-                "--release-status=Prerelease",
                 "--products",
                 "MATLAB",
                 "Compiler",

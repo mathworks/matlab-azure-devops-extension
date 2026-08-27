@@ -56,15 +56,12 @@ export async function install(
     parsedProducts.push("MATLAB");
     // Remove duplicates
     parsedProducts = [...new Set(parsedProducts)];
+    const releaseSpec = release.name + release.update + (release.isPrerelease ? "prerelease" : "");
     let mpmArguments: string[] = [
         "install",
-        `--release=${release.name + release.update}`,
+        `--release=${releaseSpec}`,
         `--destination=${destination}`,
     ];
-
-    if (release.isPrerelease) {
-        mpmArguments = mpmArguments.concat("--release-status=Prerelease");
-    }
     mpmArguments = mpmArguments.concat("--products");
     mpmArguments = mpmArguments.concat(parsedProducts);
 
