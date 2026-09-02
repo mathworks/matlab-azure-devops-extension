@@ -1,7 +1,6 @@
 jobs:
   - ${{ each version in parameters.TASK_VERSION }}:
     - job: test_install_v${{ version }}
-      dependsOn: wait_for_extension
       strategy:
         matrix:
           microsoft_hosted_linux:
@@ -47,7 +46,6 @@ jobs:
 
 
     - job: test_install_release_v${{ version }}
-      dependsOn: wait_for_extension
       strategy:
         matrix:
           microsoft_hosted_linux:
@@ -74,7 +72,6 @@ jobs:
             command: assert(strcmp(version('-release'),'2023a'))
 
     - job: test_install_with_toolcache_v${{ version }}
-      dependsOn: wait_for_extension
       condition: not(eq(${{ version }}, '0'))
       strategy:
         matrix:
@@ -122,7 +119,6 @@ jobs:
             command: assert(any(strcmp({ver().Name},'Image Processing Toolbox')))
 
     - job: test_install_latest_including_prerelease_v${{ version }}
-      dependsOn: wait_for_extension
       condition: not(eq(${{ version }}, '0'))
       strategy:
         matrix:
@@ -144,7 +140,6 @@ jobs:
             command: version
 
     - job: test_run_command_v${{ version }}
-      dependsOn: wait_for_extension
       strategy:
         matrix:
           microsoft_hosted_linux:
@@ -232,7 +227,6 @@ jobs:
             startupOptions: -sd subdir
 
     - job: test_run_tests_v${{ version }}
-      dependsOn: wait_for_extension
       strategy:
         matrix:
           microsoft_hosted_linux:
@@ -490,7 +484,6 @@ jobs:
           condition: eq(variables['Agent.OS'], 'Linux')
 
     - job: test_run_build_v${{ version }}
-      dependsOn: wait_for_extension
       strategy:
         matrix:
           microsoft_hosted_linux:

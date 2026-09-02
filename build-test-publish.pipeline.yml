@@ -68,19 +68,6 @@ stages:
               shareWith: iat-ci-dev
               noWaitValidation: true
 
-  - stage: integration_test
-    displayName: Integration test
-    dependsOn: build
-    pool:
-      vmImage: ubuntu-latest
-    jobs:
-      - job: wait_for_extension
-        displayName: Wait for extension to propagate
-        steps:
-          - task: TfxInstaller@5
-            displayName: Install tfx-cli
-            inputs:
-              version: v0.23.x
           - task: IsAzureDevOpsExtensionValid@5
             displayName: Validate dev extension
             inputs:
@@ -90,6 +77,12 @@ stages:
               publisherId: MathWorks
               extensionId: matlab-azure-devops-extension
               extensionTag: -dev
+              maxRetries: 20
+
+  - stage: integration_test
+    displayName: Integration test
+    dependsOn: build
+    jobs:
       - template: integ-test-promote-template.yml
         parameters:
           TASK_VERSION: ['0', '1']
@@ -128,6 +121,18 @@ stages:
                     extensionVisibility: private
                     vsixFile: $(Pipeline.Workspace)/extension/*.vsix
                     updateTasksVersion: false
+                    noWaitValidation: true
+
+                - task: IsAzureDevOpsExtensionValid@5
+                  displayName: Validate prerelease extension
+                  inputs:
+                    connectTo: VsTeam
+                    connectedServiceName: MathWorks
+                    method: id
+                    publisherId: MathWorks
+                    extensionId: matlab-azure-devops-extension
+                    extensionTag: -prerelease
+                    maxRetries: 20
 
   - stage: publish_release
     displayName: Publish release
@@ -161,4 +166,15 @@ stages:
                     fileType: vsix
                     vsixFile: $(Pipeline.Workspace)/extension/*.vsix
                     updateTasksVersion: false
+                    noWaitValidation: true
+
+                - task: IsAzureDevOpsExtensionValid@5
+                  displayName: Validate release extension
+                  inputs:
+                    connectTo: VsTeam
+                    connectedServiceName: MathWorks
+                    method: id
+                    publisherId: MathWorks
+                    extensionId: matlab-azure-devops-extension
+                    maxRetries: 20
 
