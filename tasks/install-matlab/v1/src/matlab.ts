@@ -152,7 +152,7 @@ export async function setupBatch(platform: string, architecture: string) {
     const matlabBatchPath = await toolLib.cacheFile(tempPath, `matlab-batch${matlabBatchExt}`, "matlab-batch", "1.0.0");
     try {
         toolLib.prependPath(matlabBatchPath);
-    } catch (err: any) {
+    } catch (err) {
         throw new Error("Failed to add MATLAB to system path.");
     }
     if (platform !== "win32") {

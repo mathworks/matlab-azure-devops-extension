@@ -122,7 +122,7 @@ export default function suite() {
             const products = "MATLAB Compiler";
             const expectedMpmArgs = [
                 "install",
-                "--release=r2022bLatest",
+                "--release=r2022b",
                 `--destination=${destination}`,
                 "--products",
                 "MATLAB",
@@ -141,7 +141,7 @@ export default function suite() {
             const products = "MATLAB Compiler";
             const expectedMpmArgs = [
                 "install",
-                "--release=r2025aLatestprerelease",
+                "--release=r2025aprerelease",
                 `--destination=${destination}`,
                 "--products",
                 "MATLAB",
