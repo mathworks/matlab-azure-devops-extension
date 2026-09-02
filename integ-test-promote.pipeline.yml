@@ -1,0 +1,108 @@
+resources:
+  pipelines:
+    - pipeline: build
+      source: build-test-publish
+      trigger: true
+
+trigger: none
+pr: none
+
+stages:
+  - stage: integration_test
+    displayName: Integration test
+    jobs:
+      - template: integ-test-promote-template.yml
+        parameters:
+          TASK_VERSION: ['0', '1']
+
+  - stage: publish_prerelease
+    displayName: Publish prerelease
+    dependsOn: integration_test
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    pool:
+      vmImage: ubuntu-latest
+    jobs:
+      - deployment: publish_prerelease
+        environment: prerelease
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: none
+
+                - download: build
+                  displayName: Get stored extension
+                  artifact: extension
+
+                - task: TfxInstaller@5
+                  displayName: Install tfx-cli
+                  inputs:
+                    version: v0.23.x
+
+                - task: PublishAzureDevOpsExtension@5
+                  displayName: Publish prerelease
+                  inputs:
+                    connectTo: VsTeam
+                    connectedServiceName: MathWorks
+                    fileType: vsix
+                    extensionTag: -prerelease
+                    extensionVisibility: private
+                    vsixFile: $(Pipeline.Workspace)/build/extension/*.vsix
+                    updateTasksVersion: false
+                    noWaitValidation: true
+
+                - task: IsAzureDevOpsExtensionValid@5
+                  displayName: Validate prerelease extension
+                  inputs:
+                    connectTo: VsTeam
+                    connectedServiceName: MathWorks
+                    method: id
+                    publisherId: MathWorks
+                    extensionId: matlab-azure-devops-extension
+                    extensionTag: -prerelease
+                    maxRetries: 20
+
+  - stage: publish_release
+    displayName: Publish release
+    dependsOn: publish_prerelease
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    pool:
+      vmImage: ubuntu-latest
+    jobs:
+      - deployment: publish_release
+        environment: release
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: none
+
+                - download: build
+                  displayName: Get stored extension
+                  artifact: extension
+
+                - task: TfxInstaller@5
+                  displayName: Install tfx-cli
+                  inputs:
+                    version: v0.23.x
+
+                - task: PublishAzureDevOpsExtension@5
+                  displayName: Publish release
+                  inputs:
+                    connectTo: VsTeam
+                    connectedServiceName: MathWorks
+                    fileType: vsix
+                    vsixFile: $(Pipeline.Workspace)/build/extension/*.vsix
+                    updateTasksVersion: false
+                    noWaitValidation: true
+
+                - task: IsAzureDevOpsExtensionValid@5
+                  displayName: Validate release extension
+                  inputs:
+                    connectTo: VsTeam
+                    connectedServiceName: MathWorks
+                    method: id
+                    publisherId: MathWorks
+                    extensionId: matlab-azure-devops-extension
+                    maxRetries: 20
+

@@ -11,170 +11,66 @@ variables:
   vsixFolder: '$(Build.ArtifactStagingDirectory)/vsix'
   vsixFile: '$(vsixFolder)/matlab-$(Build.BuildNumber).vsix'
 
-stages:
-  - stage: build
-    displayName: Build and publish dev
-    pool:
-      vmImage: ubuntu-latest
-    jobs:
-      - job: build_test_package
-        displayName: Build, test, and package
-        steps:
-          - task: UseNode@1
-            displayName: Install node.js
-            inputs:
-              version: 20.x
+pool:
+  vmImage: ubuntu-latest
 
-          - script: npm install
-            displayName: Install dependencies
+steps:
+  - task: UseNode@1
+    displayName: Install node.js
+    inputs:
+      version: 20.x
 
-          - script: npm run build
-            displayName: Build
+  - script: npm install
+    displayName: Install dependencies
 
-          - script: npm run test
-            displayName: Test
+  - script: npm run build
+    displayName: Build
 
-          - script: npm run preparePackage
-            displayName: Prepare package
+  - script: npm run test
+    displayName: Test
 
-          - task: TfxInstaller@5
-            displayName: Install tfx-cli
-            inputs:
-              version: v0.23.x
+  - script: npm run preparePackage
+    displayName: Prepare package
 
-          - task: PackageAzureDevOpsExtension@5
-            displayName: Package
-            inputs:
-              rootFolder: '$(packageFolder)'
-              outputPath: '$(vsixFile)'
-              extensionVersion: '$(Build.BuildNumber)'
-              updateTasksVersion: true
-              updateTasksVersionType: minor
+  - task: TfxInstaller@5
+    displayName: Install tfx-cli
+    inputs:
+      version: v0.23.x
 
-          - publish: '$(vsixFile)'
-            displayName: Store extension
-            artifact: extension
+  - task: PackageAzureDevOpsExtension@5
+    displayName: Package
+    inputs:
+      rootFolder: '$(packageFolder)'
+      outputPath: '$(vsixFile)'
+      extensionVersion: '$(Build.BuildNumber)'
+      updateTasksVersion: true
+      updateTasksVersionType: minor
 
-          - task: PublishAzureDevOpsExtension@5
-            displayName: Publish dev
-            inputs:
-              connectTo: VsTeam
-              connectedServiceName: MathWorks
-              fileType: vsix
-              vsixFile: '$(vsixFile)'
-              extensionTag: -dev
-              extensionVisibility: private
-              updateTasksVersion: false
-              shareWith: iat-ci-dev
-              noWaitValidation: true
+  - publish: '$(vsixFile)'
+    displayName: Store extension
+    artifact: extension
 
-          - task: IsAzureDevOpsExtensionValid@5
-            displayName: Validate dev extension
-            inputs:
-              connectTo: VsTeam
-              connectedServiceName: MathWorks
-              method: id
-              publisherId: MathWorks
-              extensionId: matlab-azure-devops-extension
-              extensionTag: -dev
-              maxRetries: 20
+  - task: PublishAzureDevOpsExtension@5
+    displayName: Publish dev
+    inputs:
+      connectTo: VsTeam
+      connectedServiceName: MathWorks
+      fileType: vsix
+      vsixFile: '$(vsixFile)'
+      extensionTag: -dev
+      extensionVisibility: private
+      updateTasksVersion: false
+      shareWith: iat-ci-dev
+      noWaitValidation: true
 
-  - stage: integration_test
-    displayName: Integration test
-    dependsOn: build
-    jobs:
-      - template: integ-test-promote-template.yml
-        parameters:
-          TASK_VERSION: ['0', '1']
-
-  - stage: publish_prerelease
-    displayName: Publish prerelease
-    dependsOn: integration_test
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-    pool:
-      vmImage: ubuntu-latest
-    jobs:
-      - deployment: publish_prerelease
-        environment: prerelease
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - checkout: none
-
-                - download: current
-                  displayName: Get stored extension
-                  artifact: extension
-
-                - task: TfxInstaller@5
-                  displayName: Install tfx-cli
-                  inputs:
-                    version: v0.23.x
-
-                - task: PublishAzureDevOpsExtension@5
-                  displayName: Publish prerelease
-                  inputs:
-                    connectTo: VsTeam
-                    connectedServiceName: MathWorks
-                    fileType: vsix
-                    extensionTag: -prerelease
-                    extensionVisibility: private
-                    vsixFile: $(Pipeline.Workspace)/extension/*.vsix
-                    updateTasksVersion: false
-                    noWaitValidation: true
-
-                - task: IsAzureDevOpsExtensionValid@5
-                  displayName: Validate prerelease extension
-                  inputs:
-                    connectTo: VsTeam
-                    connectedServiceName: MathWorks
-                    method: id
-                    publisherId: MathWorks
-                    extensionId: matlab-azure-devops-extension
-                    extensionTag: -prerelease
-                    maxRetries: 20
-
-  - stage: publish_release
-    displayName: Publish release
-    dependsOn: publish_prerelease
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-    pool:
-      vmImage: ubuntu-latest
-    jobs:
-      - deployment: publish_release
-        environment: release
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - checkout: none
-
-                - download: current
-                  displayName: Get stored extension
-                  artifact: extension
-
-                - task: TfxInstaller@5
-                  displayName: Install tfx-cli
-                  inputs:
-                    version: v0.23.x
-
-                - task: PublishAzureDevOpsExtension@5
-                  displayName: Publish release
-                  inputs:
-                    connectTo: VsTeam
-                    connectedServiceName: MathWorks
-                    fileType: vsix
-                    vsixFile: $(Pipeline.Workspace)/extension/*.vsix
-                    updateTasksVersion: false
-                    noWaitValidation: true
-
-                - task: IsAzureDevOpsExtensionValid@5
-                  displayName: Validate release extension
-                  inputs:
-                    connectTo: VsTeam
-                    connectedServiceName: MathWorks
-                    method: id
-                    publisherId: MathWorks
-                    extensionId: matlab-azure-devops-extension
-                    maxRetries: 20
+  - task: IsAzureDevOpsExtensionValid@5
+    displayName: Validate dev extension
+    inputs:
+      connectTo: VsTeam
+      connectedServiceName: MathWorks
+      method: id
+      publisherId: MathWorks
+      extensionId: matlab-azure-devops-extension
+      extensionTag: -dev
+      maxRetries: 20
 
