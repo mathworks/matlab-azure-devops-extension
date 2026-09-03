@@ -244,7 +244,9 @@ jobs:
           condition: eq(${{ version }}, '0')
         - task: MathWorks.matlab-azure-devops-extension-dev.InstallMATLAB.InstallMATLAB@${{ version }}
           inputs:
-            products: Simulink Simulink_Test Simulink_Coverage Parallel_Computing_Toolbox
+            # Removed Parallel_Computing_Toolbox due to the combo of PCT bug g3416906
+            # and disk space issues on hosted runners
+            products: Simulink Simulink_Test Simulink_Coverage
           displayName: Install MATLAB on Microsoft-hosted agents
           condition: eq(${{ version }}, '1')
         - bash: |
