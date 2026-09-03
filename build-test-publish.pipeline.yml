@@ -1,6 +1,9 @@
-name: 1.15$(Rev:.r)
+name: 1.16$(Rev:.r)
 
 trigger:
+  - master
+
+pr:
   - master
 
 variables:
@@ -12,10 +15,10 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-  - task: NodeTool@0
+  - task: UseNode@1
     displayName: Install node.js
     inputs:
-      versionSpec: 18.x
+      version: 20.x
 
   - script: npm install
     displayName: Install dependencies
@@ -29,12 +32,12 @@ steps:
   - script: npm run preparePackage
     displayName: Prepare package
 
-  - task: TfxInstaller@2
+  - task: TfxInstaller@5
     displayName: Install tfx-cli
     inputs:
-      version: v0.16.x
+      version: v0.23.x
 
-  - task: PackageAzureDevOpsExtension@2
+  - task: PackageAzureDevOpsExtension@5
     displayName: Package
     inputs:
       rootFolder: '$(packageFolder)'
@@ -47,7 +50,7 @@ steps:
     displayName: Store extension
     artifact: extension
 
-  - task: PublishAzureDevOpsExtension@2
+  - task: PublishAzureDevOpsExtension@5
     displayName: Publish dev
     inputs:
       connectTo: VsTeam
@@ -58,3 +61,16 @@ steps:
       extensionVisibility: private
       updateTasksVersion: false
       shareWith: iat-ci-dev
+      noWaitValidation: true
+
+  - task: IsAzureDevOpsExtensionValid@5
+    displayName: Validate dev extension
+    inputs:
+      connectTo: VsTeam
+      connectedServiceName: MathWorks
+      method: id
+      publisherId: MathWorks
+      extensionId: matlab-azure-devops-extension
+      extensionTag: -dev
+      minTimeout: "2"
+

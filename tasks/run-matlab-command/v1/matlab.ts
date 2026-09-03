@@ -60,9 +60,10 @@ export async function getRunMATLABCommandPath(platform: string, architecture: st
             ext = "";
             platformDir = "glnxa64";
             break;
-        default:
+        default: {
             const msg = `This task is not supported on ${platform} runners using the ${architecture} architecture.`;
             return Promise.reject(Error(msg));
+        }
     }
 
     const binDir = path.join(__dirname, "bin", platformDir);

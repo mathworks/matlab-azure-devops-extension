@@ -1,7 +1,7 @@
 resources:
   pipelines:
-    - pipeline: integ_test_promote
-      source: pre-integ-test
+    - pipeline: build
+      source: build-test-publish
       trigger: true
 
 trigger: none
@@ -17,6 +17,7 @@ stages:
 
   - stage: publish_prerelease
     displayName: Publish prerelease
+    dependsOn: integration_test
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     pool:
       vmImage: ubuntu-latest
@@ -29,22 +30,16 @@ stages:
               steps:
                 - checkout: none
 
-                - task: DownloadPipelineArtifact@2
+                - download: build
                   displayName: Get stored extension
-                  inputs:
-                    source: specific
-                    project: b3d35465-d584-454b-a4e9-e60757510c12
-                    pipeline: 6
-                    runVersion: latest
-                    artifact: extension
-                    path: $(Build.StagingDirectory)
+                  artifact: extension
 
-                - task: TfxInstaller@2
+                - task: TfxInstaller@5
                   displayName: Install tfx-cli
                   inputs:
-                    version: v0.7.x
+                    version: v0.23.x
 
-                - task: PublishAzureDevOpsExtension@2
+                - task: PublishAzureDevOpsExtension@5
                   displayName: Publish prerelease
                   inputs:
                     connectTo: VsTeam
@@ -52,11 +47,24 @@ stages:
                     fileType: vsix
                     extensionTag: -prerelease
                     extensionVisibility: private
-                    vsixFile: $(Build.StagingDirectory)/*.vsix
+                    vsixFile: $(Pipeline.Workspace)/build/extension/*.vsix
                     updateTasksVersion: false
+                    noWaitValidation: true
+
+                - task: IsAzureDevOpsExtensionValid@5
+                  displayName: Validate prerelease extension
+                  inputs:
+                    connectTo: VsTeam
+                    connectedServiceName: MathWorks
+                    method: id
+                    publisherId: MathWorks
+                    extensionId: matlab-azure-devops-extension
+                    extensionTag: -prerelease
+                    minTimeout: "2"
 
   - stage: publish_release
     displayName: Publish release
+    dependsOn: publish_prerelease
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     pool:
       vmImage: ubuntu-latest
@@ -69,26 +77,32 @@ stages:
               steps:
                 - checkout: none
 
-                - task: DownloadPipelineArtifact@2
+                - download: build
                   displayName: Get stored extension
-                  inputs:
-                    source: specific
-                    project: b3d35465-d584-454b-a4e9-e60757510c12
-                    pipeline: 6
-                    runVersion: latest
-                    artifact: extension
-                    path: $(Build.StagingDirectory)
+                  artifact: extension
 
-                - task: TfxInstaller@2
+                - task: TfxInstaller@5
                   displayName: Install tfx-cli
                   inputs:
-                    version: v0.7.x
+                    version: v0.23.x
 
-                - task: PublishAzureDevOpsExtension@2
+                - task: PublishAzureDevOpsExtension@5
                   displayName: Publish release
                   inputs:
                     connectTo: VsTeam
                     connectedServiceName: MathWorks
                     fileType: vsix
-                    vsixFile: $(Build.StagingDirectory)/*.vsix
+                    vsixFile: $(Pipeline.Workspace)/build/extension/*.vsix
                     updateTasksVersion: false
+                    noWaitValidation: true
+
+                - task: IsAzureDevOpsExtensionValid@5
+                  displayName: Validate release extension
+                  inputs:
+                    connectTo: VsTeam
+                    connectedServiceName: MathWorks
+                    method: id
+                    publisherId: MathWorks
+                    extensionId: matlab-azure-devops-extension
+                    minTimeout: "2"
+

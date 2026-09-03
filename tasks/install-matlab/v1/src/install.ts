@@ -34,7 +34,7 @@ export async function install(platform: string, architecture: string, release: s
     // add MATLAB to system path
     try {
         toolLib.prependPath(path.join(toolpath, "bin"));
-    } catch (err: any) {
+    } catch (err) {
         throw new Error("Failed to add MATLAB to system path.");
     }
 
@@ -48,7 +48,7 @@ export async function install(platform: string, architecture: string, release: s
             if (fs.existsSync(runtimePath)) {
                 toolLib.prependPath(runtimePath);
             }
-        } catch (err: any) {
+        } catch (err) {
             throw new Error("Failed to add MATLAB Runtime to system path on windows.");
         }
     }
