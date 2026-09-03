@@ -60,7 +60,7 @@ stages:
                     publisherId: MathWorks
                     extensionId: matlab-azure-devops-extension
                     extensionTag: -prerelease
-                    maxRetries: 20
+                    minTimeout: "2"
 
   - stage: publish_release
     displayName: Publish release
@@ -104,5 +104,5 @@ stages:
                     method: id
                     publisherId: MathWorks
                     extensionId: matlab-azure-devops-extension
-                    maxRetries: 20
+                    minTimeout: "2"
 
