@@ -63,6 +63,7 @@ export async function install(
         "install",
         `--release=${releaseSpec}`,
         `--destination=${destination}`,
+        "--caller=CI_INTEG:AZURE_DEVOPS",
     ];
     mpmArguments = mpmArguments.concat("--products");
     mpmArguments = mpmArguments.concat(parsedProducts);
