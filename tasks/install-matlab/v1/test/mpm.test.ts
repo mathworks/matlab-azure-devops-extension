@@ -129,8 +129,8 @@ export default function suite() {
                 "MATLAB",
                 "Compiler",
             ];
-            assert.doesNotReject(async () => { mpm.install(mpmPath, releaseInfo, products, destination); });
-            mpm.install(mpmPath, releaseInfo, destination, products).then(() => {
+            assert.doesNotReject(async () => { mpm.install(mpmPath, releaseInfo, products, destination, "linux", arch); });
+            mpm.install(mpmPath, releaseInfo, destination, products, "linux", arch).then(() => {
                 assert(stubExec.calledWithMatch(mpmPath, expectedMpmArgs));
             });
         });
@@ -149,10 +149,27 @@ export default function suite() {
                 "MATLAB",
                 "Compiler",
             ];
-            assert.doesNotReject(async () => { mpm.install(mpmPath, releaseInfo, products, destination); });
-            mpm.install(mpmPath, releaseInfo, destination, products).then(() => {
+            assert.doesNotReject(async () => { mpm.install(mpmPath, releaseInfo, products, destination, "linux", arch); });
+            mpm.install(mpmPath, releaseInfo, destination, products, "linux", arch).then(() => {
                 assert(stubExec.calledWithMatch(mpmPath, expectedMpmArgs));
             });
+        });
+
+        it("install omits --caller with maci64 mpm", async () => {
+            const mpmPath = "mpm";
+            const releaseInfo = {name: "r2022b", version: "9.13.0", update: "Latest", isPrerelease: false};
+            const destination = "/opt/matlab";
+            const products = "MATLAB Compiler";
+            const expectedMpmArgs = [
+                "install",
+                "--release=r2022b",
+                `--destination=${destination}`,
+                "--products",
+                "MATLAB",
+                "Compiler",
+            ];
+            await mpm.install(mpmPath, releaseInfo, destination, products, "darwin", arch);
+            assert.deepStrictEqual(stubExec.lastCall.args[1], expectedMpmArgs);
         });
 
         it("install rejects on failed install", async () => {
@@ -164,7 +181,7 @@ export default function suite() {
                 // non-zero exit code
                 return Promise.resolve(1);
             });
-            await assert.rejects(async () => mpm.install(mpmPath, releaseInfo, destination, products));
+            await assert.rejects(async () => mpm.install(mpmPath, releaseInfo, destination, products, "linux", arch));
         });
 
         it("install does not fail when mpm reports products already installed", async () => {
@@ -183,7 +200,7 @@ export default function suite() {
             });
 
             // Should not reject
-            await mpm.install(mpmPath, releaseInfo, destination, products);
+            await mpm.install(mpmPath, releaseInfo, destination, products, "linux", arch);
             assert(stubExec.called);
         });
     });
