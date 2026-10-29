@@ -50,6 +50,8 @@ export async function install(
     release: matlab.Release,
     destination: string,
     products: string,
+    platform: string,
+    architecture: string,
 ): Promise<void> {
     let parsedProducts = products.split(" ");
     // Add MATLAB by default
@@ -64,6 +66,10 @@ export async function install(
         `--release=${releaseSpec}`,
         `--destination=${destination}`,
     ];
+    // The maci64 mpm predates support for --caller
+    if (!(platform === "darwin" && architecture === "x64")) {
+        mpmArguments.push("--caller=CI_INTEG:AZURE_DEVOPS");
+    }
     mpmArguments = mpmArguments.concat("--products");
     mpmArguments = mpmArguments.concat(parsedProducts);
 
