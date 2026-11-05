@@ -175,7 +175,7 @@ export async function installSystemDependencies(platform: string, architecture: 
     } else if (platform === "darwin" && architecture === "arm64") {
         if (release < "r2023b") {
             return installAppleSiliconRosetta();
-        } else {
+        } else if (release < "r2026b") {
             return installAppleSiliconJdk();
         }
     }
@@ -190,7 +190,7 @@ async function installAppleSiliconRosetta() {
 
 async function installAppleSiliconJdk() {
     const jdk = await downloadToolWithRetries(
-        "https://corretto.aws/downloads/resources/8.402.08.1/amazon-corretto-8.402.08.1-macosx-aarch64.pkg",
+        "https://corretto.aws/downloads/resources/11.0.33.0.10/amazon-corretto-11.0.33.0.10-macosx-aarch64.pkg",
         "jdk.pkg",
     );
 
