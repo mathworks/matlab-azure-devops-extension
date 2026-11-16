@@ -424,6 +424,18 @@ export default function suite() {
                 assert(stubExec.calledOnce);
             });
 
+            it("works on Mac with Apple silicon >= R2026b", async () => {
+                platform = "darwin";
+                architecture = "arm64";
+                release = "r2026b";
+                await assert.doesNotReject(async () => {
+                    await matlab.installSystemDependencies(platform, architecture, release);
+                });
+                assert(stubDownloadAndRun.notCalled);
+                assert(stubDownloadTool.notCalled);
+                assert(stubExec.notCalled);
+            });
+
             it("works on Mac with Apple silicon < R2023b", async () => {
                 platform = "darwin";
                 architecture = "arm64";

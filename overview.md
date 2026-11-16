@@ -190,7 +190,11 @@ If you are using a Linux agent, verify that the following software is installed 
 - All MATLAB dependencies — To view the list of MATLAB dependencies, go to the [MATLAB Dependencies](https://github.com/mathworks-ref-arch/container-images/tree/main/matlab-deps) repository on GitHub. Then, open the `<release>/<system>/base-dependencies.txt` file for your MATLAB release and your agent's operating system.
 
 ##### macOS
-If you are using a macOS agent with an Apple silicon processor, verify that Java&reg; Runtime Environment (JRE&trade;) is installed on your agent. For information about this requirement and to get a compatible JRE version, see [MATLAB on Apple Silicon Macs](https://www.mathworks.com/support/requirements/apple-silicon.html).
+If you are using a macOS agent with an Apple silicon processor, verify that the following software is installed on your agent:
+- Rosetta 2 for MATLAB R2023a and earlier — For more information, see [Using Intel-based apps on a Mac with Apple silicon](https://support.apple.com/102527).
+- Java&reg; Runtime Environment (JRE&trade;) for MATLAB R2023b through R2026a — For information about this requirement and to get a compatible JRE version, see [MATLAB on Apple Silicon Macs](https://www.mathworks.com/support/requirements/apple-silicon.html).
+
+Starting in R2026b, only products and features that use Java require a JRE. To use these products and features, install a compatible JRE on your agent or specify `MATLAB_Support_for_OpenJDK` in the `products` input. For more information, see [Versions of OpenJDK Compatible with MATLAB by Release](https://www.mathworks.com/support/requirements/openjdk.html).
 
 >**Tip:** One convenient way to include the required dependencies on a self-hosted agent is to specify the [MATLAB Dependencies container image on Docker&reg; Hub](https://hub.docker.com/r/mathworks/matlab-deps) in your YAML pipeline.
 
