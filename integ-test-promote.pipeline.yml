@@ -13,7 +13,7 @@ stages:
     jobs:
       - template: integ-test-promote-template.yml
         parameters:
-          TASK_VERSION: ['0', '1']
+          TASK_VERSION: ['1']
 
   - stage: publish_prerelease
     displayName: Publish prerelease
